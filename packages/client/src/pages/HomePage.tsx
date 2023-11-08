@@ -1,12 +1,12 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { increment, decrement } from '../features/homePageSlice'
-import { RootState } from '../store'
+import { Store } from '../store'
 import Button from '@mui/material/Button'
 import ExampleForm from '../components/ExampleForm'
 
 function HomePageComponent() {
-  const count = useSelector((state: RootState) => state.homePage.value)
+  const count = useSelector((state: Store) => state.homePage.value)
   const dispatch = useDispatch()
 
   return (
