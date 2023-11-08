@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import './App.css'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import HomePage from './pages/HomePage'
+import axios from 'axios'
 
 function NotFoundPage() {
   return <h1>404 - Page Not Found</h1>
@@ -39,9 +40,12 @@ function App() {
   useEffect(() => {
     const fetchServerData = async () => {
       const url = `http://localhost:${__SERVER_PORT__}`
-      const response = await fetch(url)
-      const data = await response.json()
-      console.log(data)
+      try {
+        const response = await axios.get(url)
+        console.log(response.data)
+      } catch (error) {
+        console.error('Ошибка при запросе данных:', error)
+      }
     }
 
     fetchServerData()
