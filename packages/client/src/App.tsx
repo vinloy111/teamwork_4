@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import './App.css'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import HomePage from './pages/HomePage'
 
 function NotFoundPage() {
   return <h1>404 - Page Not Found</h1>
@@ -12,10 +13,6 @@ function LoginPage() {
 
 function RegisterPage() {
   return <h1>Register Page</h1>
-}
-
-function HomePage() {
-  return <h1>Home Page</h1>
 }
 
 function ProfilePage() {
