@@ -12,7 +12,6 @@ global.fetch = jest.fn(() =>
 )
 
 test('Example test', async () => {
-  // Оберните компонент App в Provider и передайте хранилище
   render(
     <Provider store={store}>
       <App />
