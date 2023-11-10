@@ -14,7 +14,7 @@ type Props = {
   onSendArmy: (attacker: Area, defender: Area) => void
 }
 
-export const CanvasAreas = React.memo((props: Props): JSX.Element => {
+export const CanvasAreas = React?.memo((props: Props): JSX.Element => {
   const { areas, onSendArmy } = props
   const [isMouseDown, setIsMouseDown] = useState<undefined | number>(undefined)
   const [isMouseMove, setIsMouseMove] = useState<

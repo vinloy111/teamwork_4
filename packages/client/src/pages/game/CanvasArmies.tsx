@@ -7,7 +7,7 @@ type Props = {
   armies: Army[]
 }
 
-export const CanvasArmies = React.memo((props: Props): JSX.Element => {
+export const CanvasArmies = React?.memo((props: Props): JSX.Element => {
   const { armies } = props
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
