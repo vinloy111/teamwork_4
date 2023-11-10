@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { CanvasAreas } from './CanvasAreas'
 import { CanvasArmies } from './CanvasArmies'
-import { Area, AreaBase, Army } from './GameTypes'
+import { Area, AreaBase, Army } from '../../types/GameData'
 import './style.css'
 import { distanceBetweenPoints, intermediatePoint } from './utils'
 

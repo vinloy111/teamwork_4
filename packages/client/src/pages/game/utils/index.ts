@@ -1,5 +1,5 @@
 import { areasExtendedMap } from '..'
-import { Area, Army, Position } from '../GameTypes'
+import { Area, Army, Position } from '../../../types/GameData'
 
 const TWO_PI = 2 * Math.PI
 const CIRCLE_RADIUS = 30

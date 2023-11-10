@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { Army } from './GameTypes'
+import { Army } from '../../types/GameData'
 import { drawArmy } from './utils'
 import './style.css'
 

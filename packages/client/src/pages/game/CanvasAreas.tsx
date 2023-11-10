@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, MouseEvent, useState } from 'react'
-import { Area } from './GameTypes'
+import { Area } from '../../types/GameData'
 import {
   checkDotIntoCircle,
   drawArrow,
