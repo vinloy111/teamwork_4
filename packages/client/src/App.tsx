@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import './App.css'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import HomePage from './pages/HomePage'
+import { GamePage } from './pages/game'
 import axios from 'axios'
 
 function NotFoundPage() {
@@ -18,10 +19,6 @@ function RegisterPage() {
 
 function ProfilePage() {
   return <h1>Profile Page</h1>
-}
-
-function GamePage() {
-  return <h1>Game Page</h1>
 }
 
 function LeaderboardPage() {
