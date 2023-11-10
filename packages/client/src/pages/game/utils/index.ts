@@ -1,5 +1,5 @@
-import { areasExtendedMap } from '..'
-import { Area, Army, Position } from '../../../types/GameData'
+import { Area, Army, Position } from 'types/GameData'
+import { areasExtendedMap } from '../config'
 
 const TWO_PI = 2 * Math.PI
 const CIRCLE_RADIUS = 30

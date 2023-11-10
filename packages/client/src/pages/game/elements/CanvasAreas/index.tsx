@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, MouseEvent, useState } from 'react'
-import { Area } from '../../types/GameData'
+import { Area } from 'types/GameData'
 import {
   checkDotIntoCircle,
   drawArrow,
   drawCircle,
   drawCircleBorder,
   drawPowerBar,
-} from './utils'
+} from '../../utils'
 import './style.css'
 
 type Props = {
@@ -88,7 +88,7 @@ export const CanvasAreas = React?.memo((props: Props): JSX.Element => {
   }
 
   return (
-    <div className="game-canvas-wrapper">
+    <div className="canvas-areas-wrapper">
       <canvas
         onMouseDown={onMouseDown}
         onMouseMove={onMouseMove}

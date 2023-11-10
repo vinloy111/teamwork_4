@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
-import { Army } from '../../types/GameData'
-import { drawArmy } from './utils'
+import { Army } from 'types/GameData'
+import { drawArmy } from '../../utils'
 import './style.css'
 
 type Props = {
@@ -22,7 +22,7 @@ export const CanvasArmies = React?.memo((props: Props): JSX.Element => {
   }, [armies])
 
   return (
-    <div className="army-canvas-wrapper">
+    <div className="canvas-army-wrapper">
       <canvas ref={canvasRef} />
     </div>
   )
