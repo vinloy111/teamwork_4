@@ -1,9 +1,11 @@
 export type Position = { x: number; y: number }
 
+export type AreaOwner = 'user' | 'computer' | 'freeLands'
+
 export type AreaBase = {
   id: number
   position: Position
-  owner: 'user' | 'computer' | 'freeLands'
+  owner: AreaOwner
 }
 
 export type Area = AreaBase & {

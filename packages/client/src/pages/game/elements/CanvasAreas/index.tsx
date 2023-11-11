@@ -82,7 +82,7 @@ export const CanvasAreas = React?.memo((props: Props): JSX.Element => {
       setIsMouseMove({
         x: e.clientX,
         y: e.clientY,
-        target: finded || undefined,
+        target: finded,
       })
     }
   }

@@ -1,4 +1,4 @@
-import { Area, Army, Position } from 'types/GameData'
+import { Area, AreaOwner, Army, Position } from 'types/GameData'
 import { areasExtendedMap } from '../config'
 
 const TWO_PI = 2 * Math.PI
@@ -109,7 +109,7 @@ export const drawPowerBar = (
   areas: Area[]
 ): void => {
   // TODO: Добавить учет армий
-  const powers = areas.reduce(
+  const powers: Record<AreaOwner, number> = areas.reduce(
     (acc, i) => {
       return { ...acc, [i.owner]: acc?.[i.owner] + i.count }
     },
@@ -125,24 +125,18 @@ export const drawPowerBar = (
   ctx.fillStyle = POWER_BAR_COLOR
   ctx.fillRect(powerBarStart, 20, POWER_BAR_WIDTH, POWER_BAR_HEIGHT)
 
-  const allCount = areas.reduce((acc, i) => {
-    return acc + i.count
-  }, 0)
+  const allCount = areas.reduce((acc, i) => acc + i.count, 0)
 
   let temp = powerBarStart
-  const dataForRender = Object.entries(powers).map(i => {
-    const owner = i[0] as 'user' | 'computer' | 'freeLands'
-    const count = i[1]
+  const dataForRender = Object.entries(powers).map(([owner, count]) => {
     const startPoint = temp + GAP_WIDTH
-    const activePowersCount = Object.values(powers).filter(i =>
-      Boolean(i)
-    ).length
+    const activePowersCount = Object.values(powers).filter(Boolean).length
     const freeSpace = POWER_BAR_WIDTH - (activePowersCount + 1) * GAP_WIDTH
     const width = (count / allCount) * freeSpace
     temp = temp + GAP_WIDTH + width
     return {
       [owner]: count,
-      color: areasExtendedMap[owner].color,
+      color: areasExtendedMap[owner as AreaOwner].color,
       startPoint,
       width,
     }
@@ -155,7 +149,9 @@ export const drawPowerBar = (
 }
 
 export const distanceBetweenPoints = (from: Position, to: Position): number => {
-  return Math.sqrt(Math.pow(to.x - from.x, 2) + Math.pow(to.y - from.y, 2))
+  const diffX = to.x - from.x
+  const diffY = to.y - from.y
+  return Math.sqrt(Math.pow(diffX, 2) + Math.pow(diffY, 2))
 }
 
 export const intermediatePoint = (
