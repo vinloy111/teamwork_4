@@ -139,10 +139,9 @@ export const drawPowerBar = (
   let temp = powerBarStart
   const dataForRender = Object.entries(allPowers).map(([owner, count]) => {
     const startPoint = temp + GAP_WIDTH
-    const activePowersCount = Object.values(allPowers).filter(Boolean).length
-    const freeSpace = POWER_BAR_WIDTH - (activePowersCount + 1) * GAP_WIDTH
+    const freeSpace = POWER_BAR_WIDTH - 2 * GAP_WIDTH
     const width = (count / allCount) * freeSpace
-    temp = temp + GAP_WIDTH + width
+    temp = temp + width
     return {
       [owner]: count,
       color: areasExtendedMap[owner as AreaOwner].color,

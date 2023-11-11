@@ -6,6 +6,7 @@ import { Area, Army } from 'types/GameData'
 import { distanceBetweenPoints, intermediatePoint } from '../../utils'
 import { areasBase, areasExtendedMap, GAME_CONSTS } from '../../config'
 import { CanvasPowerBar } from '../CanvasPowerBar'
+import { CPULogic } from '../CPULogic'
 
 const areasDefault = areasBase.map(i => ({
   ...i,
@@ -38,7 +39,8 @@ export const Game = (): JSX.Element => {
     setAreas(a =>
       a.map(i => ({
         ...i,
-        count: i.count < i.limit ? i.count + 1 : i.count,
+        count:
+          i.owner !== 'freeLands' && i.count < i.limit ? i.count + 1 : i.count,
       }))
     )
   }, [currentSecond])
@@ -142,6 +144,12 @@ export const Game = (): JSX.Element => {
         areas={areas}
         onSendArmy={onSendArmy}
         canvasSize={canvasSize}
+      />
+      <CPULogic
+        owner="computer"
+        areas={areas}
+        onSendArmy={onSendArmy}
+        seconds={currentSecond}
       />
     </>
   )
