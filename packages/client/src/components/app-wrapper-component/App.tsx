@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react'
 import axios from 'axios'
 import { createTheme, ThemeProvider, useMediaQuery } from '@mui/material'
-import { theme, themeOptions } from '../../theme'
+import { themeOptions } from '../../theme'
 import { RouterProvider } from 'react-router'
 import { AppRouter } from './AppRouter'
 import './App.css'
@@ -13,11 +13,11 @@ function App() {
     () =>
       createTheme({
         palette: {
-          mode: 'dark',
+          mode: prefersDarkMode ? 'dark' : 'light',
         },
         ...themeOptions,
       }),
-    []
+    [prefersDarkMode]
   )
 
   useEffect(() => {
