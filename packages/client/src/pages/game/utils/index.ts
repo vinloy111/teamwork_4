@@ -54,26 +54,35 @@ export const drawArrow = (
 ): void => {
   const { color, startX, startY, endX, endY } = arrow
   if (endX && endY) {
+    const length = Math.sqrt(
+      Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2)
+    )
+    const offset = 20
+    const newEndX = endX - ((endX - startX) / length) * offset
+    const newEndY = endY - ((endY - startY) / length) * offset
+
     ctx.strokeStyle = color
-    ctx.lineWidth = 20
+    ctx.fillStyle = color
+    ctx.lineWidth = 10
     ctx.beginPath()
     ctx.moveTo(startX, startY)
-    ctx.lineTo(endX, endY)
+    ctx.lineTo(newEndX, newEndY)
     ctx.stroke()
 
     const arrowSize = 30
     const angle = Math.atan2(endY - startY, endX - startX)
     ctx.beginPath()
-    ctx.moveTo(
+    ctx.moveTo(endX, endY)
+    ctx.lineTo(
       endX - arrowSize * Math.cos(angle - Math.PI / 6),
       endY - arrowSize * Math.sin(angle - Math.PI / 6)
     )
-    ctx.lineTo(endX, endY)
     ctx.lineTo(
       endX - arrowSize * Math.cos(angle + Math.PI / 6),
       endY - arrowSize * Math.sin(angle + Math.PI / 6)
     )
-    ctx.stroke()
+    ctx.closePath()
+    ctx.fill()
     ctx.lineWidth = 1
   }
 }
@@ -106,10 +115,12 @@ export const drawArmy = (ctx: CanvasRenderingContext2D, army: Army): void => {
 
 export const drawPowerBar = (
   ctx: CanvasRenderingContext2D,
-  areas: Area[]
+  areas: Area[],
+  armies: Army[]
 ): void => {
-  // TODO: Добавить учет армий
-  const powers: Record<AreaOwner, number> = areas.reduce(
+  const allElements = [...areas, ...armies]
+  const allCount = allElements.reduce((acc, i) => acc + i.count, 0)
+  const allPowers: Record<AreaOwner, number> = allElements.reduce(
     (acc, i) => {
       return { ...acc, [i.owner]: acc?.[i.owner] + i.count }
     },
@@ -125,15 +136,12 @@ export const drawPowerBar = (
   ctx.fillStyle = POWER_BAR_COLOR
   ctx.fillRect(powerBarStart, 20, POWER_BAR_WIDTH, POWER_BAR_HEIGHT)
 
-  const allCount = areas.reduce((acc, i) => acc + i.count, 0)
-
   let temp = powerBarStart
-  const dataForRender = Object.entries(powers).map(([owner, count]) => {
+  const dataForRender = Object.entries(allPowers).map(([owner, count]) => {
     const startPoint = temp + GAP_WIDTH
-    const activePowersCount = Object.values(powers).filter(Boolean).length
-    const freeSpace = POWER_BAR_WIDTH - (activePowersCount + 1) * GAP_WIDTH
+    const freeSpace = POWER_BAR_WIDTH - 2 * GAP_WIDTH
     const width = (count / allCount) * freeSpace
-    temp = temp + GAP_WIDTH + width
+    temp = temp + width
     return {
       [owner]: count,
       color: areasExtendedMap[owner as AreaOwner].color,

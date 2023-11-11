@@ -2,27 +2,27 @@ export type Position = { x: number; y: number }
 
 export type AreaOwner = 'user' | 'computer' | 'freeLands'
 
-export type AreaBase = {
-  id: number
+export type ID = string
+
+export type ElementBase = {
+  id: ID
   position: Position
   owner: AreaOwner
 }
 
-export type Area = AreaBase & {
+export type Area = ElementBase & {
   color: string
   count: number
   limit: number
 }
 
-export type Army = {
-  id: number
+export type Army = ElementBase & {
   color: string
   count: number
   distance: number
   stepLength: number
   stepCount: number
-  position: Position
   targetPosition: Position
-  fromId: number
-  toId: number
+  fromId: ID
+  toId: ID
 }

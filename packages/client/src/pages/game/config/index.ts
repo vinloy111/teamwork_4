@@ -1,4 +1,4 @@
-import { AreaBase } from 'types/GameData'
+import { ElementBase } from 'types/GameData'
 
 export const GAME_CONSTS = {
   PLAYERS_DEFAULT_ARMY_COUNT: 15,
@@ -30,9 +30,9 @@ export const areasExtendedMap = {
 }
 
 // TODO: Доработать чтобы координаты динамически вычислялись исходя из размера экрана
-export const areasBase: AreaBase[] = [
+export const areasBase: ElementBase[] = [
   {
-    id: 1,
+    id: '1',
     position: {
       x: 336,
       y: 362,
@@ -40,7 +40,7 @@ export const areasBase: AreaBase[] = [
     owner: 'user',
   },
   {
-    id: 2,
+    id: '2',
     position: {
       x: 481,
       y: 630,
@@ -48,7 +48,7 @@ export const areasBase: AreaBase[] = [
     owner: 'freeLands',
   },
   {
-    id: 3,
+    id: '3',
     position: {
       x: 620,
       y: 403,
@@ -56,7 +56,7 @@ export const areasBase: AreaBase[] = [
     owner: 'freeLands',
   },
   {
-    id: 4,
+    id: '4',
     position: {
       x: 856,
       y: 476,
@@ -64,7 +64,7 @@ export const areasBase: AreaBase[] = [
     owner: 'freeLands',
   },
   {
-    id: 5,
+    id: '5',
     position: {
       x: 939,
       y: 700,
@@ -72,7 +72,7 @@ export const areasBase: AreaBase[] = [
     owner: 'freeLands',
   },
   {
-    id: 6,
+    id: '6',
     position: {
       x: 1181,
       y: 409,
@@ -80,7 +80,7 @@ export const areasBase: AreaBase[] = [
     owner: 'freeLands',
   },
   {
-    id: 7,
+    id: '7',
     position: {
       x: 1393,
       y: 642,
@@ -88,7 +88,7 @@ export const areasBase: AreaBase[] = [
     owner: 'freeLands',
   },
   {
-    id: 8,
+    id: '8',
     position: {
       x: 1403,
       y: 348,
@@ -96,7 +96,7 @@ export const areasBase: AreaBase[] = [
     owner: 'freeLands',
   },
   {
-    id: 9,
+    id: '9',
     position: {
       x: 1582,
       y: 663,
@@ -104,7 +104,7 @@ export const areasBase: AreaBase[] = [
     owner: 'freeLands',
   },
   {
-    id: 10,
+    id: '10',
     position: {
       x: 892,
       y: 256,
@@ -112,7 +112,7 @@ export const areasBase: AreaBase[] = [
     owner: 'freeLands',
   },
   {
-    id: 11,
+    id: '11',
     position: {
       x: 1552,
       y: 399,
