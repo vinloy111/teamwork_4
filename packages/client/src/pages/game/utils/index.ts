@@ -1,4 +1,4 @@
-import { Area, AreaOwner, Army, Position } from 'types/GameData'
+import { Area, AreaOwner, Army, GameStats, Position } from 'types/GameData'
 import { areasExtendedMap } from '../config'
 
 const TWO_PI = 2 * Math.PI
@@ -113,46 +113,69 @@ export const drawArmy = (ctx: CanvasRenderingContext2D, army: Army): void => {
   ctx.fillText(String(count), position.x, position.y + COUNT_MARGIN - 20)
 }
 
-export const drawPowerBar = (
-  ctx: CanvasRenderingContext2D,
+export const getGameStats = (
   areas: Area[],
   armies: Army[]
-): void => {
+): { stats: GameStats[]; isFinish?: boolean } => {
+  const defaultValues = { user: 0, freeLands: 0, computer: 0 }
   const allElements = [...areas, ...armies]
   const allCount = allElements.reduce((acc, i) => acc + i.count, 0)
-  const allPowers: Record<AreaOwner, number> = allElements.reduce(
+  const areasByOwner: Record<AreaOwner, number> = areas.reduce((acc, i) => {
+    return { ...acc, [i.owner]: acc?.[i.owner] + 1 }
+  }, defaultValues)
+  const countByOwner: Record<AreaOwner, number> = allElements.reduce(
     (acc, i) => {
       return { ...acc, [i.owner]: acc?.[i.owner] + i.count }
     },
-    { user: 0, computer: 0, freeLands: 0 }
+    defaultValues
   )
 
+  const stats = Object.entries(defaultValues).map(([key]) => {
+    const owner = key as AreaOwner
+    const isEmpty = owner !== 'freeLands' && countByOwner[owner] <= 1
+    return {
+      owner,
+      areasCount: areasByOwner[owner],
+      count: countByOwner[owner],
+      color: areasExtendedMap[owner].color,
+      armiesPercent: countByOwner[owner] / allCount,
+      status: isEmpty ? 'Поражение' : '',
+    }
+  })
+
+  const isFinish =
+    stats.filter(i => i.owner !== 'freeLands' && i.count).length <= 1
+
+  if (isFinish) {
+    const statsWithWinner = stats.map(i =>
+      i.owner !== 'freeLands' && i.count ? { ...i, status: 'Победитель' } : i
+    )
+    return { stats: statsWithWinner, isFinish: true }
+  }
+
+  return { stats, isFinish: false }
+}
+
+export const drawPowerBar = (
+  ctx: CanvasRenderingContext2D,
+  stats: GameStats[]
+): void => {
   const POWER_BAR_WIDTH = 600
   const POWER_BAR_HEIGHT = 30
   const POWER_BAR_COLOR = 'white'
   const GAP_WIDTH = 5
+  const POWER_BAR_START_POINT = innerWidth / 2 - POWER_BAR_WIDTH / 2
+  const POWER_BAR_INNER_WIDTH = POWER_BAR_WIDTH - GAP_WIDTH * 2
 
-  const powerBarStart = innerWidth / 2 - POWER_BAR_WIDTH / 2
   ctx.fillStyle = POWER_BAR_COLOR
-  ctx.fillRect(powerBarStart, 20, POWER_BAR_WIDTH, POWER_BAR_HEIGHT)
+  ctx.fillRect(POWER_BAR_START_POINT, 20, POWER_BAR_WIDTH, POWER_BAR_HEIGHT)
 
-  let temp = powerBarStart
-  const dataForRender = Object.entries(allPowers).map(([owner, count]) => {
-    const startPoint = temp + GAP_WIDTH
-    const freeSpace = POWER_BAR_WIDTH - 2 * GAP_WIDTH
-    const width = (count / allCount) * freeSpace
-    temp = temp + width
-    return {
-      [owner]: count,
-      color: areasExtendedMap[owner as AreaOwner].color,
-      startPoint,
-      width,
-    }
-  })
-
-  dataForRender.forEach(i => {
+  let startPoint = POWER_BAR_START_POINT + GAP_WIDTH
+  stats.forEach(i => {
     ctx.fillStyle = i.color
-    ctx.fillRect(i.startPoint, 25, i.width, POWER_BAR_HEIGHT - 10)
+    const width = POWER_BAR_INNER_WIDTH * i.armiesPercent
+    ctx.fillRect(startPoint, 25, width, POWER_BAR_HEIGHT - 10)
+    startPoint = startPoint + width
   })
 }
 

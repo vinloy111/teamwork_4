@@ -4,10 +4,10 @@ import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
 
 type Props = {
-  onStartGame: () => void
+  runGame: () => void
 }
 
-export const StartScreen = ({ onStartGame }: Props): JSX.Element => {
+export const StartScreen = ({ runGame }: Props): JSX.Element => {
   const instruction = (
     <>
       <Typography variant="h2" sx={{ mb: '50px' }} gutterBottom>
@@ -36,7 +36,7 @@ export const StartScreen = ({ onStartGame }: Props): JSX.Element => {
   const button = (
     <Box
       sx={{ mt: '30px', flex: 1, display: 'flex', justifyContent: 'center' }}>
-      <Button variant="contained" onClick={onStartGame}>
+      <Button variant="contained" onClick={runGame}>
         Начать игру
       </Button>
     </Box>
