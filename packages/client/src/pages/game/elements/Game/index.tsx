@@ -1,15 +1,22 @@
 import { useEffect, useState } from 'react'
+import { v4 as uuidv4 } from 'uuid'
 import { CanvasAreas } from '../CanvasAreas'
 import { CanvasArmies } from '../CanvasArmies'
 import { Area, Army } from 'types/GameData'
 import { distanceBetweenPoints, intermediatePoint } from '../../utils'
 import { areasBase, areasExtendedMap, GAME_CONSTS } from '../../config'
-import './style.css'
+import { CanvasPowerBar } from '../CanvasPowerBar'
+import { CPULogic } from '../CPULogic'
 
 const areasDefault = areasBase.map(i => ({
   ...i,
   ...areasExtendedMap[i.owner],
 }))
+
+const canvasSize = {
+  width: innerWidth,
+  height: innerHeight,
+}
 
 export const Game = (): JSX.Element => {
   const [areas, setAreas] = useState<Area[]>(areasDefault)
@@ -32,7 +39,8 @@ export const Game = (): JSX.Element => {
     setAreas(a =>
       a.map(i => ({
         ...i,
-        count: i.count < i.limit ? i.count + 1 : i.count,
+        count:
+          i.owner !== 'freeLands' && i.count < i.limit ? i.count + 1 : i.count,
       }))
     )
   }, [currentSecond])
@@ -96,7 +104,6 @@ export const Game = (): JSX.Element => {
     }
   }
 
-  // TODO: Придумать для армий нормальный ID
   const onSendArmy = (attacker: Area, defender: Area): void => {
     setAreas(a => {
       const otherAreas = a.filter(i => i.id !== attacker.id)
@@ -112,7 +119,8 @@ export const Game = (): JSX.Element => {
       return [
         ...a,
         {
-          id: attacker.position.x + attacker.position.y + attacker.count, // TODO: Сделать для армий нормальный уникальный ID
+          id: uuidv4(),
+          owner: attacker.owner,
           color: attacker.color,
           count: attacker.count,
           stepLength,
@@ -128,10 +136,21 @@ export const Game = (): JSX.Element => {
   }
 
   return (
-    <div className="game-wrapper">
-      <CanvasArmies armies={armies} />
+    <>
+      <CanvasPowerBar areas={areas} armies={armies} canvasSize={canvasSize} />
+      <CanvasArmies armies={armies} canvasSize={canvasSize} />
       {/* TODO: onSendArmy каждый раз отправляется повторно, надо бы это исправить */}
-      <CanvasAreas areas={areas} onSendArmy={onSendArmy} />
-    </div>
+      <CanvasAreas
+        areas={areas}
+        onSendArmy={onSendArmy}
+        canvasSize={canvasSize}
+      />
+      <CPULogic
+        owner="computer"
+        areas={areas}
+        onSendArmy={onSendArmy}
+        seconds={currentSecond}
+      />
+    </>
   )
 }

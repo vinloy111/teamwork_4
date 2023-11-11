@@ -1,22 +1,23 @@
 import React, { useEffect, useRef, MouseEvent, useState } from 'react'
-import { Area } from 'types/GameData'
+import { Area, ID } from 'types/GameData'
+import { CanvasSize } from 'types/GameStats'
 import {
   checkDotIntoCircle,
   drawArrow,
   drawCircle,
   drawCircleBorder,
-  drawPowerBar,
 } from '../../utils'
 import './style.css'
 
 type Props = {
   areas: Area[]
   onSendArmy: (attacker: Area, defender: Area) => void
+  canvasSize: CanvasSize
 }
 
 export const CanvasAreas = React?.memo((props: Props): JSX.Element => {
-  const { areas, onSendArmy } = props
-  const [isMouseDown, setIsMouseDown] = useState<undefined | number>(undefined)
+  const { areas, onSendArmy, canvasSize } = props
+  const [isMouseDown, setIsMouseDown] = useState<undefined | ID>(undefined)
   const [isMouseMove, setIsMouseMove] = useState<
     undefined | { x: number; y: number; target?: Area }
   >(undefined)
@@ -25,12 +26,11 @@ export const CanvasAreas = React?.memo((props: Props): JSX.Element => {
   useEffect(() => {
     if (canvasRef.current) {
       const ctx = canvasRef.current?.getContext?.('2d')
-      canvasRef.current.width = innerWidth
-      canvasRef.current.height = innerHeight
+      canvasRef.current.width = canvasSize.width
+      canvasRef.current.height = canvasSize.height
 
       if (ctx) {
         areas?.forEach(i => drawCircle(ctx, i))
-        drawPowerBar(ctx, areas) // TODO: Вероятно PowerBar имеет смысл тоже вынести в отдельный Canvas, но не факт
 
         const isMouseDownTarget = areas.find(i => i.id == isMouseDown)
         if (isMouseDownTarget) {
@@ -90,6 +90,7 @@ export const CanvasAreas = React?.memo((props: Props): JSX.Element => {
   return (
     <div className="canvas-areas-wrapper">
       <canvas
+        style={isMouseDown ? { cursor: 'none' } : undefined}
         onMouseDown={onMouseDown}
         onMouseMove={onMouseMove}
         onMouseUp={onMouseUp}
