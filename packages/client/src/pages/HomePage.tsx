@@ -11,28 +11,26 @@ function HomePageComponent() {
   const dispatch = useDispatch()
 
   return (
-    <Layout>
-      <>
-        <h1>Home Page</h1>
-        {/* TODO Удалить, когда начнется разработка */}
-        <div>Пример использования стора и material: {count}</div>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => dispatch(increment())}>
-          Increment
-        </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={() => dispatch(decrement())}>
-          Decrement
-        </Button>
+    <>
+      <h1>Home Page</h1>
+      {/* TODO Удалить, когда начнется разработка */}
+      <div>Пример использования стора и material: {count}</div>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => dispatch(increment())}>
+        Increment
+      </Button>
+      <Button
+        variant="contained"
+        color="secondary"
+        onClick={() => dispatch(decrement())}>
+        Decrement
+      </Button>
 
-        <h2>Пример использования формы</h2>
-        <ExampleForm />
-      </>
-    </Layout>
+      <h2>Пример использования формы</h2>
+      <ExampleForm />
+    </>
   )
 }
 
