@@ -4,7 +4,6 @@ import { increment, decrement } from '../features/homePageSlice'
 import { Store } from '../store'
 import Button from '@mui/material/Button'
 import ExampleForm from '../components/ExampleForm'
-import Layout from '../components/layout/Layout'
 
 function HomePageComponent() {
   const count = useSelector((state: Store) => state.homePage.value)
