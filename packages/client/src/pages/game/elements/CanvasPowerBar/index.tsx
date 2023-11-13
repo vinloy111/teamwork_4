@@ -1,17 +1,18 @@
 import React, { useEffect, useRef } from 'react'
-import { Area, Army } from 'types/GameData'
+import { Area, Army, GameStats } from 'types/GameData'
 import { CanvasSize } from 'types/GameStats'
-import { drawPowerBar } from '../../utils'
+import { drawPowerBar, getGameStats } from '../../utils'
 import './style.css'
 
 type Props = {
   areas: Area[]
   armies: Army[]
   canvasSize: CanvasSize
+  finishGame: (stats: GameStats[]) => void
 }
 
 export const CanvasPowerBar = React?.memo((props: Props): JSX.Element => {
-  const { areas, armies, canvasSize } = props
+  const { areas, armies, canvasSize, finishGame } = props
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
@@ -20,7 +21,12 @@ export const CanvasPowerBar = React?.memo((props: Props): JSX.Element => {
       canvasRef.current.width = canvasSize.width
       canvasRef.current.height = canvasSize.height
 
-      if (ctx) drawPowerBar(ctx, areas, armies)
+      if (ctx) {
+        const { stats, isFinish } = getGameStats(areas, armies)
+        drawPowerBar(ctx, stats)
+
+        if (isFinish) finishGame(stats)
+      }
     }
   }, [areas, armies])
 
