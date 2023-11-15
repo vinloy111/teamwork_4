@@ -31,7 +31,7 @@ function LeaderboardPage() {
 function ForumTopicPage() {
   return <h1>ForumTopic Page</h1>
 }
-//errorElement={<ErrorElement fallback={<h1>Error...</h1>}/>}
+
 export const AppRouter = createBrowserRouter(
   createRoutesFromElements(
     <>
