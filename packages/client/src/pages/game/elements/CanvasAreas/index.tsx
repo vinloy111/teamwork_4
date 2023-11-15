@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, MouseEvent, useState } from 'react'
+import React, { useEffect, useRef, useState, MouseEvent } from 'react'
 import { Area, ID } from 'types/GameData'
 import { CanvasSize } from 'types/GameStats'
 import {
@@ -55,16 +55,23 @@ export const CanvasAreas = React?.memo((props: Props): JSX.Element => {
   }, [areas, isMouseDown, isMouseMove])
 
   const onMouseDown = (e: MouseEvent<HTMLCanvasElement>): void => {
-    console.log({ posX: e.clientX, posY: e.clientY })
+    console.log(e.nativeEvent.offsetX)
+    console.log({ x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY })
     const finded = areas.find(i =>
-      checkDotIntoCircle({ x: e.clientX, y: e.clientY }, i)
+      checkDotIntoCircle(
+        { x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY },
+        i
+      )
     )
     if (finded) setIsMouseDown(finded.id)
   }
 
   const onMouseUp = (e: MouseEvent<HTMLCanvasElement>): void => {
     const defender = areas.find(i =>
-      checkDotIntoCircle({ x: e.clientX, y: e.clientY }, i)
+      checkDotIntoCircle(
+        { x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY },
+        i
+      )
     )
     const attacker = areas.find(i => i.id == isMouseDown)
     if (defender && attacker && attacker.id !== defender.id) {
@@ -77,11 +84,14 @@ export const CanvasAreas = React?.memo((props: Props): JSX.Element => {
   const onMouseMove = (e: MouseEvent<HTMLCanvasElement>): void => {
     if (isMouseDown) {
       const finded = areas.find(i =>
-        checkDotIntoCircle({ x: e.clientX, y: e.clientY }, i)
+        checkDotIntoCircle(
+          { x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY },
+          i
+        )
       )
       setIsMouseMove({
-        x: e.clientX,
-        y: e.clientY,
+        x: e.nativeEvent.offsetX,
+        y: e.nativeEvent.offsetY,
         target: finded,
       })
     }

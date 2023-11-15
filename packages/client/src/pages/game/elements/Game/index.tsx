@@ -2,38 +2,42 @@ import { useEffect, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { CanvasAreas } from '../CanvasAreas'
 import { CanvasArmies } from '../CanvasArmies'
-import { Area, Army, GameStats } from 'types/GameData'
+import { Area, Army, GameResult, GameStats } from 'types/GameData'
 import { distanceBetweenPoints, intermediatePoint } from '../../utils'
 import { areasBase, areasExtendedMap, GAME_CONSTS } from '../../config'
 import { CanvasPowerBar } from '../CanvasPowerBar'
 import { CPULogic } from '../CPULogic'
+import { CanvasSize } from 'types/GameStats'
+import { GameMenu } from '../GameMenu'
 
 const areasDefault = areasBase.map(i => ({
   ...i,
   ...areasExtendedMap[i.owner],
 }))
 
-const canvasSize = {
-  width: innerWidth,
-  height: innerHeight,
-}
-
 type Props = {
-  finishGame: (stats: GameStats[]) => void
+  finishGame: (stats: GameResult) => void
+  breakGame: () => void
+  canvasSize: CanvasSize
 }
 
-// TODO: Баг, что если отправленная армия долго будет впути и за это время, точку из которой её отправили - захватят, то она захватит новую локацию не для своей фракции, а дла фракции захватившей её "родину"
-
-export const Game = ({ finishGame }: Props): JSX.Element => {
+export const Game = ({
+  finishGame,
+  breakGame,
+  canvasSize,
+}: Props): JSX.Element => {
   const [areas, setAreas] = useState<Area[]>(areasDefault)
   const [armies, setArmies] = useState<Army[]>([])
   const [currentSecond, setCurrentSeconds] = useState<number>(0)
   const [currentFrame, setCurrentFrame] = useState<number>(0)
 
+  let startTime = 0 // Хак для сброса времени при перезапуске игры
   const animate = (currentTime = 0): void => {
-    const second = Math.floor(currentTime / 1000)
+    if (!startTime) startTime = currentTime
+    const time = currentTime - startTime
+    const second = Math.floor(time / 1000)
     setCurrentSeconds(second)
-    const frame = Math.floor(currentTime / 33)
+    const frame = Math.floor(time / 33)
     setCurrentFrame(frame)
 
     requestAnimationFrame(animate)
@@ -68,14 +72,13 @@ export const Game = ({ finishGame }: Props): JSX.Element => {
 
   const checkCollapse = (army: Army): void => {
     if (army.distance <= army.stepLength) {
-      const attacker = areas.find(i => i.id == army.fromId)
       const defender = areas.find(i => i.id == army.toId)
 
-      if (attacker && defender && attacker?.owner !== defender?.owner) {
+      if (defender && army?.owner !== defender?.owner) {
         setAreas(a => {
           const otherAreas = a.filter(i => i.id !== defender.id)
           const isCapture = army.count > defender.count
-          const newOwner = isCapture ? attacker.owner : defender.owner
+          const newOwner = isCapture ? army.owner : defender.owner
           const newCount = isCapture
             ? army.count - defender.count
             : defender.count - army.count
@@ -90,7 +93,7 @@ export const Game = ({ finishGame }: Props): JSX.Element => {
             },
           ]
         })
-      } else if (attacker && defender) {
+      } else if (army && defender) {
         setAreas(a => {
           const otherAreas = a.filter(i => i.id !== defender.id)
           return [
@@ -141,12 +144,16 @@ export const Game = ({ finishGame }: Props): JSX.Element => {
     })
   }
 
+  const sendGameResult = (stats: GameStats[]) => {
+    finishGame({ stats, seconds: currentSecond })
+  }
+
   return (
     <>
       <CanvasPowerBar
         areas={areas}
         armies={armies}
-        finishGame={finishGame}
+        finishGame={sendGameResult}
         canvasSize={canvasSize}
       />
       <CanvasArmies armies={armies} canvasSize={canvasSize} />
@@ -156,6 +163,7 @@ export const Game = ({ finishGame }: Props): JSX.Element => {
         onSendArmy={onSendArmy}
         canvasSize={canvasSize}
       />
+      <GameMenu seconds={currentSecond} breakGame={breakGame} />
       <CPULogic
         owner="computer"
         areas={areas}
