@@ -55,8 +55,6 @@ export const CanvasAreas = React?.memo((props: Props): JSX.Element => {
   }, [areas, isMouseDown, isMouseMove])
 
   const onMouseDown = (e: MouseEvent<HTMLCanvasElement>): void => {
-    console.log(e.nativeEvent.offsetX)
-    console.log({ x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY })
     const finded = areas.find(i =>
       checkDotIntoCircle(
         { x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY },
