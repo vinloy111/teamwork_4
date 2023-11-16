@@ -26,3 +26,12 @@ export type Army = ElementBase & {
   fromId: ID
   toId: ID
 }
+
+export type GameStats = {
+  owner: AreaOwner
+  areasCount: number
+  count: number
+  armiesPercent: number
+  color: string
+  status?: string
+}

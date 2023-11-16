@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { CanvasAreas } from '../CanvasAreas'
 import { CanvasArmies } from '../CanvasArmies'
-import { Area, Army } from 'types/GameData'
+import { Area, Army, GameStats } from 'types/GameData'
 import { distanceBetweenPoints, intermediatePoint } from '../../utils'
 import { areasBase, areasExtendedMap, GAME_CONSTS } from '../../config'
 import { CanvasPowerBar } from '../CanvasPowerBar'
@@ -18,7 +18,13 @@ const canvasSize = {
   height: innerHeight,
 }
 
-export const Game = (): JSX.Element => {
+type Props = {
+  finishGame: (stats: GameStats[]) => void
+}
+
+// TODO: Баг, что если отправленная армия долго будет впути и за это время, точку из которой её отправили - захватят, то она захватит новую локацию не для своей фракции, а дла фракции захватившей её "родину"
+
+export const Game = ({ finishGame }: Props): JSX.Element => {
   const [areas, setAreas] = useState<Area[]>(areasDefault)
   const [armies, setArmies] = useState<Army[]>([])
   const [currentSecond, setCurrentSeconds] = useState<number>(0)
@@ -137,7 +143,12 @@ export const Game = (): JSX.Element => {
 
   return (
     <>
-      <CanvasPowerBar areas={areas} armies={armies} canvasSize={canvasSize} />
+      <CanvasPowerBar
+        areas={areas}
+        armies={armies}
+        finishGame={finishGame}
+        canvasSize={canvasSize}
+      />
       <CanvasArmies armies={armies} canvasSize={canvasSize} />
       {/* TODO: onSendArmy каждый раз отправляется повторно, надо бы это исправить */}
       <CanvasAreas
