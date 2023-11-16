@@ -9,6 +9,7 @@ import ForumPage from '../../pages/forum/ForumPage'
 import Layout from '../layout/Layout'
 import NotFoundPage from '../../pages/404/404'
 import ServerErrorPage from '../../pages/500/ServerErrorPage'
+import LeaderBoardPage from '../../pages/leaderboard/LeaderBoardPage'
 
 function LoginPage() {
   return <h1>Login Page</h1>
@@ -20,10 +21,6 @@ function RegisterPage() {
 
 function ProfilePage() {
   return <h1>Profile Page</h1>
-}
-
-function LeaderboardPage() {
-  return <h1>Leaderboard Page</h1>
 }
 
 function ForumTopicPage() {
@@ -38,7 +35,7 @@ export const AppRouter = createBrowserRouter(
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/profile" element={<ProfilePage />} />
       <Route path="/game" element={<GamePage />} />
-      <Route path="/leaderboard" element={<LeaderboardPage />} />
+      <Route path="/leaderboard" element={<LeaderBoardPage />} />
       <Route path="/forum" element={<ForumPage />} />
       <Route path="/forum/:topicId" element={<ForumTopicPage />} />
       <Route path="/500" element={<ServerErrorPage />} />
