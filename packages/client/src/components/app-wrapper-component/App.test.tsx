@@ -13,11 +13,11 @@ global.fetch = jest.fn(() =>
 
 describe('my suite', () => {
   test.skip('Example test', async () => {
-    render(
+    /*    render(
       <Provider store={store}>
         <App />
       </Provider>
     )
-    expect(screen.getByText(appContent)).toBeDefined()
+    expect(screen.getByText(appContent)).toBeDefined()*/
   })
 })
