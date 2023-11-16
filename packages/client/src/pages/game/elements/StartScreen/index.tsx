@@ -2,6 +2,7 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
+import { APP_CONST } from '../../../../consts'
 
 type Props = {
   runGame: () => void
@@ -10,8 +11,11 @@ type Props = {
 export const StartScreen = ({ runGame }: Props): JSX.Element => {
   const instruction = (
     <>
-      <Typography variant="h2" sx={{ mb: '50px' }} gutterBottom>
-        Захват территорий
+      <Typography
+        variant="h2"
+        sx={{ textAlign: 'center', mb: '50px' }}
+        gutterBottom>
+        {APP_CONST.gameName}
       </Typography>
       <Typography variant="h4" gutterBottom>
         Игровой процесс:

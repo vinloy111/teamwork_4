@@ -194,3 +194,16 @@ export const intermediatePoint = (
   const newY = from.y + (to.y - from.y) * t
   return { x: newX, y: newY }
 }
+
+export const getTime = (seconds?: number): string => {
+  if (!seconds) {
+    return '00:00'
+  }
+
+  const minutes = Math.floor(seconds / 60)
+  const remainingSeconds = seconds % 60
+  const formattedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`
+  const formattedSeconds =
+    remainingSeconds < 10 ? `0${remainingSeconds}` : `${remainingSeconds}`
+  return `${formattedMinutes}:${formattedSeconds}`
+}

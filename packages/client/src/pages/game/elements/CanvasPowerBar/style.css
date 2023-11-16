@@ -1,8 +1,5 @@
 .canvas-power-bar-wrapper {
   position: absolute;
   top: 0;
-  bottom: 0;
-  overflow: hidden;
-  height: 100vh;
-  width: 100vw;
+  left: 0;
 }

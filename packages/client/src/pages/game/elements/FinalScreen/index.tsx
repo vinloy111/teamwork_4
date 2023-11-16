@@ -1,4 +1,4 @@
-import { GameStats } from 'types/GameData'
+import { GameResult } from 'types/GameData'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Paper from '@mui/material/Paper'
@@ -9,11 +9,12 @@ import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Typography from '@mui/material/Typography'
+import { getTime } from '../../utils'
 
 type Props = {
   runGame: () => void
   showStarScreen: () => void
-  gameInfo?: GameStats[]
+  gameInfo?: GameResult
 }
 
 export const FinalScreen = ({
@@ -33,7 +34,7 @@ export const FinalScreen = ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {gameInfo?.map((row, index) => (
+          {gameInfo?.stats?.map((row, index) => (
             <TableRow
               key={index}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
@@ -56,7 +57,7 @@ export const FinalScreen = ({
         Статистика сессии:
       </Typography>
       <Typography variant="body1" gutterBottom>
-        Длительнось - TODO
+        Длительность - {getTime(gameInfo?.seconds)}
       </Typography>
       {resultTable}
     </>

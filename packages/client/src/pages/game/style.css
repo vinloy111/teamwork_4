@@ -1,7 +1,8 @@
 .game-wrapper {
-  height: 100vh;
+  height: calc(100vh - 64px);
   width: 100vw;
   overflow: hidden;
   background-image: url('game-map.svg');
   background-size: cover;
+  position: relative;
 }
