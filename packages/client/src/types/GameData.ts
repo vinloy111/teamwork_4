@@ -35,3 +35,5 @@ export type GameStats = {
   color: string
   status?: string
 }
+
+export type GameResult = { stats: GameStats[]; seconds: number }
