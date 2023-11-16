@@ -6,10 +6,8 @@ import {
 import HomePage from '../../pages/HomePage'
 import { GamePage } from '../../pages/game'
 import ForumPage from '../../pages/forum/ForumPage'
-
-function NotFoundPage() {
-  return <h1>404 - Page Not Found</h1>
-}
+import Layout from '../layout/Layout'
+import NotFoundPage from '../../pages/404/404'
 
 function LoginPage() {
   return <h1>Login Page</h1>
@@ -33,7 +31,7 @@ function ForumTopicPage() {
 
 export const AppRouter = createBrowserRouter(
   createRoutesFromElements(
-    <>
+    <Route element={<Layout />}>
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
@@ -43,6 +41,6 @@ export const AppRouter = createBrowserRouter(
       <Route path="/forum" element={<ForumPage />} />
       <Route path="/forum/:topicId" element={<ForumTopicPage />} />
       <Route path="*" element={<NotFoundPage />} />
-    </>
+    </Route>
   )
 )
