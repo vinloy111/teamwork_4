@@ -17,10 +17,10 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "types/*": ["src/types/*"],
-      "pages/*": ["src/pages/*"],
-      "features/*": ["src/features/*"],
-      "components/*": ["src/components/*"]
+      "types/*": ["src/types/*"]
+      // "pages/*": ["src/pages/*"],
+      // "features/*": ["src/features/*"],
+      // "components/*": ["src/components/*"]
     }
   },
   "include": ["src"],
