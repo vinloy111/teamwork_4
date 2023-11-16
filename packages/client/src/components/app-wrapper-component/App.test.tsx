@@ -11,11 +11,11 @@ global.fetch = jest.fn(() =>
   Promise.resolve({ json: () => Promise.resolve('hey') })
 )
 
-test('Example test', async () => {
-  /*render(
+test.skip('Example test', async () => {
+  render(
     <Provider store={store}>
       <App />
     </Provider>
   )
-  expect(screen.getByText(appContent)).toBeDefined()*/
+  expect(screen.getByText(appContent)).toBeDefined()
 })
