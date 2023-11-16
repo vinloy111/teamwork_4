@@ -26,7 +26,11 @@ export const themeOptions: ThemeOptions = {
     warning: {
       main: '#ffab00',
     },
+    text: {
+      primary: '#fff',
+    },
   },
+
   typography: {
     fontFamily: 'Comfortaa,Roboto,sans serif',
     button: {
@@ -44,6 +48,8 @@ export const themeOptions: ThemeOptions = {
           color: 'white',
           height: 48,
           padding: '0 30px',
+          width: 'auto',
+          maxWidth: '200px',
         },
       },
     },
