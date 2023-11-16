@@ -8,6 +8,7 @@ import { GamePage } from '../../pages/game'
 import ForumPage from '../../pages/forum/ForumPage'
 import Layout from '../layout/Layout'
 import NotFoundPage from '../../pages/404/404'
+import ServerErrorPage from '../../pages/500/ServerErrorPage'
 
 function LoginPage() {
   return <h1>Login Page</h1>
@@ -40,6 +41,7 @@ export const AppRouter = createBrowserRouter(
       <Route path="/leaderboard" element={<LeaderboardPage />} />
       <Route path="/forum" element={<ForumPage />} />
       <Route path="/forum/:topicId" element={<ForumTopicPage />} />
+      <Route path="/500" element={<ServerErrorPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Route>
   )
