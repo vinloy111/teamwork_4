@@ -5,29 +5,26 @@ export const themeOptions: ThemeOptions = {
   palette: {
     mode: 'dark',
     primary: {
-      main: '#ccff90',
+      main: '#ffff00',
     },
     background: {
-      default: '#111111',
-      paper: '#212121',
+      default: '#21243b',
+      paper: '#21243b',
     },
     secondary: {
-      main: '#f4ff81',
+      main: '#fb983c',
     },
     info: {
-      main: '#39cff3',
+      main: '#9c27b0',
     },
     success: {
-      main: '#63fd74',
+      main: '#76ff03',
     },
     error: {
-      main: '#ff5759',
+      main: '#e54c44',
     },
     warning: {
-      main: '#ffab00',
-    },
-    text: {
-      primary: '#fff',
+      main: '#fff176',
     },
   },
 
@@ -35,23 +32,6 @@ export const themeOptions: ThemeOptions = {
     fontFamily: 'Comfortaa,Roboto,sans serif',
     button: {
       fontWeight: 900,
-    },
-  },
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          background: 'linear-gradient(50deg, #8EB264 50%, #f4ff81 90%)',
-          border: 0,
-          borderRadius: 3,
-          boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-          color: 'white',
-          height: 48,
-          padding: '0 30px',
-          width: 'auto',
-          maxWidth: '200px',
-        },
-      },
     },
   },
 }

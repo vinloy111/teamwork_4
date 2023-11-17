@@ -1,7 +1,7 @@
-import Box from '@mui/material/Box'
+import { LeaderBoardComponent } from '../../components/leaderboard/leaderboard'
 
 const LeaderBoardPage = () => {
-  return <Box>Forum</Box>
+  return <LeaderBoardComponent />
 }
 
 export default LeaderBoardPage
