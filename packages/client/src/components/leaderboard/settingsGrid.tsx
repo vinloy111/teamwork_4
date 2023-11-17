@@ -1,5 +1,4 @@
 import { GridColDef } from '@mui/x-data-grid'
-import Box from '@mui/system/Box'
 import { Avatar } from '@mui/material'
 import { theme } from '../../theme'
 import Typography from '@mui/material/Typography'

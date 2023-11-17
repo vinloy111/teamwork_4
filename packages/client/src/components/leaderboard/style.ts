@@ -1,4 +1,4 @@
-import { Card, CardProps, Grid, GridProps, styled } from '@mui/material'
+import { Card, CardProps, styled } from '@mui/material'
 
 export const CardStyled = styled(Card)<CardProps>(({ theme }) => ({
   position: 'absolute',
