@@ -5,4 +5,5 @@ export const GridStyled = styled(Grid)<GridProps>(({ theme }) => ({
   height: '100%',
   width: '100%',
   color: theme.palette.text.primary,
+  position: 'relative',
 }))

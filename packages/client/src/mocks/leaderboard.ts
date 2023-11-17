@@ -31,4 +31,9 @@ export const mockLeaderboardList: Player[] = [
     idUser: '5',
     scoreCount: 444,
   },
+  {
+    id: '7',
+    idUser: '6',
+    scoreCount: 4444,
+  },
 ]

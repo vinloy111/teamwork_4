@@ -27,9 +27,8 @@ export const themeOptions: ThemeOptions = {
       main: '#fff176',
     },
   },
-
   typography: {
-    fontFamily: 'Comfortaa,Roboto,sans serif',
+    fontFamily: ['Chilanka', 'cursive'].join(','),
     button: {
       fontWeight: 900,
     },

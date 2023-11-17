@@ -36,10 +36,17 @@ export const mockUser5: User = {
   login: 'gg',
 }
 
+export const mockUser6: User = {
+  avatar: 'ufo4.png',
+  firstName: 'Ira',
+  id: '6',
+  login: 'ii',
+}
 export const mockAllUsers: User[] = [
   mockUser1,
   mockUser2,
   mockUser3,
   mockUser4,
   mockUser5,
+  mockUser6,
 ]

@@ -3,4 +3,5 @@ export declare type Player = {
   idUser: string
   scoreCount: number
   name?: string
+  avatar?: string | null
 }
