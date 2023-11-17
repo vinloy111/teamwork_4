@@ -1,6 +1,6 @@
 import { Card, CardProps, styled } from '@mui/material'
 
-export const CardStyled = styled(Card)<CardProps>(({ theme }) => ({
+export const CardStyled = styled(Card)<CardProps>(() => ({
   position: 'absolute',
   right: 0,
   bottom: 0,
