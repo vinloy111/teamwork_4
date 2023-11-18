@@ -168,7 +168,7 @@ export const Game = ({
     finishGame({ stats, seconds: currentSecond })
   }
 
-  return (
+  return currentFrame ? (
     <>
       <CanvasPowerBar
         areas={areas}
@@ -191,5 +191,7 @@ export const Game = ({
         seconds={currentSecond}
       />
     </>
+  ) : (
+    <></>
   )
 }
