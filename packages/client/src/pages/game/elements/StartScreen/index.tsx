@@ -6,9 +6,10 @@ import { APP_CONST } from '../../../../consts'
 
 type Props = {
   runGame: () => void
+  isLoaded: boolean
 }
 
-export const StartScreen = ({ runGame }: Props): JSX.Element => {
+export const StartScreen = ({ isLoaded, runGame }: Props): JSX.Element => {
   const instruction = (
     <>
       <Typography
@@ -40,7 +41,7 @@ export const StartScreen = ({ runGame }: Props): JSX.Element => {
   const button = (
     <Box
       sx={{ mt: '30px', flex: 1, display: 'flex', justifyContent: 'center' }}>
-      <Button variant="contained" onClick={runGame}>
+      <Button variant="contained" onClick={runGame} disabled={!isLoaded}>
         Начать игру
       </Button>
     </Box>

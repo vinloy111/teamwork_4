@@ -23,6 +23,7 @@ export const CanvasAreas = React?.memo((props: Props): JSX.Element => {
   >(undefined)
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
+  // TODO: Переделать на 2 useEffect
   useEffect(() => {
     if (canvasRef.current) {
       const ctx = canvasRef.current?.getContext?.('2d')
