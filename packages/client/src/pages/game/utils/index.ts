@@ -2,24 +2,29 @@ import { Area, AreaOwner, Army, GameStats, Position } from 'types/GameData'
 import { areasExtendedMap } from '../config'
 
 const TWO_PI = 2 * Math.PI
-const CIRCLE_RADIUS = 30
-const COUNT_MARGIN = 45
-const BLACK_COLOR = 'black'
+const CIRCLE_RADIUS = 40
+const ARMY_RADIUS = 20
+const COUNT_MARGIN = 55
+const WHITE_COLOR = 'white'
 
 export const drawCircle = (
   ctx: CanvasRenderingContext2D,
   circle: Area
 ): void => {
-  const { position, color, count } = circle
+  const { position, count, img } = circle
 
-  ctx.fillStyle = ctx.strokeStyle = color
-  ctx.beginPath()
-  ctx.arc(position.x, position.y, CIRCLE_RADIUS, 0, TWO_PI)
-  ctx.closePath()
-  ctx.fill()
+  if (img) {
+    ctx.drawImage(
+      img,
+      position.x - CIRCLE_RADIUS,
+      position.y - CIRCLE_RADIUS,
+      CIRCLE_RADIUS * 2,
+      CIRCLE_RADIUS * 2
+    )
+  }
 
   ctx.font = 'bold 25px Verdana'
-  ctx.fillStyle = BLACK_COLOR
+  ctx.fillStyle = WHITE_COLOR
   ctx.textBaseline = 'middle'
   ctx.textAlign = 'center'
   ctx.fillText(String(count), position.x, position.y + COUNT_MARGIN)
@@ -98,19 +103,21 @@ export const checkDotIntoCircle = (
 }
 
 export const drawArmy = (ctx: CanvasRenderingContext2D, army: Army): void => {
-  const { position, color, count } = army
-
-  ctx.fillStyle = ctx.strokeStyle = color
-  ctx.beginPath()
-  ctx.arc(position.x, position.y, CIRCLE_RADIUS - 15, 0, TWO_PI)
-  ctx.closePath()
-  ctx.fill()
+  const { position, img, count } = army
+  if (img)
+    ctx.drawImage(
+      img,
+      position.x - ARMY_RADIUS,
+      position.y - ARMY_RADIUS,
+      ARMY_RADIUS * 2,
+      ARMY_RADIUS * 2
+    )
 
   ctx.font = 'bold 15px Verdana'
-  ctx.fillStyle = BLACK_COLOR
+  ctx.fillStyle = WHITE_COLOR
   ctx.textBaseline = 'middle'
   ctx.textAlign = 'center'
-  ctx.fillText(String(count), position.x, position.y + COUNT_MARGIN - 20)
+  ctx.fillText(String(count), position.x, position.y + COUNT_MARGIN - 30)
 }
 
 export const getGameStats = (

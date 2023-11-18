@@ -2,7 +2,6 @@
   height: calc(100vh - 64px);
   width: 100vw;
   overflow: hidden;
-  background-image: url('game-map.svg');
-  background-size: cover;
+  background-color: #050818;
   position: relative;
 }

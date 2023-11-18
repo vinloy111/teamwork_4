@@ -2,7 +2,13 @@ import { useEffect, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { CanvasAreas } from '../CanvasAreas'
 import { CanvasArmies } from '../CanvasArmies'
-import { Area, Army, GameResult, GameStats } from 'types/GameData'
+import {
+  Area,
+  Army,
+  GameRecources,
+  GameResult,
+  GameStats,
+} from 'types/GameData'
 import { distanceBetweenPoints, intermediatePoint } from '../../utils'
 import { areasBase, areasExtendedMap, GAME_CONSTS } from '../../config'
 import { CanvasPowerBar } from '../CanvasPowerBar'
@@ -10,23 +16,20 @@ import { CPULogic } from '../CPULogic'
 import { CanvasSize } from 'types/GameStats'
 import { GameMenu } from '../GameMenu'
 
-const areasDefault = areasBase.map(i => ({
-  ...i,
-  ...areasExtendedMap[i.owner],
-}))
-
 type Props = {
   finishGame: (stats: GameResult) => void
   breakGame: () => void
   canvasSize: CanvasSize
+  recources: GameRecources
 }
 
 export const Game = ({
   finishGame,
   breakGame,
   canvasSize,
+  recources,
 }: Props): JSX.Element => {
-  const [areas, setAreas] = useState<Area[]>(areasDefault)
+  const [areas, setAreas] = useState<Area[]>([])
   const [armies, setArmies] = useState<Army[]>([])
   const [currentSecond, setCurrentSeconds] = useState<number>(0)
   const [currentFrame, setCurrentFrame] = useState<number>(0)
@@ -43,9 +46,22 @@ export const Game = ({
     requestAnimationFrame(animate)
   }
 
-  useEffect(() => animate(), [])
+  useEffect(() => {
+    const areasDefault = areasBase.map(i => {
+      const { imgLink } = areasExtendedMap[i.owner]
+      return {
+        ...i,
+        ...areasExtendedMap[i.owner],
+        img: recources.areas[imgLink],
+      }
+    })
+    setAreas(areasDefault)
+
+    animate()
+  }, [])
 
   useEffect(() => {
+    // Увеличение численности в локациях
     setAreas(a =>
       a.map(i => ({
         ...i,
@@ -56,6 +72,7 @@ export const Game = ({
   }, [currentSecond])
 
   useEffect(() => {
+    // Передвижение армий
     setArmies(a =>
       a.map(i => ({
         ...i,
@@ -67,6 +84,7 @@ export const Game = ({
         ),
       }))
     )
+    // Проверка дошли ли армии до точки назначения, и если да, то "атака"
     armies.forEach(checkCollapse)
   }, [currentFrame])
 
@@ -90,6 +108,7 @@ export const Game = ({
               count: newCount,
               color: areasExtendedMap[newOwner].color,
               limit: areasExtendedMap[newOwner].limit,
+              img: recources.areas[areasExtendedMap[newOwner].imgLink],
             },
           ]
         })
@@ -131,6 +150,7 @@ export const Game = ({
           id: uuidv4(),
           owner: attacker.owner,
           color: attacker.color,
+          img: recources.armies[areasExtendedMap[attacker.owner].imgLink],
           count: attacker.count,
           stepLength,
           stepCount,
@@ -148,7 +168,7 @@ export const Game = ({
     finishGame({ stats, seconds: currentSecond })
   }
 
-  return (
+  return currentFrame ? (
     <>
       <CanvasPowerBar
         areas={areas}
@@ -156,13 +176,13 @@ export const Game = ({
         finishGame={sendGameResult}
         canvasSize={canvasSize}
       />
-      <CanvasArmies armies={armies} canvasSize={canvasSize} />
       {/* TODO: onSendArmy каждый раз отправляется повторно, надо бы это исправить */}
       <CanvasAreas
         areas={areas}
         onSendArmy={onSendArmy}
         canvasSize={canvasSize}
       />
+      <CanvasArmies armies={armies} canvasSize={canvasSize} />
       <GameMenu seconds={currentSecond} breakGame={breakGame} />
       <CPULogic
         owner="computer"
@@ -171,5 +191,7 @@ export const Game = ({
         seconds={currentSecond}
       />
     </>
+  ) : (
+    <></>
   )
 }
