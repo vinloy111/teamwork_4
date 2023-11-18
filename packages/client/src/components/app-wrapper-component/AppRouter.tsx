@@ -10,10 +10,7 @@ import Layout from '../layout/Layout'
 import NotFoundPage from '../../pages/404/404'
 import ServerErrorPage from '../../pages/500/ServerErrorPage'
 import LeaderBoardPage from '../../pages/leaderboard/LeaderBoardPage'
-
-function LoginPage() {
-  return <h1>Login Page</h1>
-}
+import LoginPage from '../../pages/login/LoginPage'
 
 function RegisterPage() {
   return <h1>Register Page</h1>
