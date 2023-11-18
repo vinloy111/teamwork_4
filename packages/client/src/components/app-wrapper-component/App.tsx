@@ -1,12 +1,14 @@
-import { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import axios from 'axios'
 import { createTheme, ThemeProvider, useMediaQuery } from '@mui/material'
 import { themeOptions } from '../../theme'
 import { RouterProvider } from 'react-router'
 import { AppRouter } from './AppRouter'
 import './App.css'
+import useAuthCheck from '../../hooks/useAuthCheck'
 
 function App() {
+  useAuthCheck()
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
 
   const theme = useMemo(
