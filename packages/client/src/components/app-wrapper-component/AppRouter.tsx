@@ -11,10 +11,7 @@ import NotFoundPage from '../../pages/404/404'
 import ServerErrorPage from '../../pages/500/ServerErrorPage'
 import LeaderBoardPage from '../../pages/leaderboard/LeaderBoardPage'
 import LoginPage from '../../pages/login/LoginPage'
-
-function RegisterPage() {
-  return <h1>Register Page</h1>
-}
+import RegisterPage from '../../pages/register/RegisterPage'
 
 function ProfilePage() {
   return <h1>Profile Page</h1>

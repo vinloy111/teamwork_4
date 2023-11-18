@@ -31,6 +31,11 @@ const Menu = () => {
               Login
             </Typography>
           </MenuItem>
+          <MenuItem component={Link} to={'/register'}>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              Register
+            </Typography>
+          </MenuItem>
         </Toolbar>
       </AppBar>
     </Box>
