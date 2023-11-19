@@ -1,7 +1,25 @@
 import { AppBar, Box, MenuItem, Toolbar, Typography } from '@mui/material'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import React from 'react'
+import Button from '@mui/material/Button'
+import yApiService from '../../services/y-api-service'
+import { useDispatch } from 'react-redux'
+import { clearUser } from '../../features/authSlice'
 
 const Menu = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const handleLogout = async () => {
+    try {
+      await yApiService.logout()
+      dispatch(clearUser())
+      navigate('/login')
+    } catch (error) {
+      console.error('Ошибка выхода из системы:', error)
+    }
+  }
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -26,16 +44,9 @@ const Menu = () => {
               Leaderboard
             </Typography>
           </MenuItem>
-          <MenuItem component={Link} to={'/login'}>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Login
-            </Typography>
-          </MenuItem>
-          <MenuItem component={Link} to={'/register'}>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Register
-            </Typography>
-          </MenuItem>
+          <Button color="inherit" onClick={handleLogout}>
+            Logout
+          </Button>
         </Toolbar>
       </AppBar>
     </Box>

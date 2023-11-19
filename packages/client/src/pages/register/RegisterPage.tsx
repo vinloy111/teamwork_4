@@ -1,6 +1,8 @@
 import React from 'react'
-import { Button, TextField, Container } from '@mui/material'
+import { Button, TextField, Container, Typography } from '@mui/material'
 import StyledHeader from '../../components/styled-header/StyledHeader'
+import { Link } from 'react-router-dom'
+import './style.css'
 
 function RegisterPage() {
   return (
@@ -77,6 +79,14 @@ function RegisterPage() {
             className="submit">
             Зарегистрироваться
           </Button>
+          <Typography
+            variant="body2"
+            style={{ marginTop: '20px', textAlign: 'center' }}>
+            Уже есть аккаунт?
+            <Link to="/login" style={{ marginLeft: '5px' }}>
+              Войти
+            </Link>
+          </Typography>
         </form>
       </div>
     </Container>
