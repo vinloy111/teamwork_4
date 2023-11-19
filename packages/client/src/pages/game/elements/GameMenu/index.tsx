@@ -1,7 +1,7 @@
 import React from 'react'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-import { getTime } from '../../utils'
+import { getTime } from '../../utils/others'
 
 type Props = {
   seconds: number

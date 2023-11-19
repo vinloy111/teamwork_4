@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Army } from 'types/GameData'
 import { CanvasSize } from 'types/GameStats'
-import { drawArmy } from '../../utils'
+import { drawArmy } from '../../utils/others'
 import './style.css'
 
 type Props = {

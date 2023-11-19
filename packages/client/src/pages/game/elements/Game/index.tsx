@@ -9,26 +9,32 @@ import {
   GameResult,
   GameStats,
 } from 'types/GameData'
-import { distanceBetweenPoints, intermediatePoint } from '../../utils'
-import { areasBase, areasExtendedMap, GAME_CONSTS } from '../../config'
+import { distanceBetweenPoints, intermediatePoint } from '../../utils/others'
+import { areasExtendedMap, GAME_CONSTS } from '../../utils/gameConfig'
 import { CanvasPowerBar } from '../CanvasPowerBar'
 import { CPULogic } from '../CPULogic'
 import { CanvasSize } from 'types/GameStats'
 import { GameMenu } from '../GameMenu'
+import { generateAreas } from '../../utils/generateAreas'
 
 type Props = {
   finishGame: (stats: GameResult) => void
   breakGame: () => void
   canvasSize: CanvasSize
   recources: GameRecources
+  areasCount: number
+  difficulty: React.ComponentProps<typeof CPULogic>['difficulty']
 }
 
-export const Game = ({
-  finishGame,
-  breakGame,
-  canvasSize,
-  recources,
-}: Props): JSX.Element => {
+export const Game = (props: Props): JSX.Element => {
+  const {
+    finishGame,
+    breakGame,
+    canvasSize,
+    recources,
+    areasCount,
+    difficulty,
+  } = props
   const [areas, setAreas] = useState<Area[]>([])
   const [armies, setArmies] = useState<Army[]>([])
   const [currentSecond, setCurrentSeconds] = useState<number>(0)
@@ -47,14 +53,7 @@ export const Game = ({
   }
 
   useEffect(() => {
-    const areasDefault = areasBase.map(i => {
-      const { imgLink } = areasExtendedMap[i.owner]
-      return {
-        ...i,
-        ...areasExtendedMap[i.owner],
-        img: recources.areas[imgLink],
-      }
-    })
+    const areasDefault = generateAreas(canvasSize, areasCount, recources.areas)
     setAreas(areasDefault)
 
     animate()
@@ -108,7 +107,6 @@ export const Game = ({
               count: newCount,
               color: areasExtendedMap[newOwner].color,
               limit: areasExtendedMap[newOwner].limit,
-              img: recources.areas[areasExtendedMap[newOwner].imgLink],
             },
           ]
         })
@@ -186,6 +184,7 @@ export const Game = ({
       <GameMenu seconds={currentSecond} breakGame={breakGame} />
       <CPULogic
         owner="computer"
+        difficulty={difficulty}
         areas={areas}
         onSendArmy={onSendArmy}
         seconds={currentSecond}
