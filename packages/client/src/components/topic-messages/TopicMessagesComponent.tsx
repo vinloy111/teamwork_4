@@ -1,6 +1,6 @@
 import { Stack } from '@mui/material'
 
-import { Topic } from 'types/Forum'
+import { Message, Topic } from 'types/Forum'
 import { useState } from 'react'
 import { MessageComponent } from './MessageComponent'
 
@@ -9,6 +9,11 @@ export declare type TopicMessagesProps = {
 }
 export const TopicMessagesComponent = ({ topic }: TopicMessagesProps) => {
   const [messages, setMessages] = useState(topic.listOfMessages || [])
+  const onSaveMessage = (message: Message) => {
+    setMessages(prevState => {
+      return [...prevState, message]
+    })
+  }
   return (
     <Stack
       display="flex"
@@ -18,8 +23,18 @@ export const TopicMessagesComponent = ({ topic }: TopicMessagesProps) => {
       justifyContent="center">
       {messages.length > 0 &&
         messages.map(message => (
-          <MessageComponent key={message.id} initMessage={message} />
+          <MessageComponent
+            key={message.id}
+            initMessage={message}
+            isEditable={false}
+            onSaveMessage={onSaveMessage}
+          />
         ))}
+      <MessageComponent
+        initMessage={null}
+        isEditable={true}
+        onSaveMessage={onSaveMessage}
+      />
     </Stack>
   )
 }
