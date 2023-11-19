@@ -10,6 +10,7 @@ import Fon1 from '../../assets/images/fon1.png'
 import Fon2 from '../../assets/images/fon2.png'
 import { CardStyled } from './style'
 import { theme } from '../../theme'
+import StyledHeader from '../styled-header/StyledHeader'
 
 export const LeaderBoardComponent = () => {
   const [usersBoard, setUsersBoard] = useState<Player[]>([])
@@ -27,18 +28,7 @@ export const LeaderBoardComponent = () => {
       width={'100%'}
       marginTop={theme.spacing(1)}
       sx={{ backgroundImage: Fon1 }}>
-      <Typography
-        variant={'h3'}
-        sx={{
-          color: theme.palette.warning.main,
-          zIndex: 10,
-          backgroundColor: theme.palette.background.paper,
-          p: theme.spacing(2),
-          m: theme.spacing(2),
-          borderRadius: 5,
-        }}>
-        Таблица Лидеров
-      </Typography>
+      <StyledHeader text="Таблица Лидеров" />
       {usersBoard && usersBoard.length > 0 && (
         <Box sx={{ height: '50%', width: '50%' }}>
           <DataGrid

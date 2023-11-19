@@ -15,6 +15,7 @@ export const CanvasPowerBar = React?.memo((props: Props): JSX.Element => {
   const { areas, armies, canvasSize, finishGame } = props
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
+  // TODO: Переделать на 2 useEffect
   useEffect(() => {
     if (canvasRef.current) {
       const ctx = canvasRef.current?.getContext?.('2d')

@@ -2,19 +2,25 @@ export type Position = { x: number; y: number }
 
 export type AreaOwner = 'user' | 'computer' | 'freeLands'
 
+export type ArmyAndAreaColor = 'blue' | 'red' | 'gray'
+
 export type ID = string
 
 export type ElementBase = {
   id: ID
   position: Position
   owner: AreaOwner
+  img?: HTMLImageElement
 }
 
-export type Area = ElementBase & {
+export type AreaByOwner = {
   color: string
   count: number
   limit: number
+  imgLink: ArmyAndAreaColor
 }
+
+export type Area = ElementBase & AreaByOwner
 
 export type Army = ElementBase & {
   color: string
@@ -27,6 +33,19 @@ export type Army = ElementBase & {
   toId: ID
 }
 
+export type GameRecources = {
+  areas: {
+    red?: HTMLImageElement
+    blue?: HTMLImageElement
+    gray?: HTMLImageElement
+  }
+  armies: {
+    red?: HTMLImageElement
+    blue?: HTMLImageElement
+    gray?: HTMLImageElement
+  }
+}
+
 export type GameStats = {
   owner: AreaOwner
   areasCount: number
@@ -37,3 +56,12 @@ export type GameStats = {
 }
 
 export type GameResult = { stats: GameStats[]; seconds: number }
+
+export type Star = {
+  x: number
+  y: number
+  color: string
+  vector: number
+  minRadius: number
+  maxRadius: number
+}
