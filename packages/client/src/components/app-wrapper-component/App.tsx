@@ -37,7 +37,7 @@ function App() {
   }, [])
   return (
     <ThemeProvider theme={theme}>
-      <RouterProvider router={AppRouter} />
+      <RouterProvider router={AppRouter()} />
     </ThemeProvider>
   )
 }
