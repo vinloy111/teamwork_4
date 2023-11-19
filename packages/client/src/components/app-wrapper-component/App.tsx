@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import axios from 'axios'
 import { createTheme, ThemeProvider, useMediaQuery } from '@mui/material'
 import { themeOptions } from '../../theme'
@@ -8,7 +8,10 @@ import './App.css'
 import useAuthCheck from '../../hooks/useAuthCheck'
 
 function App() {
-  useAuthCheck()
+  const router = AppRouter()
+  const [isAuthChecked, setIsAuthChecked] = useState(false)
+
+  useAuthCheck(() => setIsAuthChecked(true))
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
 
   const theme = useMemo(
@@ -37,7 +40,11 @@ function App() {
   }, [])
   return (
     <ThemeProvider theme={theme}>
-      <RouterProvider router={AppRouter()} />
+      {isAuthChecked ? (
+        <RouterProvider router={router} />
+      ) : (
+        <div>Авторизация...</div>
+      )}
     </ThemeProvider>
   )
 }
