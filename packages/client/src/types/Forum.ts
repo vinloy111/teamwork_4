@@ -16,6 +16,6 @@ export declare type Topic = {
 export declare type Message = {
   id: string
   idAuthor: string
-  message: string
+  text: string
   date: string
 }

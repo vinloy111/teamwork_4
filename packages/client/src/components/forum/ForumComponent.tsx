@@ -1,7 +1,6 @@
 import { CardMedia, Stack, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { DataGrid } from '@mui/x-data-grid'
-import Box from '@mui/system/Box'
 import Fon1 from '../../assets/images/fon1.png'
 import Fon2 from '../../assets/images/fon2.png'
 import { theme } from '../../theme'
@@ -39,24 +38,21 @@ export const ForumComponent = () => {
         {forum?.caption || ''}
       </Typography>
       {forum && forum.listOfTopics && forum.listOfTopics.length > 0 && (
-        <Box sx={{ height: '50%', width: '50%' }}>
-          <DataGrid
-            rows={forum.listOfTopics}
-            columns={columns}
-            initialState={{
-              pagination: {
-                paginationModel: {
-                  pageSize: 5,
-                },
+        <DataGrid
+          rows={forum.listOfTopics}
+          columns={columns}
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 5,
               },
-            }}
-            pageSizeOptions={[5]}
-            disableRowSelectionOnClick
-            disableColumnMenu
-            rowHeight={120}
-            sx={{ zIndex: 10 }}
-          />
-        </Box>
+            },
+          }}
+          disableRowSelectionOnClick
+          disableColumnMenu
+          rowHeight={120}
+          sx={{ zIndex: 10 }}
+        />
       )}
       <CardStyled
         sx={{

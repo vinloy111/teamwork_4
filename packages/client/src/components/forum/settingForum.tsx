@@ -31,7 +31,10 @@ export const columns: GridColDef[] = [
     width: 100,
     editable: true,
     renderCell: props => (
-      <Button href={`/forum/${props.value}`} variant="contained">
+      <Button
+        href={`/forum/${props.value}`}
+        variant="contained"
+        sx={{ letterSpacing: 0 }}>
         Открыть
       </Button>
     ),

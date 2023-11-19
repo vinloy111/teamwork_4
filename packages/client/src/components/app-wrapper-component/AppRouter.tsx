@@ -12,13 +12,10 @@ import ServerErrorPage from '../../pages/500/ServerErrorPage'
 import LeaderBoardPage from '../../pages/leaderboard/LeaderBoardPage'
 import LoginPage from '../../pages/login/LoginPage'
 import RegisterPage from '../../pages/register/RegisterPage'
+import { ForumTopicPage } from '../../pages/topic/ForumTopicPage'
 
 function ProfilePage() {
   return <h1>Profile Page</h1>
-}
-
-function ForumTopicPage() {
-  return <h1>ForumTopic Page</h1>
 }
 
 export const AppRouter = createBrowserRouter(
