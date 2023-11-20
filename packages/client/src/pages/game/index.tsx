@@ -3,15 +3,21 @@ import { CanvasStarBackground } from './elements/CanvasStarBackground'
 import { StartScreen } from './elements/StartScreen'
 import { FinalScreen } from './elements/FinalScreen'
 import { Game } from './elements/Game'
-import { GameScreen } from 'types/GameStats'
+import { GameDifficulty, GameScreen } from 'types/GameStats'
 import { GameRecources, GameResult } from 'types/GameData'
 import './style.css'
 import { RecourcesLoader } from './elements/RecourcesLoader'
 
 export const GamePage = (): JSX.Element => {
   const gameWrapper = useRef<HTMLDivElement>(null)
+  const [difficulty, setDifficulty] = useState<GameDifficulty>(
+    GameDifficulty.easy
+  )
+  const [areasCount, setAreasCount] = useState<number>(12)
   const [recources, setRecources] = useState<GameRecources | null>(null)
-  const [gameStatus, setGameStatus] = useState<GameScreen>('startScreen')
+  const [gameStatus, setGameStatus] = useState<GameScreen>(
+    GameScreen.startScreen
+  )
   const [canvasSize, setCanvasSize] = useState<{
     width: number
     height: number
@@ -29,29 +35,35 @@ export const GamePage = (): JSX.Element => {
 
   const runGame = () => {
     setGameInfo(undefined)
-    setGameStatus('gameScreen')
+    setGameStatus(GameScreen.gameScreen)
   }
 
   const finishGame = (stats: GameResult) => {
     setGameInfo(stats)
-    setGameStatus('finalScreen')
+    setGameStatus(GameScreen.finalScreen)
   }
 
   const breakGame = () => {
     setGameInfo(undefined)
-    setGameStatus('startScreen')
+    setGameStatus(GameScreen.startScreen)
   }
 
   const content: Record<GameScreen, JSX.Element> = {
     startScreen: (
       <StartScreen
+        difficulty={difficulty}
+        setDifficulty={setDifficulty}
+        areasCount={areasCount}
+        setAreasCount={setAreasCount}
         isLoaded={Boolean(recources)}
-        runGame={() => setGameStatus('gameScreen')}
+        runGame={runGame}
       />
     ),
     gameScreen: recources ? (
       <Game
         canvasSize={canvasSize}
+        areasCount={areasCount}
+        difficulty={difficulty}
         recources={recources}
         finishGame={finishGame}
         breakGame={breakGame}
@@ -62,7 +74,7 @@ export const GamePage = (): JSX.Element => {
     finalScreen: (
       <FinalScreen
         gameInfo={gameInfo}
-        showStarScreen={() => setGameStatus('startScreen')}
+        showStarScreen={breakGame}
         runGame={runGame}
       />
     ),

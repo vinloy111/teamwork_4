@@ -1,17 +1,16 @@
 import { Area, AreaOwner, Army, GameStats, Position } from 'types/GameData'
-import { areasExtendedMap } from '../config'
+import { areasExtendedMap } from '../gameConfig'
 
 const TWO_PI = 2 * Math.PI
-const CIRCLE_RADIUS = 40
+const CIRCLE_RADIUS = 35
 const ARMY_RADIUS = 20
-const COUNT_MARGIN = 55
-const WHITE_COLOR = 'white'
+const COUNT_MARGIN = 60
 
 export const drawCircle = (
   ctx: CanvasRenderingContext2D,
   circle: Area
 ): void => {
-  const { position, count, img } = circle
+  const { position, color, count, img } = circle
 
   if (img) {
     ctx.drawImage(
@@ -23,8 +22,10 @@ export const drawCircle = (
     )
   }
 
+  drawCircleBorder(ctx, circle, color, true)
+
   ctx.font = 'bold 25px Verdana'
-  ctx.fillStyle = WHITE_COLOR
+  ctx.fillStyle = color
   ctx.textBaseline = 'middle'
   ctx.textAlign = 'center'
   ctx.fillText(String(count), position.x, position.y + COUNT_MARGIN)
@@ -33,17 +34,18 @@ export const drawCircle = (
 export const drawCircleBorder = (
   ctx: CanvasRenderingContext2D,
   circle: Area,
-  color: string
+  color: string,
+  withoutOpacity?: boolean
 ): void => {
   const { position } = circle
   ctx.strokeStyle = color
   ctx.beginPath()
-  ctx.arc(position.x, position.y, CIRCLE_RADIUS + 2, 0, TWO_PI)
+  ctx.arc(position.x, position.y, CIRCLE_RADIUS + 5, 0, TWO_PI)
   ctx.closePath()
-  ctx.globalAlpha = 0.6
-  ctx.lineWidth = 7
+  if (!withoutOpacity) ctx.globalAlpha = 0.5
+  ctx.lineWidth = 5
   ctx.stroke()
-  ctx.globalAlpha = 1
+  if (!withoutOpacity) ctx.globalAlpha = 1
   ctx.lineWidth = 1
 }
 
@@ -103,7 +105,7 @@ export const checkDotIntoCircle = (
 }
 
 export const drawArmy = (ctx: CanvasRenderingContext2D, army: Army): void => {
-  const { position, img, count } = army
+  const { position, img, color, count } = army
   if (img)
     ctx.drawImage(
       img,
@@ -114,10 +116,10 @@ export const drawArmy = (ctx: CanvasRenderingContext2D, army: Army): void => {
     )
 
   ctx.font = 'bold 15px Verdana'
-  ctx.fillStyle = WHITE_COLOR
+  ctx.fillStyle = color
   ctx.textBaseline = 'middle'
   ctx.textAlign = 'center'
-  ctx.fillText(String(count), position.x, position.y + COUNT_MARGIN - 30)
+  ctx.fillText(String(count), position.x, position.y + COUNT_MARGIN - 35)
 }
 
 export const getGameStats = (
