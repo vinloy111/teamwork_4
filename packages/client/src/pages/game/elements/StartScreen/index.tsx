@@ -62,6 +62,12 @@ export const StartScreen = (props: Props): JSX.Element => {
     </>
   )
 
+  const difficultyConf = [
+    { value: GameDifficulty.easy, label: 'Легкая' },
+    { value: GameDifficulty.medium, label: 'Средняя' },
+    { value: GameDifficulty.hard, label: 'Сложная' },
+  ]
+
   const selectDifficulty = (
     <Typography variant="body1" gutterBottom>
       <FormControl>
@@ -70,17 +76,20 @@ export const StartScreen = (props: Props): JSX.Element => {
           row
           value={difficulty}
           onChange={(_, v) => setDifficulty(v as GameDifficulty)}>
-          <FormControlLabel value="easy" control={<Radio />} label="Легкая" />
-          <FormControlLabel
-            value="medium"
-            control={<Radio />}
-            label="Средняя"
-          />
-          <FormControlLabel value="hard" control={<Radio />} label="Сложная" />
+          {difficultyConf.map(i => (
+            <FormControlLabel
+              key={i.value}
+              value={i.value}
+              control={<Radio />}
+              label={i.value}
+            />
+          ))}
         </RadioGroup>
       </FormControl>
     </Typography>
   )
+
+  const areasConf = [{ value: 12 }, { value: 16 }, { value: 20 }, { value: 24 }]
 
   const selectAreas = (
     <Typography variant="body1" gutterBottom>
@@ -90,10 +99,14 @@ export const StartScreen = (props: Props): JSX.Element => {
           row
           value={areasCount}
           onChange={(_, v) => setAreasCount(Number(v))}>
-          <FormControlLabel value="12" control={<Radio />} label="12" />
-          <FormControlLabel value="16" control={<Radio />} label="16" />
-          <FormControlLabel value="20" control={<Radio />} label="20" />
-          <FormControlLabel value="24" control={<Radio />} label="24" />
+          {areasConf.map(i => (
+            <FormControlLabel
+              key={i.value}
+              value={i.value}
+              control={<Radio />}
+              label={i.value}
+            />
+          ))}
         </RadioGroup>
       </FormControl>
     </Typography>

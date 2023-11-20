@@ -1,5 +1,13 @@
-export type GameScreen = 'startScreen' | 'gameScreen' | 'finalScreen'
+export enum GameScreen {
+  startScreen = 'startScreen',
+  gameScreen = 'gameScreen',
+  finalScreen = 'finalScreen',
+}
 
-export type GameDifficulty = 'easy' | 'medium' | 'hard'
+export enum GameDifficulty {
+  easy = 'easy',
+  medium = 'medium',
+  hard = 'hard',
+}
 
 export type CanvasSize = { width: number; height: number }
