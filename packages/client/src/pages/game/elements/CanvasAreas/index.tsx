@@ -6,7 +6,7 @@ import {
   drawArrow,
   drawCircle,
   drawCircleBorder,
-} from '../../utils'
+} from '../../utils/others'
 import './style.css'
 
 type Props = {

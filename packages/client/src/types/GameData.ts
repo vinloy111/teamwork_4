@@ -34,16 +34,8 @@ export type Army = ElementBase & {
 }
 
 export type GameRecources = {
-  areas: {
-    red?: HTMLImageElement
-    blue?: HTMLImageElement
-    gray?: HTMLImageElement
-  }
-  armies: {
-    red?: HTMLImageElement
-    blue?: HTMLImageElement
-    gray?: HTMLImageElement
-  }
+  areas: Record<string, HTMLImageElement>
+  armies: Record<ArmyAndAreaColor, HTMLImageElement | undefined>
 }
 
 export type GameStats = {
