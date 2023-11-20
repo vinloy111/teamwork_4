@@ -61,12 +61,12 @@ export const Game = (props: Props): JSX.Element => {
     requestAnimationFrame(animate)
   }
 
-  // TODO: Убрать если придём к тому, чтобы оключить React.StrictMode
-  useEffect(() => setRun(true), []) // Хак, чтобы из-за React.StrictMode анимация не запускалась 2 раза
+  // TODO: Убрать если придём к тому, чтобы отключить React.StrictMode
+  // Хак, чтобы из-за React.StrictMode анимация не запускалась 2 раза
+  useEffect(() => setRun(true), [])
 
   useEffect(() => {
     if (run) {
-      console.log(1111111)
       const areasDefault = generateAreas(
         canvasSize,
         areasCount,

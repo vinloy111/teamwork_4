@@ -50,11 +50,11 @@ export const generateAreas = (
 ): Area[] => {
   const areasCount = new Array(count).fill({})
   const coords = randomPlaceAreas(canvasSize, count)
+  const shuffleAreas = Object.values(areas).sort(() => Math.random() - 0.5)
 
   return areasCount.map((_, index) => {
     const id = index + 1
     const owner = id === 1 ? 'user' : id === count ? 'computer' : 'freeLands'
-    const shuffleAreas = Object.values(areas).sort(() => Math.random() - 0.5)
 
     return {
       id: String(id),
