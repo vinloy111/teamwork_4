@@ -62,7 +62,7 @@ export const CanvasAreas = React?.memo((props: Props): JSX.Element => {
         i
       )
     )
-    if (finded) setIsMouseDown(finded.id)
+    if (finded && finded.owner === 'user') setIsMouseDown(finded.id)
   }
 
   const onMouseUp = (e: MouseEvent<HTMLCanvasElement>): void => {

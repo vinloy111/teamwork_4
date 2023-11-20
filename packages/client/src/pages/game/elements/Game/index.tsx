@@ -38,6 +38,7 @@ export const Game = (props: Props): JSX.Element => {
   const [run, setRun] = useState<boolean>(false)
   const [areas, setAreas] = useState<Area[]>([])
   const [armies, setArmies] = useState<Army[]>([])
+  const [pauseState, setPauseState] = useState<boolean>(false)
   const pause = useRef<boolean>(false)
   const deltaTime = useRef<number>(0)
   const lastUpdate = useRef<number>(0)
@@ -186,6 +187,7 @@ export const Game = (props: Props): JSX.Element => {
 
   const setPause = () => {
     pause.current = !pause.current
+    setPauseState(v => !v)
   }
 
   return currentFrame ? (
@@ -204,6 +206,7 @@ export const Game = (props: Props): JSX.Element => {
       />
       <CanvasArmies armies={armies} canvasSize={canvasSize} />
       <GameMenu
+        isPause={pauseState}
         seconds={currentSecond}
         setPause={setPause}
         breakGame={breakGame}
