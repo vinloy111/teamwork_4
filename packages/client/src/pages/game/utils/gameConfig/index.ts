@@ -8,7 +8,8 @@ export const GAME_CONSTS = {
   BLUE_COLOR: '#4459ff',
   GRAY_COLOR: '#cbcbcb',
   RED_COLOR: '#f95757',
-  ARMY_STEP_LENGTH: 5,
+  ARMY_STEP_LENGTH_BY_SECOND: 150,
+  MAX_FRAME_INTERVAL: 40,
 }
 
 export const areasExtendedMap: {

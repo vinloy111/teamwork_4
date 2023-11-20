@@ -6,10 +6,11 @@ import { getTime } from '../../utils/others'
 type Props = {
   seconds: number
   breakGame: () => void
+  setPause: () => void
 }
 
 export const GameMenu = React?.memo(
-  ({ seconds, breakGame }: Props): JSX.Element => {
+  ({ seconds, breakGame, setPause }: Props): JSX.Element => {
     return (
       <Box
         sx={{
@@ -24,8 +25,11 @@ export const GameMenu = React?.memo(
         <Box sx={{ fontSize: '30px', lineHeight: '30px', mb: '10px' }}>
           {getTime(seconds)}
         </Box>
-        <Button variant="contained" onClick={breakGame}>
+        <Button sx={{ mb: '10px' }} variant="contained" onClick={breakGame}>
           X
+        </Button>
+        <Button variant="contained" onClick={setPause}>
+          Пауза
         </Button>
       </Box>
     )

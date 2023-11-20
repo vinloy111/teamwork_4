@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { CanvasAreas } from '../CanvasAreas'
 import { CanvasArmies } from '../CanvasArmies'
@@ -35,29 +35,47 @@ export const Game = (props: Props): JSX.Element => {
     areasCount,
     difficulty,
   } = props
+  const [run, setRun] = useState<boolean>(false)
   const [areas, setAreas] = useState<Area[]>([])
   const [armies, setArmies] = useState<Army[]>([])
+  const pause = useRef<boolean>(false)
+  const deltaTime = useRef<number>(0)
+  const lastUpdate = useRef<number>(0)
+  const time = useRef<number>(0)
   const [currentSecond, setCurrentSeconds] = useState<number>(0)
   const [currentFrame, setCurrentFrame] = useState<number>(0)
 
-  let startTime = 0 // Хак для сброса времени при перезапуске игры
-  const animate = (currentTime = 0): void => {
-    if (!startTime) startTime = currentTime
-    const time = currentTime - startTime
-    const second = Math.floor(time / 1000)
-    setCurrentSeconds(second)
-    const frame = Math.floor(time / 33)
-    setCurrentFrame(frame)
+  const animate = (currentTime: number): void => {
+    deltaTime.current = currentTime - lastUpdate.current
+    lastUpdate.current = currentTime
+
+    if (!pause.current && deltaTime.current < GAME_CONSTS.MAX_FRAME_INTERVAL) {
+      time.current = time.current + deltaTime.current
+
+      const roundSec = Math.round(time.current / 1000)
+      if (roundSec > currentSecond) setCurrentSeconds(roundSec)
+      setCurrentFrame(time.current)
+    }
 
     requestAnimationFrame(animate)
   }
 
-  useEffect(() => {
-    const areasDefault = generateAreas(canvasSize, areasCount, recources.areas)
-    setAreas(areasDefault)
+  // TODO: Убрать если придём к тому, чтобы оключить React.StrictMode
+  useEffect(() => setRun(true), []) // Хак, чтобы из-за React.StrictMode анимация не запускалась 2 раза
 
-    animate()
-  }, [])
+  useEffect(() => {
+    if (run) {
+      console.log(1111111)
+      const areasDefault = generateAreas(
+        canvasSize,
+        areasCount,
+        recources.areas
+      )
+      setAreas(areasDefault)
+
+      animate(0)
+    }
+  }, [run])
 
   useEffect(() => {
     // Увеличение численности в локациях
@@ -75,11 +93,11 @@ export const Game = (props: Props): JSX.Element => {
     setArmies(a =>
       a.map(i => ({
         ...i,
-        distance: i.distance - i.stepLength,
+        distance: i.distance - (i.stepLength * deltaTime.current) / 1000,
         position: intermediatePoint(
           i.position,
           i.targetPosition,
-          i.stepLength / i.distance
+          (i.stepLength * deltaTime.current) / 1000 / i.distance
         ),
       }))
     )
@@ -88,7 +106,7 @@ export const Game = (props: Props): JSX.Element => {
   }, [currentFrame])
 
   const checkCollapse = (army: Army): void => {
-    if (army.distance <= army.stepLength) {
+    if (army.distance <= (army.stepLength * deltaTime.current) / 1000) {
       const defender = areas.find(i => i.id == army.toId)
 
       if (defender && army?.owner !== defender?.owner) {
@@ -140,7 +158,7 @@ export const Game = (props: Props): JSX.Element => {
         { x: attacker.position.x, y: attacker.position.y },
         { x: defender.position.x, y: defender.position.y }
       )
-      const stepLength = GAME_CONSTS.ARMY_STEP_LENGTH
+      const stepLength = GAME_CONSTS.ARMY_STEP_LENGTH_BY_SECOND
       const stepCount = distance / stepLength
       return [
         ...a,
@@ -166,6 +184,10 @@ export const Game = (props: Props): JSX.Element => {
     finishGame({ stats, seconds: currentSecond })
   }
 
+  const setPause = () => {
+    pause.current = !pause.current
+  }
+
   return currentFrame ? (
     <>
       <CanvasPowerBar
@@ -181,7 +203,11 @@ export const Game = (props: Props): JSX.Element => {
         canvasSize={canvasSize}
       />
       <CanvasArmies armies={armies} canvasSize={canvasSize} />
-      <GameMenu seconds={currentSecond} breakGame={breakGame} />
+      <GameMenu
+        seconds={currentSecond}
+        setPause={setPause}
+        breakGame={breakGame}
+      />
       <CPULogic
         owner="computer"
         difficulty={difficulty}
