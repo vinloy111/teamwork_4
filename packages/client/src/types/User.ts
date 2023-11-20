@@ -8,4 +8,12 @@ export declare type User = {
   phone?: string
   email?: string
   avatar?: string
+  viewedProfile?: number
+  picturePath?: string
+  numberInTheTop?: number
+  occupation?: string
+  location?: string
+  lastPost?: string
+  aboutMe?: string
+  site?: string
 }

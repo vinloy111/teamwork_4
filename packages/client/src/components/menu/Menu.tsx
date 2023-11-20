@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 const Menu = () => {
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar>
         <Toolbar>
           <MenuItem component={Link} to={'/'}>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
@@ -33,6 +33,7 @@ const Menu = () => {
           </MenuItem>
         </Toolbar>
       </AppBar>
+      <Toolbar />
     </Box>
   )
 }

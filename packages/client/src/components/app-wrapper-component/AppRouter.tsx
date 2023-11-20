@@ -10,6 +10,7 @@ import Layout from '../layout/Layout'
 import NotFoundPage from '../../pages/404/404'
 import ServerErrorPage from '../../pages/500/ServerErrorPage'
 import LeaderBoardPage from '../../pages/leaderboard/LeaderBoardPage'
+import ProfilePage from '../../pages/profile'
 
 function LoginPage() {
   return <h1>Login Page</h1>
@@ -17,10 +18,6 @@ function LoginPage() {
 
 function RegisterPage() {
   return <h1>Register Page</h1>
-}
-
-function ProfilePage() {
-  return <h1>Profile Page</h1>
 }
 
 function ForumTopicPage() {
@@ -33,7 +30,7 @@ export const AppRouter = createBrowserRouter(
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
-      <Route path="/profile" element={<ProfilePage />} />
+      <Route path="/profile/:userId" element={<ProfilePage />} />
       <Route path="/game" element={<GamePage />} />
       <Route path="/leaderboard" element={<LeaderBoardPage />} />
       <Route path="/forum" element={<ForumPage />} />
