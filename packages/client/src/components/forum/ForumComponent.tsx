@@ -1,16 +1,18 @@
 import { CardMedia, Stack, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { DataGrid } from '@mui/x-data-grid'
-import Fon1 from '../../assets/images/fon1.png'
-import Fon2 from '../../assets/images/fon2.png'
+import ImageForBackground1 from '../../assets/images/fon1.png'
+import ImageForBackground2 from '../../assets/images/fon2.png'
 import { theme } from '../../theme'
 import { Forum } from 'types/Forum'
 import { mockForum } from '../../mocks/forum'
-import { columns } from './settingForum'
+import { getColumns } from './settingForum'
 import { CardStyled } from '../leaderboard/style'
+import { useNavigate } from 'react-router-dom'
 
 export const ForumComponent = () => {
   const [forum, setForum] = useState<Forum | null>(null)
+  const navigate = useNavigate()
   const getForum = () => {
     setForum(mockForum)
   }
@@ -23,8 +25,7 @@ export const ForumComponent = () => {
       justifyContent={'center'}
       height={'auto'}
       width={'100%'}
-      marginTop={theme.spacing(1)}
-      sx={{ backgroundImage: Fon1 }}>
+      marginTop={theme.spacing(1)}>
       <Typography
         variant={'h3'}
         sx={{
@@ -40,7 +41,7 @@ export const ForumComponent = () => {
       {forum && forum.listOfTopics && forum.listOfTopics.length > 0 && (
         <DataGrid
           rows={forum.listOfTopics}
-          columns={columns}
+          columns={getColumns(navigate)}
           initialState={{
             pagination: {
               paginationModel: {
@@ -61,7 +62,7 @@ export const ForumComponent = () => {
           width: 500,
           height: 342,
         }}>
-        <CardMedia component="img" alt="fon1" image={Fon1} />
+        <CardMedia component="img" alt="fon1" image={ImageForBackground1} />
       </CardStyled>
       <CardStyled
         sx={{
@@ -71,7 +72,7 @@ export const ForumComponent = () => {
           height: 397,
           opacity: '60%',
         }}>
-        <CardMedia component="img" alt="fon2" image={Fon2} />
+        <CardMedia component="img" alt="fon2" image={ImageForBackground2} />
       </CardStyled>
     </Stack>
   )

@@ -20,8 +20,8 @@ export const ForumTopicPage = () => {
       setIsLoading(true)
       /**{TODO: В дальнейшем запрос в ручку по topicId }*/
       setTopic(getTopicById(topicId))
-      console.log(topic)
-      setIsLoading(false)
+      /**{TODO: В дальнейшем убрать-для теста лоадера }*/
+      setTimeout(() => setIsLoading(false), 1000)
     }
   }, [])
 
@@ -30,9 +30,9 @@ export const ForumTopicPage = () => {
   return (
     <Stack
       alignItems="center"
-      justifyContent={'center'}
-      height={'auto'}
-      width={'100%'}
+      justifyContent="center"
+      height="auto"
+      width="100%"
       marginTop={theme.spacing(1)}>
       {!isLoading && !topic && (
         <>
@@ -43,7 +43,7 @@ export const ForumTopicPage = () => {
         </>
       )}
       <Typography
-        variant={'h3'}
+        variant="h3"
         sx={{
           color: theme.palette.warning.main,
           zIndex: 10,

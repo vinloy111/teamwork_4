@@ -1,6 +1,6 @@
 import { Message } from 'types/Forum'
 import { useEffect, useRef, useState } from 'react'
-import { Stack, TextareaAutosize } from '@mui/material'
+import { Stack } from '@mui/material'
 import {
   MenuButtonBold,
   MenuButtonItalic,
@@ -11,7 +11,6 @@ import {
   type RichTextEditorRef,
 } from 'mui-tiptap'
 import Button from '@mui/material/Button'
-// @ts-ignore
 import { StarterKit } from '@tiptap/starter-kit'
 import Box from '@mui/material/Box'
 

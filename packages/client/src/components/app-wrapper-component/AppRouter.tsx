@@ -43,11 +43,8 @@ export const AppRouter = () => {
         <Route path="/profile" element={protectedRoute(ProfilePage)} />
         <Route path="/game" element={protectedRoute(GamePage)} />
         <Route path="/leaderboard" element={protectedRoute(LeaderBoardPage)} />
-        <Route path="/forum" element={protectedRoute(ForumPage)} />
-        <Route
-          path="/forum/:topicId"
-          element={protectedRoute(ForumTopicPage)}
-        />
+        <Route path="/forum" element={<ForumPage />} />
+        <Route path="/forum/:topicId" element={<ForumTopicPage />} />
       </Route>
     )
   )
