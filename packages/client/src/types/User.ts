@@ -1,6 +1,6 @@
 export declare type User = {
   id: string
-  firstName: string
+  firstName?: string
   lastName?: string
   nickName?: string
   login: string

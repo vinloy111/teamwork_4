@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import {
   Box,
   Button,
@@ -9,18 +8,16 @@ import {
   useTheme,
 } from '@mui/material'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
-import { Formik, FormikValues } from 'formik'
+import { Formik } from 'formik'
 import * as yup from 'yup'
-import { useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-//import { setLogin } from "state";
+import { useSelector } from 'react-redux'
 import Dropzone from 'react-dropzone'
 import FlexBetween from '../../components/FlexBetween'
 import { User } from 'types/User'
 import { Store } from '../../store'
 import { FormikHelpers } from 'formik/dist/types'
 
-type Values = User & { picture: File }
+type Values = User & { picture: File | undefined }
 
 const phoneRegExp = /^([+]?[0-9\s-()]{3,25})*$/i
 
@@ -35,7 +32,7 @@ const registerSchema = yup.object().shape({
   site: yup.string().url(),
 })
 
-const initialValuesRegister = {
+const initialValuesRegister: User = {
   id: '',
   firstName: '',
   lastName: '',
@@ -47,17 +44,19 @@ const initialValuesRegister = {
   email: '',
   numberInTheTop: 0,
   occupation: '',
-  impressions: '',
+  lastPost: '',
   aboutMe: '',
   site: '',
 }
 
 const ProfileForm = () => {
-  const { palette } = useTheme()
+  const theme = useTheme()
   const user = useSelector((state: Store) => state.auth.user as User | null)
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const isNonMobile = useMediaQuery('(min-width:600px)')
+  const initialValues: Values =
+    user === null
+      ? { ...initialValuesRegister, picture: undefined }
+      : { ...user, picture: undefined }
+  const isNonMobile = useMediaQuery(theme.breakpoints.up('sm'))
 
   const register = async (
     values: Values,
@@ -65,10 +64,13 @@ const ProfileForm = () => {
   ) => {
     // this allows us to send form info with image
     const formData = new FormData()
-    for (const value in values) {
-      formData.append(value, values[value])
-    }
-    formData.append('picturePath', values.picture.name)
+    Object.entries(values).forEach(([key, value]) => {
+      if (value) {
+        formData.append(key, value as string | Blob)
+      }
+    })
+    //formData.append('picturePath', values.picture.name)
+    console.log(formData)
 
     const savedUserResponse = await fetch(
       'http://localhost:3001/auth/register',
@@ -78,6 +80,7 @@ const ProfileForm = () => {
       }
     )
     const savedUser = await savedUserResponse.json()
+    console.log(savedUser)
     onSubmitProps.resetForm()
   }
   const handleFormSubmit = async (
@@ -90,7 +93,7 @@ const ProfileForm = () => {
   return (
     <Formik
       onSubmit={handleFormSubmit}
-      initialValues={{ ...initialValuesRegister, ...user }}
+      initialValues={initialValues}
       validationSchema={registerSchema}>
       {({
         values,
@@ -113,7 +116,7 @@ const ProfileForm = () => {
               <Paper sx={{ padding: '10px' }}>
                 <Typography
                   fontSize="1rem"
-                  color={palette.primary.main}
+                  color={theme.palette.primary.main}
                   fontWeight="500"
                   mb="1rem">
                   Personal Information
@@ -194,7 +197,7 @@ const ProfileForm = () => {
               <Paper sx={{ padding: '10px' }}>
                 <Typography
                   fontSize="1rem"
-                  color={palette.primary.main}
+                  color={theme.palette.primary.main}
                   fontWeight="500"
                   mb="1rem">
                   Contact Information
@@ -241,7 +244,7 @@ const ProfileForm = () => {
                   />
                   <Box
                     gridColumn="span 4"
-                    border={`1px solid ${palette.success.main}`}
+                    border={`1px solid ${theme.palette.success.main}`}
                     borderRadius="5px"
                     p="1rem">
                     <Dropzone
@@ -253,15 +256,15 @@ const ProfileForm = () => {
                       {({ getRootProps, getInputProps }) => (
                         <Box
                           {...getRootProps()}
-                          border={`2px dashed ${palette.primary.main}`}
+                          border={`2px dashed ${theme.palette.primary.main}`}
                           p="1rem"
                           sx={{ '&:hover': { cursor: 'pointer' } }}>
                           <input {...getInputProps()} />
                           {!values.picture ? (
-                            <p>Add Picture Here</p>
+                            <p>Add Avatar Here</p>
                           ) : (
                             <FlexBetween>
-                              <Typography>{values.picture.name}</Typography>
+                              <Typography>{values.picture?.name}</Typography>
                               <EditOutlinedIcon />
                             </FlexBetween>
                           )}
@@ -282,9 +285,9 @@ const ProfileForm = () => {
               sx={{
                 m: '2rem 0',
                 p: '1rem',
-                backgroundColor: palette.success.main,
-                color: palette.background.default,
-                '&:hover': { color: palette.primary.main },
+                backgroundColor: theme.palette.success.main,
+                color: theme.palette.background.default,
+                '&:hover': { color: theme.palette.primary.main },
               }}>
               SAVE
             </Button>

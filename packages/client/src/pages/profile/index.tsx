@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Box, useTheme, useMediaQuery, Tabs, Tab, Button } from '@mui/material'
 import ProfileTab from './ProfileTab'
 import ProfileData from './ProfileData'
+import ProfilePass from './ProfilePass'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router'
 import { Store } from '../../store'
@@ -101,7 +102,7 @@ const ProfilePage = () => {
           <ProfileData />
         </TabPanel>
         <TabPanel value={value} index={2}>
-          Change password
+          <ProfilePass />
         </TabPanel>
       </Box>
     </Box>
