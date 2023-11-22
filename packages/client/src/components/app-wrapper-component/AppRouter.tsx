@@ -13,16 +13,13 @@ import ServerErrorPage from '../../pages/500/ServerErrorPage'
 import LeaderBoardPage from '../../pages/leaderboard/LeaderBoardPage'
 import LoginPage from '../../pages/login/LoginPage'
 import RegisterPage from '../../pages/register/RegisterPage'
+import { ForumTopicPage } from '../../pages/topic/ForumTopicPage'
 import { useSelector } from 'react-redux'
 import { Store } from '../../store'
 import React from 'react'
 
 function ProfilePage() {
   return <h1>Profile Page</h1>
-}
-
-function ForumTopicPage() {
-  return <h1>ForumTopic Page</h1>
 }
 
 export const AppRouter = () => {
@@ -46,11 +43,8 @@ export const AppRouter = () => {
         <Route path="/profile" element={protectedRoute(ProfilePage)} />
         <Route path="/game" element={protectedRoute(GamePage)} />
         <Route path="/leaderboard" element={protectedRoute(LeaderBoardPage)} />
-        <Route path="/forum" element={protectedRoute(ForumPage)} />
-        <Route
-          path="/forum/:topicId"
-          element={protectedRoute(ForumTopicPage)}
-        />
+        <Route path="/forum" element={<ForumPage />} />
+        <Route path="/forum/:topicId" element={<ForumTopicPage />} />
       </Route>
     )
   )

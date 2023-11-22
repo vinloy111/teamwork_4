@@ -1,8 +1,7 @@
-import Layout from '../../components/layout/Layout'
-import Box from '@mui/material/Box'
+import { ForumComponent } from '../../components/forum/ForumComponent'
 
 const ForumPage = () => {
-  return <Box>Forum</Box>
+  return <ForumComponent />
 }
 
 export default ForumPage

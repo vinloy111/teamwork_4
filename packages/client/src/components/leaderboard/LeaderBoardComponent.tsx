@@ -1,4 +1,4 @@
-import { CardMedia, Stack, Typography } from '@mui/material'
+import { CardMedia, Stack } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { fillUserData } from './utils'
 import { mockLeaderboardList } from '../../mocks/leaderboard'
