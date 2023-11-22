@@ -75,7 +75,7 @@ export const MessageComponent = ({
             MenuBarProps: {
               hide: !showMenuBar,
             },
-            footer: isEditable ? (
+            footer: isEditable && (
               <Stack
                 direction="row"
                 spacing={2}
@@ -95,7 +95,7 @@ export const MessageComponent = ({
                   Save
                 </Button>
               </Stack>
-            ) : null,
+            ),
           }}
         />
       </Box>
