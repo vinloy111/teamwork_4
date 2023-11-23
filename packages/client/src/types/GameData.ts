@@ -4,6 +4,8 @@ export type AreaOwner = 'user' | 'computer' | 'freeLands'
 
 export type ArmyAndAreaColor = 'blue' | 'red' | 'gray'
 
+export type GameAudio = 'backgroundMusic' | 'start' | 'win' | 'lose'
+
 export type ID = string
 
 export type ElementBase = {
@@ -36,6 +38,7 @@ export type Army = ElementBase & {
 export type GameRecources = {
   areas: Record<string, HTMLImageElement>
   armies: Record<ArmyAndAreaColor, HTMLImageElement | undefined>
+  audio: Record<GameAudio, HTMLAudioElement | undefined>
 }
 
 export type GameStats = {

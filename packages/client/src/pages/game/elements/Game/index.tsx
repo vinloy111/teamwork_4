@@ -35,7 +35,6 @@ export const Game = (props: Props): JSX.Element => {
     areasCount,
     difficulty,
   } = props
-  const [run, setRun] = useState<boolean>(false)
   const [areas, setAreas] = useState<Area[]>([])
   const [armies, setArmies] = useState<Army[]>([])
   const [pauseState, setPauseState] = useState<boolean>(false)
@@ -61,31 +60,29 @@ export const Game = (props: Props): JSX.Element => {
     requestAnimationFrame(animate)
   }
 
-  // TODO: Убрать если придём к тому, чтобы отключить React.StrictMode
-  // Хак, чтобы из-за React.StrictMode анимация не запускалась 2 раза
-  useEffect(() => setRun(true), [])
-
   useEffect(() => {
-    if (run) {
-      const areasDefault = generateAreas(
-        canvasSize,
-        areasCount,
-        recources.areas
-      )
-      setAreas(areasDefault)
+    const areasDefault = generateAreas(canvasSize, areasCount, recources.areas)
+    setAreas(areasDefault)
 
-      animate(0)
-    }
-  }, [run])
+    animate(0)
+  }, [])
 
   useEffect(() => {
     // Увеличение численности в локациях
     setAreas(a =>
-      a.map(i => ({
-        ...i,
-        count:
-          i.owner !== 'freeLands' && i.count < i.limit ? i.count + 1 : i.count,
-      }))
+      a.map(i =>
+        i.owner === 'freeLands'
+          ? i
+          : {
+              ...i,
+              count:
+                i.count === i.limit
+                  ? i.count
+                  : i.count < i.limit
+                  ? i.count + 1
+                  : i.count - 1,
+            }
+      )
     )
   }, [currentSecond])
 
@@ -111,13 +108,21 @@ export const Game = (props: Props): JSX.Element => {
       const defender = areas.find(i => i.id == army.toId)
 
       if (defender && army?.owner !== defender?.owner) {
+        const isCapture = army.count > defender.count
+        const isUserWin =
+          (army.owner === 'user' && isCapture) ||
+          (defender.owner === 'user' && !isCapture)
+        const newOwner = isCapture ? army.owner : defender.owner
+        const newCount = isCapture
+          ? army.count - defender.count
+          : defender.count - army.count
+        if (army.owner === 'user' || defender.owner === 'user') {
+          isUserWin
+            ? recources?.audio?.win?.play()
+            : recources?.audio?.lose?.play()
+        }
         setAreas(a => {
           const otherAreas = a.filter(i => i.id !== defender.id)
-          const isCapture = army.count > defender.count
-          const newOwner = isCapture ? army.owner : defender.owner
-          const newCount = isCapture
-            ? army.count - defender.count
-            : defender.count - army.count
           return [
             ...otherAreas,
             {
@@ -130,6 +135,9 @@ export const Game = (props: Props): JSX.Element => {
           ]
         })
       } else if (army && defender) {
+        if (army.owner === 'user') {
+          recources?.audio?.win?.play()
+        }
         setAreas(a => {
           const otherAreas = a.filter(i => i.id !== defender.id)
           return [
@@ -150,6 +158,9 @@ export const Game = (props: Props): JSX.Element => {
   }
 
   const onSendArmy = (attacker: Area, defender: Area): void => {
+    if (attacker.owner === 'user') {
+      recources?.audio?.start?.play()
+    }
     setAreas(a => {
       const otherAreas = a.filter(i => i.id !== attacker.id)
       return [...otherAreas, { ...attacker, count: 0 }]
@@ -186,6 +197,9 @@ export const Game = (props: Props): JSX.Element => {
   }
 
   const setPause = () => {
+    pause.current
+      ? recources?.audio?.backgroundMusic?.play()
+      : recources?.audio?.backgroundMusic?.pause()
     pause.current = !pause.current
     setPauseState(v => !v)
   }

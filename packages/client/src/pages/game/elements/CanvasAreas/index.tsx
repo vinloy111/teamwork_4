@@ -34,7 +34,9 @@ export const CanvasAreas = React?.memo((props: Props): JSX.Element => {
         areas?.forEach(i => drawCircle(ctx, i))
 
         const isMouseDownTarget = areas.find(i => i.id == isMouseDown)
-        if (isMouseDownTarget) {
+        const isActualMouseDown = isMouseDownTarget?.owner === 'user'
+        if (!isActualMouseDown) setIsMouseDown(undefined)
+        if (isMouseDownTarget && isActualMouseDown) {
           if (
             isMouseDownTarget?.id &&
             isMouseMove?.target &&

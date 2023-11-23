@@ -34,16 +34,24 @@ export const GamePage = (): JSX.Element => {
   }, [gameWrapper.current?.clientWidth, gameWrapper.current?.clientHeight])
 
   const runGame = () => {
+    if (recources?.audio?.backgroundMusic) {
+      recources.audio.backgroundMusic.loop = true
+      recources.audio.backgroundMusic.volume = 0.15
+      recources.audio.backgroundMusic.currentTime = 0
+      recources.audio.backgroundMusic.play()
+    }
     setGameInfo(undefined)
     setGameStatus(GameScreen.gameScreen)
   }
 
   const finishGame = (stats: GameResult) => {
+    recources?.audio?.backgroundMusic?.pause()
     setGameInfo(stats)
     setGameStatus(GameScreen.finalScreen)
   }
 
   const breakGame = () => {
+    recources?.audio?.backgroundMusic?.pause()
     setGameInfo(undefined)
     setGameStatus(GameScreen.startScreen)
   }
