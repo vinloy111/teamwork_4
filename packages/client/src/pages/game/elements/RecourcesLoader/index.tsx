@@ -38,7 +38,6 @@ export const RecourcesLoader = React?.memo(
     useEffect(() => {
       AUDIO?.forEach(i => {
         const audio = new Audio(i.src)
-        audio.volume = 0.25
         audio.oncanplaythrough = () => {
           setData(d => ({ ...d, audio: { ...d.audio, [i.name]: audio } }))
         }

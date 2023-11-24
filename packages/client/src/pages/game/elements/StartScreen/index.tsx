@@ -32,32 +32,10 @@ export const StartScreen = (props: Props): JSX.Element => {
   const title = (
     <>
       <Typography
-        variant="h2"
+        variant="h3"
         sx={{ textAlign: 'center', mb: '50px' }}
         gutterBottom>
         {APP_CONST.gameName}
-      </Typography>
-    </>
-  )
-
-  const instruction = (
-    <>
-      <Typography variant="h4" gutterBottom>
-        Игровой процесс:
-      </Typography>
-      <Typography variant="body1" gutterBottom>
-        <ul>
-          <li>
-            Накапливайте юнитов (подконтрольные вам территории генерируют нового
-            юнита каждую секунду)
-          </li>
-          <li>Захватывайте нейтральные (серые) территории</li>
-          <li>
-            Собирайте войска вместе (перетаскивая юнитов между подконтрольными
-            территориями)
-          </li>
-          <li>Для победы захватите все территории противника</li>
-        </ul>
       </Typography>
     </>
   )
@@ -144,7 +122,6 @@ export const StartScreen = (props: Props): JSX.Element => {
         elevation={24}
         sx={{ maxWidth: 600, padding: '20px', borderRadius: '10px' }}>
         {title}
-        {instruction}
         {settings}
         {button}
       </Paper>

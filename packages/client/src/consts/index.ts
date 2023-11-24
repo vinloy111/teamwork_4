@@ -1,3 +1,3 @@
 export const APP_CONST = {
-  gameName: 'Захват территорий',
+  gameName: 'Безжалостные космические завоевания',
 }
