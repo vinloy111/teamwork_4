@@ -61,20 +61,24 @@ export const drawArrow = (
 ): void => {
   const { color, startX, startY, endX, endY } = arrow
   if (endX && endY) {
-    const length = Math.sqrt(
+    const lineLength = Math.sqrt(
       Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2)
     )
     const offset = 20
-    const newEndX = endX - ((endX - startX) / length) * offset
-    const newEndY = endY - ((endY - startY) / length) * offset
+    const lineStartX = startX - ((startX - endX) / lineLength) * (offset * 2)
+    const lineStartY = startY - ((startY - endY) / lineLength) * (offset * 2)
+    const lineEndX = endX - ((endX - startX) / lineLength) * offset
+    const lineEndY = endY - ((endY - startY) / lineLength) * offset
 
     ctx.strokeStyle = color
     ctx.fillStyle = color
     ctx.lineWidth = 10
-    ctx.beginPath()
-    ctx.moveTo(startX, startY)
-    ctx.lineTo(newEndX, newEndY)
-    ctx.stroke()
+    if (lineLength > CIRCLE_RADIUS) {
+      ctx.beginPath()
+      ctx.moveTo(lineStartX, lineStartY)
+      ctx.lineTo(lineEndX, lineEndY)
+      ctx.stroke()
+    }
 
     const arrowSize = 30
     const angle = Math.atan2(endY - startY, endX - startX)

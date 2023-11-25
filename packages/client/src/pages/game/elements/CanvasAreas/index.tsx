@@ -22,40 +22,44 @@ export const CanvasAreas = React?.memo((props: Props): JSX.Element => {
     undefined | { x: number; y: number; target?: Area }
   >(undefined)
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null)
 
-  // TODO: Переделать на 2 useEffect
   useEffect(() => {
     if (canvasRef.current) {
       const ctx = canvasRef.current?.getContext?.('2d')
       canvasRef.current.width = canvasSize.width
       canvasRef.current.height = canvasSize.height
+      setCtx(ctx)
+    }
+  }, [canvasRef, canvasSize])
 
-      if (ctx) {
-        areas?.forEach(i => drawCircle(ctx, i))
+  useEffect(() => {
+    if (ctx) {
+      ctx.clearRect(0, 0, canvasSize.width, canvasSize.height)
+      areas?.forEach(i => drawCircle(ctx, i))
 
-        const isMouseDownTarget = areas.find(i => i.id == isMouseDown)
-        const isActualMouseDown = isMouseDownTarget?.owner === 'user'
-        if (!isActualMouseDown) setIsMouseDown(undefined)
-        if (isMouseDownTarget && isActualMouseDown) {
-          if (
-            isMouseDownTarget?.id &&
-            isMouseMove?.target &&
-            isMouseDownTarget?.id !== isMouseMove.target?.id
-          ) {
-            drawCircleBorder(ctx, isMouseMove.target, isMouseDownTarget.color)
-          }
-
-          drawArrow(ctx, {
-            color: isMouseDownTarget.color,
-            startX: isMouseDownTarget.position.x,
-            startY: isMouseDownTarget.position.y,
-            endX: isMouseMove?.x,
-            endY: isMouseMove?.y,
-          })
+      const isMouseDownTarget = areas.find(i => i.id == isMouseDown)
+      const isActualMouseDown = isMouseDownTarget?.owner === 'user'
+      if (!isActualMouseDown) setIsMouseDown(undefined)
+      if (isMouseDownTarget && isActualMouseDown) {
+        if (
+          isMouseDownTarget?.id &&
+          isMouseMove?.target &&
+          isMouseDownTarget?.id !== isMouseMove.target?.id
+        ) {
+          drawCircleBorder(ctx, isMouseMove.target, isMouseDownTarget.color)
         }
+
+        drawArrow(ctx, {
+          color: isMouseDownTarget.color,
+          startX: isMouseDownTarget.position.x,
+          startY: isMouseDownTarget.position.y,
+          endX: isMouseMove?.x,
+          endY: isMouseMove?.y,
+        })
       }
     }
-  }, [areas, isMouseDown, isMouseMove])
+  }, [ctx, areas, isMouseDown, isMouseMove])
 
   const onMouseDown = (e: MouseEvent<HTMLCanvasElement>): void => {
     const finded = areas.find(i =>

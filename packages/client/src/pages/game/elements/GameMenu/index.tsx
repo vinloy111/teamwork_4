@@ -53,6 +53,13 @@ export const GameMenu = React?.memo((props: Props): JSX.Element => {
     dispatch(changeSoundVolume(!hasVolume))
   }
 
+  const btnStyle = {
+    ml: '10px',
+    lineHeight: 'unset',
+    padding: 0,
+    minWidth: '40px',
+  }
+
   const gameMenu = (
     <Box
       sx={{
@@ -61,20 +68,20 @@ export const GameMenu = React?.memo((props: Props): JSX.Element => {
         right: '20px',
         flex: 1,
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: 'row',
         justifyContent: 'center',
       }}>
-      <Box sx={{ fontSize: '30px', lineHeight: '30px', mb: '10px' }}>
+      <Box sx={{ fontSize: '30px', lineHeight: '30px' }}>
         {getTime(seconds)}
       </Box>
-      <Button sx={{ mb: '10px' }} variant="contained" onClick={breakGame}>
-        X
-      </Button>
-      <Button sx={{ mb: '10px' }} variant="contained" onClick={setPause}>
-        ||
-      </Button>
-      <Button variant="contained" onClick={changeVolume}>
+      <Button sx={btnStyle} variant="contained" onClick={changeVolume}>
         {hasVolume ? '🔇' : '🔊'}
+      </Button>
+      <Button sx={btnStyle} variant="contained" onClick={setPause}>
+        {isPause ? '▶' : '||'}
+      </Button>
+      <Button sx={btnStyle} variant="contained" onClick={breakGame}>
+        X
       </Button>
     </Box>
   )
