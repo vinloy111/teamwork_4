@@ -5,7 +5,7 @@ import { CanvasArmies } from '../CanvasArmies'
 import {
   Area,
   Army,
-  GameRecources,
+  GameResources,
   GameResult,
   GameStats,
 } from 'types/GameData'
@@ -21,7 +21,7 @@ type Props = {
   finishGame: (stats: GameResult) => void
   breakGame: () => void
   canvasSize: CanvasSize
-  recources: GameRecources
+  resources: GameResources
   areasCount: number
   difficulty: React.ComponentProps<typeof CPULogic>['difficulty']
 }
@@ -31,7 +31,7 @@ export const Game = (props: Props): JSX.Element => {
     finishGame,
     breakGame,
     canvasSize,
-    recources,
+    resources,
     areasCount,
     difficulty,
   } = props
@@ -61,7 +61,7 @@ export const Game = (props: Props): JSX.Element => {
   }
 
   useEffect(() => {
-    const areasDefault = generateAreas(canvasSize, areasCount, recources.areas)
+    const areasDefault = generateAreas(canvasSize, areasCount, resources.areas)
     setAreas(areasDefault)
 
     animate(0)
@@ -118,8 +118,8 @@ export const Game = (props: Props): JSX.Element => {
           : defender.count - army.count
         if (army.owner === 'user' || defender.owner === 'user') {
           isUserWin
-            ? recources?.audio?.win?.play()
-            : recources?.audio?.lose?.play()
+            ? resources?.audio?.win?.play()
+            : resources?.audio?.lose?.play()
         }
         setAreas(a => {
           const otherAreas = a.filter(i => i.id !== defender.id)
@@ -136,7 +136,7 @@ export const Game = (props: Props): JSX.Element => {
         })
       } else if (army && defender) {
         if (army.owner === 'user') {
-          recources?.audio?.win?.play()
+          resources?.audio?.win?.play()
         }
         setAreas(a => {
           const otherAreas = a.filter(i => i.id !== defender.id)
@@ -159,7 +159,7 @@ export const Game = (props: Props): JSX.Element => {
 
   const onSendArmy = (attacker: Area, defender: Area): void => {
     if (attacker.owner === 'user') {
-      recources?.audio?.start?.play()
+      resources?.audio?.start?.play()
     }
     setAreas(a => {
       const otherAreas = a.filter(i => i.id !== attacker.id)
@@ -178,7 +178,7 @@ export const Game = (props: Props): JSX.Element => {
           id: uuidv4(),
           owner: attacker.owner,
           color: attacker.color,
-          img: recources.armies[areasExtendedMap[attacker.owner].imgLink],
+          img: resources.armies[areasExtendedMap[attacker.owner].imgLink],
           count: attacker.count,
           stepLength,
           stepCount,
@@ -198,8 +198,8 @@ export const Game = (props: Props): JSX.Element => {
 
   const setPause = () => {
     pause.current
-      ? recources?.audio?.backgroundMusic?.play()
-      : recources?.audio?.backgroundMusic?.pause()
+      ? resources?.audio?.backgroundMusic?.play()
+      : resources?.audio?.backgroundMusic?.pause()
     pause.current = !pause.current
     setPauseState(v => !v)
   }

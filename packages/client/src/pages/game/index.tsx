@@ -4,8 +4,8 @@ import { StartScreen } from './elements/StartScreen'
 import { FinalScreen } from './elements/FinalScreen'
 import { Game } from './elements/Game'
 import { GameDifficulty, GameScreen } from 'types/GameStats'
-import { GameRecources, GameResult } from 'types/GameData'
-import { RecourcesLoader } from './elements/RecourcesLoader'
+import { GameResources, GameResult } from 'types/GameData'
+import { ResourcesLoader } from './elements/ResourcesLoader'
 import { useSelector } from 'react-redux'
 import { Store } from 'src/store'
 import './style.css'
@@ -17,7 +17,7 @@ export const GamePage = (): JSX.Element => {
     GameDifficulty.easy
   )
   const [areasCount, setAreasCount] = useState<number>(12)
-  const [recources, setRecources] = useState<GameRecources | null>(null)
+  const [resources, setResources] = useState<GameResources | null>(null)
   const [gameStatus, setGameStatus] = useState<GameScreen>(
     GameScreen.startScreen
   )
@@ -37,39 +37,36 @@ export const GamePage = (): JSX.Element => {
   }, [gameWrapper.current?.clientWidth, gameWrapper.current?.clientHeight])
 
   useEffect(() => {
-    if (recources?.audio?.backgroundMusic) {
-      recources.audio.backgroundMusic.volume =
-        gameSettings.backgroundMusicVolume
+    if (resources?.audio) {
+      const { backgroundMusic, lose, start, win } = resources.audio
+      const { backgroundMusicVolume, soundVolume } = gameSettings
+
+      if (backgroundMusic) backgroundMusic.volume = backgroundMusicVolume
+      if (lose) lose.volume = soundVolume
+      if (start) start.volume = soundVolume
+      if (win) win.volume = soundVolume
     }
-    if (recources?.audio?.lose) {
-      recources.audio.lose.volume = gameSettings.soundVolume
-    }
-    if (recources?.audio?.start) {
-      recources.audio.start.volume = gameSettings.soundVolume
-    }
-    if (recources?.audio?.win) {
-      recources.audio.win.volume = gameSettings.soundVolume
-    }
-  }, [recources?.audio, gameSettings])
+  }, [resources?.audio, gameSettings])
 
   const runGame = () => {
-    if (recources?.audio?.backgroundMusic) {
-      recources.audio.backgroundMusic.loop = true
-      recources.audio.backgroundMusic.currentTime = 0
-      recources.audio.backgroundMusic.play()
+    const backgroundMusic = resources?.audio?.backgroundMusic
+    if (backgroundMusic) {
+      backgroundMusic.loop = true
+      backgroundMusic.currentTime = 0
+      backgroundMusic.play()
     }
     setGameInfo(undefined)
     setGameStatus(GameScreen.gameScreen)
   }
 
   const finishGame = (stats: GameResult) => {
-    recources?.audio?.backgroundMusic?.pause()
+    resources?.audio?.backgroundMusic?.pause()
     setGameInfo(stats)
     setGameStatus(GameScreen.finalScreen)
   }
 
   const breakGame = () => {
-    recources?.audio?.backgroundMusic?.pause()
+    resources?.audio?.backgroundMusic?.pause()
     setGameInfo(undefined)
     setGameStatus(GameScreen.startScreen)
   }
@@ -81,16 +78,16 @@ export const GamePage = (): JSX.Element => {
         setDifficulty={setDifficulty}
         areasCount={areasCount}
         setAreasCount={setAreasCount}
-        isLoaded={Boolean(recources)}
+        isLoaded={Boolean(resources)}
         runGame={runGame}
       />
     ),
-    gameScreen: recources ? (
+    gameScreen: resources ? (
       <Game
         canvasSize={canvasSize}
         areasCount={areasCount}
         difficulty={difficulty}
-        recources={recources}
+        resources={resources}
         finishGame={finishGame}
         breakGame={breakGame}
       />
@@ -108,7 +105,7 @@ export const GamePage = (): JSX.Element => {
 
   return (
     <div ref={gameWrapper} className="game-wrapper">
-      <RecourcesLoader setRecources={setRecources} />
+      <ResourcesLoader setResources={setResources} />
       <CanvasStarBackground canvasSize={canvasSize} />
       {content[gameStatus]}
     </div>

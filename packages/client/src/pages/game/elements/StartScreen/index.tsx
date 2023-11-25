@@ -8,7 +8,7 @@ import Radio from '@mui/material/Radio'
 import RadioGroup from '@mui/material/RadioGroup'
 import Typography from '@mui/material/Typography'
 import { GameDifficulty } from 'types/GameStats'
-import { APP_CONST } from '../../../../consts'
+import { APP_CONSTS } from '../../../../consts'
 
 type Props = {
   runGame: () => void
@@ -35,7 +35,7 @@ export const StartScreen = (props: Props): JSX.Element => {
         variant="h3"
         sx={{ textAlign: 'center', mb: '50px' }}
         gutterBottom>
-        {APP_CONST.gameName}
+        {APP_CONSTS.gameName}
       </Typography>
     </>
   )

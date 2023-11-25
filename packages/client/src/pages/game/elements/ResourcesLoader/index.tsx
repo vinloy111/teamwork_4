@@ -1,26 +1,18 @@
+import { APP_CONSTS } from 'consts/index'
 import React, { useEffect, useState } from 'react'
-import { GameRecources } from 'types/GameData'
+import { GameResources } from 'types/GameData'
 
 type Props = {
-  setRecources: React.Dispatch<React.SetStateAction<GameRecources | null>>
+  setResources: React.Dispatch<React.SetStateAction<GameResources | null>>
 }
 
-const AREA_IMG_COUNT = 24 // TODO: По хорошему бы найти решение, чтобы это число автоматически генерировалось на основе кол-ва изображений в каталоге
-const AREAS = new Array(AREA_IMG_COUNT).fill({})
-const ARMIES = ['red', 'gray', 'blue']
-const AUDIO = [
-  {
-    name: 'backgroundMusic',
-    src: 'src/assets/music/space-game-theme-loop.wav',
-  },
-  { name: 'start', src: 'src/assets/sounds/start.mp3' },
-  { name: 'win', src: 'src/assets/sounds/win.wav' },
-  { name: 'lose', src: 'src/assets/sounds/fall.wav' },
-]
+const AREAS = APP_CONSTS.gameResourcesConfig.areas
+const ARMIES = APP_CONSTS.gameResourcesConfig.armies
+const AUDIO = APP_CONSTS.gameResourcesConfig.audio
 
-export const RecourcesLoader = React?.memo(
-  ({ setRecources }: Props): JSX.Element => {
-    const [data, setData] = useState<GameRecources>({
+export const ResourcesLoader = React?.memo(
+  ({ setResources }: Props): JSX.Element => {
+    const [data, setData] = useState<GameResources>({
       areas: {},
       armies: {
         red: undefined,
@@ -69,7 +61,7 @@ export const RecourcesLoader = React?.memo(
         Object.values(data.armies).filter(Boolean).length >= ARMIES.length &&
         Object.values(data.audio).filter(Boolean).length >= AUDIO.length
       ) {
-        setRecources(data)
+        setResources(data)
       }
     }, [data])
 

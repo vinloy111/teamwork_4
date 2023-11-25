@@ -35,7 +35,7 @@ export type Army = ElementBase & {
   toId: ID
 }
 
-export type GameRecources = {
+export type GameResources = {
   areas: Record<string, HTMLImageElement>
   armies: Record<ArmyAndAreaColor, HTMLImageElement | undefined>
   audio: Record<GameAudio, HTMLAudioElement | undefined>

@@ -1,10 +1,10 @@
 import Box from '@mui/system/Box'
-import { APP_CONST } from '../../consts'
+import { APP_CONSTS } from '../../consts'
 import { HomeCard } from 'components/home-card'
 
 export const HomePage = () => {
   const projectInfo = [
-    `Приветствуем вас на сайте нашей игры '${APP_CONST.gameName}', которую мы старательно делаем во 2м модуле обучения.`,
+    `Приветствуем вас на сайте нашей игры '${APP_CONSTS.gameName}', которую мы старательно делаем во 2м модуле обучения.`,
     'Помимо самой игры в нашем приложении будет форум, страница с лучшими результатами и профиль пользователя.',
   ]
 
