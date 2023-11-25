@@ -6,8 +6,8 @@ type GameSettings = {
 }
 
 const initialState: GameSettings = {
-  backgroundMusicVolume: 0.3,
-  soundVolume: 0.4,
+  backgroundMusicVolume: 0.2,
+  soundVolume: 0.3,
 }
 
 const gameSettingsSlice = createSlice({

@@ -34,32 +34,29 @@ export const ResourcesLoader = React?.memo(
           setData(d => ({ ...d, audio: { ...d.audio, [i.name]: audio } }))
         }
       })
-    }, [])
 
-    useEffect(() => {
-      AREAS?.forEach((_, index) => {
-        const id = index + 1
+      AREAS?.forEach(i => {
         const img = new Image()
-        img.src = `src/assets/images/planets/planet_${id}.svg`
+        img.src = i.src
         img.onload = () => {
-          setData(d => ({ ...d, areas: { ...d.areas, [id]: img } }))
+          setData(d => ({ ...d, areas: { ...d.areas, [i.name]: img } }))
         }
       })
 
       ARMIES?.forEach(i => {
         const img = new Image()
-        img.src = `src/assets/images/ships/${i}-ufo.svg`
+        img.src = i.src
         img.onload = () => {
-          setData(d => ({ ...d, armies: { ...d.armies, [i]: img } }))
+          setData(d => ({ ...d, armies: { ...d.armies, [i.name]: img } }))
         }
       })
     }, [])
 
     useEffect(() => {
       if (
-        Object.values(data.areas).filter(Boolean).length >= AREAS.length &&
-        Object.values(data.armies).filter(Boolean).length >= ARMIES.length &&
-        Object.values(data.audio).filter(Boolean).length >= AUDIO.length
+        Object.values(data.areas).filter(Boolean).length === AREAS.length &&
+        Object.values(data.armies).filter(Boolean).length === ARMIES.length &&
+        Object.values(data.audio).filter(Boolean).length === AUDIO.length
       ) {
         setResources(data)
       }

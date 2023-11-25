@@ -1,10 +1,23 @@
 export type Position = { x: number; y: number }
 
-export type AreaOwner = 'user' | 'computer' | 'freeLands'
+export enum AreaOwner {
+  user = 'user',
+  computer = 'computer',
+  freeLands = 'freeLands',
+}
 
-export type ArmyAndAreaColor = 'blue' | 'red' | 'gray'
+enum ArmyAndAreaColor {
+  blue = 'blue',
+  red = 'red',
+  gray = 'gray',
+}
 
-export type GameAudio = 'backgroundMusic' | 'start' | 'win' | 'lose'
+enum GameAudio {
+  backgroundMusic = 'backgroundMusic',
+  start = 'start',
+  win = 'win',
+  lose = 'lose',
+}
 
 export type ID = string
 
