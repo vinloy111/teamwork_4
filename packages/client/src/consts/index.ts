@@ -1,3 +1,6 @@
+import { AreaOwner } from 'types/GameData'
+import { GameDifficulty, Player } from 'types/GameStats'
+
 export const APP_CONSTS = {
   gameName: 'Безжалостные космические завоевания',
   gameResourcesConfig: {
@@ -11,6 +14,8 @@ export const APP_CONSTS = {
       { name: 'red', src: 'src/assets/images/ships/red-ufo.svg' },
       { name: 'blue', src: 'src/assets/images/ships/blue-ufo.svg' },
       { name: 'gray', src: 'src/assets/images/ships/gray-ufo.svg' },
+      { name: 'green', src: 'src/assets/images/ships/green-ufo.svg' },
+      { name: 'orange', src: 'src/assets/images/ships/orange-ufo.svg' },
     ],
     audio: [
       {
@@ -22,4 +27,28 @@ export const APP_CONSTS = {
       { name: 'lose', src: 'src/assets/sounds/fall.wav' },
     ],
   },
+  defaultPlayersSettings: [
+    {
+      color: AreaOwner.blue,
+      colorName: 'Синий',
+      player: Player.user,
+      difficulty: undefined,
+    },
+    {
+      color: AreaOwner.red,
+      colorName: 'Красный',
+      player: Player.computer,
+      difficulty: GameDifficulty.easy,
+    },
+    {
+      color: AreaOwner.green,
+      colorName: 'Зеленый',
+      player: Player.none,
+    },
+    {
+      color: AreaOwner.orange,
+      colorName: 'Оранжевый',
+      player: Player.none,
+    },
+  ],
 }

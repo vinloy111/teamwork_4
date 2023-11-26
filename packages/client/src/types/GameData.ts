@@ -1,14 +1,12 @@
+import { Player } from './GameStats'
+
 export type Position = { x: number; y: number }
 
 export enum AreaOwner {
-  user = 'user',
-  computer = 'computer',
-  freeLands = 'freeLands',
-}
-
-enum ArmyAndAreaColor {
   blue = 'blue',
   red = 'red',
+  green = 'green',
+  orange = 'orange',
   gray = 'gray',
 }
 
@@ -25,6 +23,7 @@ export type ElementBase = {
   id: ID
   position: Position
   owner: AreaOwner
+  player: Player
   img?: HTMLImageElement
 }
 
@@ -32,7 +31,6 @@ export type AreaByOwner = {
   color: string
   count: number
   limit: number
-  imgLink: ArmyAndAreaColor
 }
 
 export type Area = ElementBase & AreaByOwner
@@ -50,7 +48,7 @@ export type Army = ElementBase & {
 
 export type GameResources = {
   areas: Record<string, HTMLImageElement>
-  armies: Record<ArmyAndAreaColor, HTMLImageElement | undefined>
+  armies: Record<AreaOwner, HTMLImageElement | undefined>
   audio: Record<GameAudio, HTMLAudioElement | undefined>
 }
 
@@ -60,7 +58,7 @@ export type GameStats = {
   count: number
   armiesPercent: number
   color: string
-  status?: string
+  isWinner?: boolean
 }
 
 export type GameResult = { stats: GameStats[]; seconds: number }

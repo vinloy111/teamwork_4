@@ -130,7 +130,7 @@ export const getGameStats = (
   areas: Area[],
   armies: Army[]
 ): { stats: GameStats[]; isFinish?: boolean } => {
-  const defaultValues = { user: 0, freeLands: 0, computer: 0 }
+  const defaultValues = { blue: 0, red: 0, green: 0, orange: 0, gray: 0 }
   const allElements = [...areas, ...armies]
   const allCount = allElements.reduce((acc, i) => acc + i.count, 0)
   const areasByOwner: Record<AreaOwner, number> = areas.reduce((acc, i) => {
@@ -145,23 +145,20 @@ export const getGameStats = (
 
   const stats = Object.entries(defaultValues).map(([key]) => {
     const owner = key as AreaOwner
-    const isEmpty = owner !== 'freeLands' && countByOwner[owner] <= 1
     return {
       owner,
       areasCount: areasByOwner[owner],
       count: countByOwner[owner],
       color: areasExtendedMap[owner].color,
       armiesPercent: countByOwner[owner] / allCount,
-      status: isEmpty ? 'Поражение' : '',
     }
   })
 
-  const isFinish =
-    stats.filter(i => i.owner !== 'freeLands' && i.count).length <= 1
+  const isFinish = stats.filter(i => i.owner !== 'gray' && i.count).length <= 1
 
   if (isFinish) {
     const statsWithWinner = stats.map(i =>
-      i.owner !== 'freeLands' && i.count ? { ...i, status: 'Победитель' } : i
+      i.owner !== 'gray' && i.count ? { ...i, isWinner: true } : i
     )
     return { stats: statsWithWinner, isFinish: true }
   }
@@ -219,4 +216,8 @@ export const getTime = (seconds?: number): string => {
   const formattedSeconds =
     remainingSeconds < 10 ? `0${remainingSeconds}` : `${remainingSeconds}`
   return `${formattedMinutes}:${formattedSeconds}`
+}
+
+export const getPaintedRow = (str: string, color: string): JSX.Element => {
+  return <span style={{ color }}>{str}</span>
 }

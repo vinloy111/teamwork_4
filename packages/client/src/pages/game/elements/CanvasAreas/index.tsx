@@ -39,7 +39,7 @@ export const CanvasAreas = React?.memo((props: Props): JSX.Element => {
       areas?.forEach(i => drawCircle(ctx, i))
 
       const isMouseDownTarget = areas.find(i => i.id == isMouseDown)
-      const isActualMouseDown = isMouseDownTarget?.owner === 'user'
+      const isActualMouseDown = isMouseDownTarget?.player === 'user'
       if (!isActualMouseDown) setIsMouseDown(undefined)
       if (isMouseDownTarget && isActualMouseDown) {
         if (
@@ -68,7 +68,7 @@ export const CanvasAreas = React?.memo((props: Props): JSX.Element => {
         i
       )
     )
-    if (finded && finded.owner === 'user') setIsMouseDown(finded.id)
+    if (finded && finded.player === 'user') setIsMouseDown(finded.id)
   }
 
   const onMouseUp = (e: MouseEvent<HTMLCanvasElement>): void => {

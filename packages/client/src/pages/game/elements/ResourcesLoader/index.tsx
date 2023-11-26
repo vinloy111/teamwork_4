@@ -17,6 +17,8 @@ export const ResourcesLoader = React?.memo(
       armies: {
         red: undefined,
         blue: undefined,
+        green: undefined,
+        orange: undefined,
         gray: undefined,
       },
       audio: {

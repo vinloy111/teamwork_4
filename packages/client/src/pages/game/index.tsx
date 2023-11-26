@@ -3,19 +3,21 @@ import { CanvasStarBackground } from './elements/CanvasStarBackground'
 import { StartScreen } from './elements/StartScreen'
 import { FinalScreen } from './elements/FinalScreen'
 import { Game } from './elements/Game'
-import { GameDifficulty, GameScreen } from 'types/GameStats'
+import { GameScreen, Player, PlayerSettings } from 'types/GameStats'
 import { GameResources, GameResult } from 'types/GameData'
 import { ResourcesLoader } from './elements/ResourcesLoader'
 import { useSelector } from 'react-redux'
 import { Store } from 'src/store'
+import { APP_CONSTS } from 'consts/index'
 import './style.css'
 
 export const GamePage = (): JSX.Element => {
   const gameWrapper = useRef<HTMLDivElement>(null)
   const { gameSettings } = useSelector((state: Store) => state)
-  const [difficulty, setDifficulty] = useState<GameDifficulty>(
-    GameDifficulty.easy
+  const [playersSettings, setPlayersSettings] = useState<PlayerSettings[]>(
+    APP_CONSTS.defaultPlayersSettings
   )
+  const actualPlayers = playersSettings.filter(i => i.player !== Player.none)
   const [areasCount, setAreasCount] = useState<number>(12)
   const [resources, setResources] = useState<GameResources | null>(null)
   const [gameStatus, setGameStatus] = useState<GameScreen>(
@@ -74,8 +76,8 @@ export const GamePage = (): JSX.Element => {
   const content: Record<GameScreen, JSX.Element> = {
     startScreen: (
       <StartScreen
-        difficulty={difficulty}
-        setDifficulty={setDifficulty}
+        playersSettings={playersSettings}
+        setPlayersSettings={setPlayersSettings}
         areasCount={areasCount}
         setAreasCount={setAreasCount}
         isLoaded={Boolean(resources)}
@@ -86,7 +88,7 @@ export const GamePage = (): JSX.Element => {
       <Game
         canvasSize={canvasSize}
         areasCount={areasCount}
-        difficulty={difficulty}
+        playersSettings={actualPlayers}
         resources={resources}
         finishGame={finishGame}
         breakGame={breakGame}
@@ -96,6 +98,8 @@ export const GamePage = (): JSX.Element => {
     ),
     finalScreen: (
       <FinalScreen
+        playersSettings={actualPlayers}
+        areasCount={areasCount}
         gameInfo={gameInfo}
         showStarScreen={breakGame}
         runGame={runGame}
