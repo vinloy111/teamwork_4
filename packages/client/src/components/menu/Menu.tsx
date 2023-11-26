@@ -21,7 +21,7 @@ const Menu = () => {
   }
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box>
       <AppBar position="static">
         <Toolbar>
           <MenuItem component={Link} to={'/'}>

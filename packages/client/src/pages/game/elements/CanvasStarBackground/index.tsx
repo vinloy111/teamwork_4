@@ -6,7 +6,7 @@ import './style.css'
 const STARS_CONFIG = {
   starsCount: 1000,
   minRadius: 0.5,
-  maxRadius: 1.5,
+  maxRadius: 2,
   colors: [
     'rgba(255, 255, 255, 0.5)',
     'rgba(252, 244, 201, 0.5)',
@@ -17,7 +17,7 @@ const STARS_CONFIG = {
     'rgba(252, 201, 241, 0.5)',
     'rgba(252, 201, 201, 0.5)',
   ],
-  step: 0.05,
+  step: 0.03,
   trangles: 4,
   intervalRadius: 2.5,
 }
@@ -102,7 +102,7 @@ export const CanvasStarBackground = ({ canvasSize }: Props): JSX.Element => {
       stars.map(i => drawStar(ctx, i))
       setStars(s => s.map(changeStar))
     }
-  }, [currentFrame])
+  }, [ctx, currentFrame])
 
   return (
     <div className="canvas-star-background">

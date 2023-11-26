@@ -3,18 +3,23 @@ import { CanvasStarBackground } from './elements/CanvasStarBackground'
 import { StartScreen } from './elements/StartScreen'
 import { FinalScreen } from './elements/FinalScreen'
 import { Game } from './elements/Game'
-import { GameDifficulty, GameScreen } from 'types/GameStats'
-import { GameRecources, GameResult } from 'types/GameData'
+import { GameScreen, Player, PlayerSettings } from 'types/GameStats'
+import { GameResources, GameResult } from 'types/GameData'
+import { ResourcesLoader } from './elements/ResourcesLoader'
+import { useSelector } from 'react-redux'
+import { Store } from 'src/store'
+import { APP_CONSTS } from 'consts/index'
 import './style.css'
-import { RecourcesLoader } from './elements/RecourcesLoader'
 
 export const GamePage = (): JSX.Element => {
   const gameWrapper = useRef<HTMLDivElement>(null)
-  const [difficulty, setDifficulty] = useState<GameDifficulty>(
-    GameDifficulty.easy
+  const { gameSettings } = useSelector((state: Store) => state)
+  const [playersSettings, setPlayersSettings] = useState<PlayerSettings[]>(
+    APP_CONSTS.defaultPlayersSettings
   )
+  const actualPlayers = playersSettings.filter(i => i.player !== Player.none)
   const [areasCount, setAreasCount] = useState<number>(12)
-  const [recources, setRecources] = useState<GameRecources | null>(null)
+  const [resources, setResources] = useState<GameResources | null>(null)
   const [gameStatus, setGameStatus] = useState<GameScreen>(
     GameScreen.startScreen
   )
@@ -33,17 +38,37 @@ export const GamePage = (): JSX.Element => {
     }
   }, [gameWrapper.current?.clientWidth, gameWrapper.current?.clientHeight])
 
+  useEffect(() => {
+    if (resources?.audio) {
+      const { backgroundMusic, lose, start, win } = resources.audio
+      const { backgroundMusicVolume, soundVolume } = gameSettings
+
+      if (backgroundMusic) backgroundMusic.volume = backgroundMusicVolume
+      if (lose) lose.volume = soundVolume
+      if (start) start.volume = soundVolume
+      if (win) win.volume = soundVolume
+    }
+  }, [resources?.audio, gameSettings])
+
   const runGame = () => {
+    const backgroundMusic = resources?.audio?.backgroundMusic
+    if (backgroundMusic) {
+      backgroundMusic.loop = true
+      backgroundMusic.currentTime = 0
+      backgroundMusic.play()
+    }
     setGameInfo(undefined)
     setGameStatus(GameScreen.gameScreen)
   }
 
   const finishGame = (stats: GameResult) => {
+    resources?.audio?.backgroundMusic?.pause()
     setGameInfo(stats)
     setGameStatus(GameScreen.finalScreen)
   }
 
   const breakGame = () => {
+    resources?.audio?.backgroundMusic?.pause()
     setGameInfo(undefined)
     setGameStatus(GameScreen.startScreen)
   }
@@ -51,20 +76,20 @@ export const GamePage = (): JSX.Element => {
   const content: Record<GameScreen, JSX.Element> = {
     startScreen: (
       <StartScreen
-        difficulty={difficulty}
-        setDifficulty={setDifficulty}
+        playersSettings={playersSettings}
+        setPlayersSettings={setPlayersSettings}
         areasCount={areasCount}
         setAreasCount={setAreasCount}
-        isLoaded={Boolean(recources)}
+        isLoaded={Boolean(resources)}
         runGame={runGame}
       />
     ),
-    gameScreen: recources ? (
+    gameScreen: resources ? (
       <Game
         canvasSize={canvasSize}
         areasCount={areasCount}
-        difficulty={difficulty}
-        recources={recources}
+        playersSettings={actualPlayers}
+        resources={resources}
         finishGame={finishGame}
         breakGame={breakGame}
       />
@@ -73,6 +98,8 @@ export const GamePage = (): JSX.Element => {
     ),
     finalScreen: (
       <FinalScreen
+        playersSettings={actualPlayers}
+        areasCount={areasCount}
         gameInfo={gameInfo}
         showStarScreen={breakGame}
         runGame={runGame}
@@ -82,7 +109,7 @@ export const GamePage = (): JSX.Element => {
 
   return (
     <div ref={gameWrapper} className="game-wrapper">
-      <RecourcesLoader setRecources={setRecources} />
+      <ResourcesLoader setResources={setResources} />
       <CanvasStarBackground canvasSize={canvasSize} />
       {content[gameStatus]}
     </div>

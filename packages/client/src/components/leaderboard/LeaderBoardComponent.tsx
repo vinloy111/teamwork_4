@@ -30,7 +30,7 @@ export const LeaderBoardComponent = () => {
       sx={{ backgroundImage: Fon1 }}>
       <StyledHeader text="Таблица Лидеров" />
       {usersBoard && usersBoard.length > 0 && (
-        <Box sx={{ height: '50%', width: '50%' }}>
+        <Box sx={{ width: '50%' }}>
           <DataGrid
             rows={usersBoard}
             columns={columns}

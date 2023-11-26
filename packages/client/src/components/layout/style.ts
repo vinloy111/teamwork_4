@@ -6,4 +6,7 @@ export const GridStyled = styled(Grid)<GridProps>(({ theme }) => ({
   width: '100%',
   color: theme.palette.text.primary,
   position: 'relative',
+  display: 'flex',
+  flexDirection: 'column',
+  overflow: 'hidden',
 }))

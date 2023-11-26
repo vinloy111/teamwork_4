@@ -5,7 +5,7 @@ import { CanvasArmies } from '../CanvasArmies'
 import {
   Area,
   Army,
-  GameRecources,
+  GameResources,
   GameResult,
   GameStats,
 } from 'types/GameData'
@@ -13,7 +13,7 @@ import { distanceBetweenPoints, intermediatePoint } from '../../utils/others'
 import { areasExtendedMap, GAME_CONSTS } from '../../utils/gameConfig'
 import { CanvasPowerBar } from '../CanvasPowerBar'
 import { CPULogic } from '../CPULogic'
-import { CanvasSize } from 'types/GameStats'
+import { CanvasSize, PlayerSettings } from 'types/GameStats'
 import { GameMenu } from '../GameMenu'
 import { generateAreas } from '../../utils/generateAreas'
 
@@ -21,9 +21,9 @@ type Props = {
   finishGame: (stats: GameResult) => void
   breakGame: () => void
   canvasSize: CanvasSize
-  recources: GameRecources
+  resources: GameResources
   areasCount: number
-  difficulty: React.ComponentProps<typeof CPULogic>['difficulty']
+  playersSettings: PlayerSettings[]
 }
 
 export const Game = (props: Props): JSX.Element => {
@@ -31,11 +31,10 @@ export const Game = (props: Props): JSX.Element => {
     finishGame,
     breakGame,
     canvasSize,
-    recources,
+    resources,
     areasCount,
-    difficulty,
+    playersSettings,
   } = props
-  const [run, setRun] = useState<boolean>(false)
   const [areas, setAreas] = useState<Area[]>([])
   const [armies, setArmies] = useState<Army[]>([])
   const [pauseState, setPauseState] = useState<boolean>(false)
@@ -61,31 +60,34 @@ export const Game = (props: Props): JSX.Element => {
     requestAnimationFrame(animate)
   }
 
-  // TODO: Убрать если придём к тому, чтобы отключить React.StrictMode
-  // Хак, чтобы из-за React.StrictMode анимация не запускалась 2 раза
-  useEffect(() => setRun(true), [])
-
   useEffect(() => {
-    if (run) {
-      const areasDefault = generateAreas(
-        canvasSize,
-        areasCount,
-        recources.areas
-      )
-      setAreas(areasDefault)
+    const areasDefault = generateAreas(
+      canvasSize,
+      areasCount,
+      resources.areas,
+      playersSettings
+    )
+    setAreas(areasDefault)
 
-      animate(0)
-    }
-  }, [run])
+    animate(0)
+  }, [])
 
   useEffect(() => {
     // Увеличение численности в локациях
     setAreas(a =>
-      a.map(i => ({
-        ...i,
-        count:
-          i.owner !== 'freeLands' && i.count < i.limit ? i.count + 1 : i.count,
-      }))
+      a.map(i =>
+        i.owner === 'gray'
+          ? i
+          : {
+              ...i,
+              count:
+                i.count === i.limit
+                  ? i.count
+                  : i.count < i.limit
+                  ? i.count + 1
+                  : i.count - 1,
+            }
+      )
     )
   }, [currentSecond])
 
@@ -111,18 +113,28 @@ export const Game = (props: Props): JSX.Element => {
       const defender = areas.find(i => i.id == army.toId)
 
       if (defender && army?.owner !== defender?.owner) {
+        const isCapture = army.count > defender.count
+        const isUserWin =
+          (army.player === 'user' && isCapture) ||
+          (defender.player === 'user' && !isCapture)
+        const newOwner = isCapture ? army.owner : defender.owner
+        const newPlayer = isCapture ? army.player : defender.player
+        const newCount = isCapture
+          ? army.count - defender.count
+          : defender.count - army.count
+        if (army.player === 'user' || defender.player === 'user') {
+          isUserWin
+            ? resources?.audio?.win?.play()
+            : resources?.audio?.lose?.play()
+        }
         setAreas(a => {
           const otherAreas = a.filter(i => i.id !== defender.id)
-          const isCapture = army.count > defender.count
-          const newOwner = isCapture ? army.owner : defender.owner
-          const newCount = isCapture
-            ? army.count - defender.count
-            : defender.count - army.count
           return [
             ...otherAreas,
             {
               ...defender,
               owner: newOwner,
+              player: newPlayer,
               count: newCount,
               color: areasExtendedMap[newOwner].color,
               limit: areasExtendedMap[newOwner].limit,
@@ -130,6 +142,9 @@ export const Game = (props: Props): JSX.Element => {
           ]
         })
       } else if (army && defender) {
+        if (army.player === 'user') {
+          resources?.audio?.win?.play()
+        }
         setAreas(a => {
           const otherAreas = a.filter(i => i.id !== defender.id)
           return [
@@ -150,6 +165,9 @@ export const Game = (props: Props): JSX.Element => {
   }
 
   const onSendArmy = (attacker: Area, defender: Area): void => {
+    if (attacker.player === 'user') {
+      resources?.audio?.start?.play()
+    }
     setAreas(a => {
       const otherAreas = a.filter(i => i.id !== attacker.id)
       return [...otherAreas, { ...attacker, count: 0 }]
@@ -166,8 +184,9 @@ export const Game = (props: Props): JSX.Element => {
         {
           id: uuidv4(),
           owner: attacker.owner,
+          player: attacker.player,
           color: attacker.color,
-          img: recources.armies[areasExtendedMap[attacker.owner].imgLink],
+          img: resources.armies[attacker.owner],
           count: attacker.count,
           stepLength,
           stepCount,
@@ -186,8 +205,29 @@ export const Game = (props: Props): JSX.Element => {
   }
 
   const setPause = () => {
+    pause.current
+      ? resources?.audio?.backgroundMusic?.play()
+      : resources?.audio?.backgroundMusic?.pause()
     pause.current = !pause.current
     setPauseState(v => !v)
+  }
+
+  const computerLogic = () => {
+    return playersSettings
+      .filter(i => i.player === 'computer')
+      .map(i => {
+        return i.difficulty ? (
+          <CPULogic
+            owner={i.color}
+            difficulty={i.difficulty}
+            areas={areas}
+            onSendArmy={onSendArmy}
+            seconds={currentSecond}
+          />
+        ) : (
+          <></>
+        )
+      })
   }
 
   return currentFrame ? (
@@ -198,7 +238,6 @@ export const Game = (props: Props): JSX.Element => {
         finishGame={sendGameResult}
         canvasSize={canvasSize}
       />
-      {/* TODO: onSendArmy каждый раз отправляется повторно, надо бы это исправить */}
       <CanvasAreas
         areas={areas}
         onSendArmy={onSendArmy}
@@ -211,13 +250,7 @@ export const Game = (props: Props): JSX.Element => {
         setPause={setPause}
         breakGame={breakGame}
       />
-      <CPULogic
-        owner="computer"
-        difficulty={difficulty}
-        areas={areas}
-        onSendArmy={onSendArmy}
-        seconds={currentSecond}
-      />
+      {computerLogic()}
     </>
   ) : (
     <></>

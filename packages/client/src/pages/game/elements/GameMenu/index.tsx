@@ -1,8 +1,14 @@
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
+import {
+  changeBackgroundMusicVolume,
+  changeSoundVolume,
+} from 'features/gameSettingsSlice'
 import { getTime } from '../../utils/others'
+import { Store } from 'src/store'
 
 type Props = {
   seconds: number
@@ -13,6 +19,11 @@ type Props = {
 
 export const GameMenu = React?.memo((props: Props): JSX.Element => {
   const { seconds, isPause, breakGame, setPause } = props
+  const dispatch = useDispatch()
+  const { backgroundMusicVolume, soundVolume } = useSelector(
+    (state: Store) => state.gameSettings
+  )
+  const hasVolume = backgroundMusicVolume && soundVolume
 
   const pauseWrapper = (
     <Box
@@ -37,6 +48,18 @@ export const GameMenu = React?.memo((props: Props): JSX.Element => {
     </Box>
   )
 
+  const changeVolume = () => {
+    dispatch(changeBackgroundMusicVolume(!hasVolume))
+    dispatch(changeSoundVolume(!hasVolume))
+  }
+
+  const btnStyle = {
+    ml: '10px',
+    lineHeight: 'unset',
+    padding: 0,
+    minWidth: '40px',
+  }
+
   const gameMenu = (
     <Box
       sx={{
@@ -45,17 +68,20 @@ export const GameMenu = React?.memo((props: Props): JSX.Element => {
         right: '20px',
         flex: 1,
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: 'row',
         justifyContent: 'center',
       }}>
-      <Box sx={{ fontSize: '30px', lineHeight: '30px', mb: '10px' }}>
+      <Box sx={{ fontSize: '30px', lineHeight: '30px' }}>
         {getTime(seconds)}
       </Box>
-      <Button sx={{ mb: '10px' }} variant="contained" onClick={breakGame}>
-        X
+      <Button sx={btnStyle} variant="contained" onClick={changeVolume}>
+        {hasVolume ? '🔇' : '🔊'}
       </Button>
-      <Button variant="contained" onClick={setPause}>
-        Пауза
+      <Button sx={btnStyle} variant="contained" onClick={setPause}>
+        {isPause ? '▶' : '||'}
+      </Button>
+      <Button sx={btnStyle} variant="contained" onClick={breakGame}>
+        X
       </Button>
     </Box>
   )
