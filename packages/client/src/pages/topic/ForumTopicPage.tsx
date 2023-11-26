@@ -1,12 +1,13 @@
 import { Stack, Typography } from '@mui/material'
 import { theme } from '../../theme'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import { Topic } from 'types/Forum'
 import { mockAllTopics } from '../../mocks/forum'
 import { LoaderComponent } from '../../components/loader/LoaderComponent'
 import Button from '@mui/material/Button'
 import { TopicMessagesComponent } from '../../components/topic-messages/TopicMessagesComponent'
+import { useNavigate } from 'react-router-dom'
 
 const getTopicById = (topicId: string): Topic | null => {
   return mockAllTopics.find(topic => topic.id === topicId) || null
@@ -15,6 +16,7 @@ export const ForumTopicPage = () => {
   const { topicId } = useParams()
   const [topic, setTopic] = useState<Topic | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const navigate = useNavigate()
   useEffect(() => {
     if (topicId) {
       setIsLoading(true)
@@ -39,7 +41,6 @@ export const ForumTopicPage = () => {
           <Typography variant={'h4'} marginTop={'10%'}>
             Тема не найдена
           </Typography>
-          <Button href={'/forum'}>Вернуться к списку топиков</Button>
         </>
       )}
       <Typography
@@ -55,6 +56,14 @@ export const ForumTopicPage = () => {
         {topic?.caption || ''}
       </Typography>
       {topic && <TopicMessagesComponent topic={topic} />}
+      <Button
+        type="button"
+        variant="outlined"
+        className="submit"
+        onClick={() => navigate(`/forum`)}
+        sx={{ m: 2 }}>
+        Вернуться к списку топиков
+      </Button>
     </Stack>
   )
 }

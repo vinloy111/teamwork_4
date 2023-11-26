@@ -17,6 +17,7 @@ import { ForumTopicPage } from '../../pages/topic/ForumTopicPage'
 import { useSelector } from 'react-redux'
 import { Store } from '../../store'
 import React from 'react'
+import { ForumAddTopicPage } from 'pages/add-topic/ForumAddTopicPage'
 
 function ProfilePage() {
   return <h1>Profile Page</h1>
@@ -43,8 +44,15 @@ export const AppRouter = () => {
         <Route path="/profile" element={protectedRoute(ProfilePage)} />
         <Route path="/game" element={protectedRoute(GamePage)} />
         <Route path="/leaderboard" element={protectedRoute(LeaderBoardPage)} />
-        <Route path="/forum" element={<ForumPage />} />
-        <Route path="/forum/:topicId" element={<ForumTopicPage />} />
+        <Route path="/forum" element={protectedRoute(ForumPage)} />
+        <Route
+          path="/forum/:topicId"
+          element={protectedRoute(ForumTopicPage)}
+        />
+        <Route
+          path="/forum/add-topic"
+          element={protectedRoute(ForumAddTopicPage)}
+        />
       </Route>
     )
   )
