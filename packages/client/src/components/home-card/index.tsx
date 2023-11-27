@@ -20,8 +20,8 @@ export const HomeCard = ({ title, items }: Props) => {
     </Typography>
   )
 
-  const renderItem = (text: string) => {
-    return <div>{text}</div>
+  const renderItem = (text: string, index: number) => {
+    return <div key={index}>{text}</div>
   }
 
   return (

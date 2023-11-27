@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { VitePWA } from 'vite-plugin-pwa'
 import dotenv from 'dotenv'
 import path from 'path'
 dotenv.config()
@@ -27,5 +28,29 @@ export default defineConfig({
       utils: path.resolve(__dirname, './src/utils'),
     },
   },
-  plugins: [react()],
+  plugins: [
+    react(),
+    VitePWA({
+      mode: 'development',
+      base: '/',
+      registerType: 'autoUpdate',
+      srcDir: 'src',
+      includeAssets: [
+        'assets/images/*.png',
+        'assets/images/planets/*.svg',
+        'assets/images/ships/*.svg',
+      ],
+      filename: 'sw.ts',
+      strategies: 'injectManifest',
+      manifest: {
+        name: 'PWA Inject Manifest',
+        short_name: 'PWA Inject',
+      },
+      devOptions: {
+        enabled: true,
+        type: 'module',
+        navigateFallback: 'index.html',
+      },
+    }),
+  ],
 })
