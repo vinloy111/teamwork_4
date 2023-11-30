@@ -1,6 +1,6 @@
-export interface RegistrationData {
+export interface RegistrationFormData {
   firstName: string
-  lastName: string
+  secondName: string
   login: string
   email: string
   password: string

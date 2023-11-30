@@ -1,12 +1,12 @@
 import axios from 'axios'
 import { UserFromApi } from 'types/UserFromApi'
-import { RegistrationData } from 'types/RegistrationData'
 import { LoginData } from 'types/LoginData'
+import { RegistrationDto } from 'types/RegistrationDto'
 
 const API_BASE_URL = 'https://ya-praktikum.tech/api/v2'
 
 const yApiService = {
-  register(userData: RegistrationData) {
+  register(userData: RegistrationDto) {
     return axios.post<{ id: string }>(`${API_BASE_URL}/auth/signup`, userData, {
       withCredentials: true,
     })
