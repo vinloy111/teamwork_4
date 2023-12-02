@@ -1,17 +1,29 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Container, Typography, Paper } from '@mui/material'
+import { useDispatch, useSelector } from 'react-redux'
+import { Store } from '../../store'
+import yApiService from 'services/y-api-service'
+import { setUser } from 'features/userSlice'
+import { adaptUserData } from 'utils/adaptUserData'
+import { useParams } from 'react-router'
 
 function UserProfilePage() {
-  const userData = {
-    id: 1349035,
-    first_name: 'АФЫВА',
-    second_name: 'В',
-    display_name: null,
-    login: 'Msasewaw1',
-    avatar: null,
-    email: 'as2312d@mail.ru',
-    phone: '312312312312',
-  }
+  const { userId } = useParams()
+  const dispatch = useDispatch()
+  const userData = useSelector((state: Store) => state.user.user)
+
+  useEffect(() => {
+    if (userId) {
+      yApiService
+        .getUserById(userId)
+        .then(response => {
+          dispatch(setUser(adaptUserData(response.data)))
+        })
+        .catch(error => {
+          console.error('Ошибка при получении данных пользователя:', error)
+        })
+    }
+  }, [dispatch])
 
   return (
     <Container component="main" maxWidth="sm">
@@ -20,30 +32,21 @@ function UserProfilePage() {
           Профиль пользователя
         </Typography>
         <div style={{ margin: '20px 0' }}>
-          <Typography variant="subtitle1">Аватар:</Typography>
-          {userData.avatar ? (
+          {userData?.avatar ? (
             <img
               src={userData.avatar}
-              alt="Аватар"
+              alt={'Аватар ' + userData?.firstName}
               style={{ maxWidth: '100px', maxHeight: '100px' }}
             />
           ) : (
             <Typography variant="subtitle2">Аватар отсутствует</Typography>
           )}
         </div>
-        <Typography variant="subtitle1">ID: {userData.id}</Typography>
-        <Typography variant="subtitle1">Имя: {userData.first_name}</Typography>
+        <Typography variant="subtitle1">ID: {userData?.id}</Typography>
+        <Typography variant="subtitle1">Имя: {userData?.firstName}</Typography>
         <Typography variant="subtitle1">
-          Фамилия: {userData.second_name}
+          Отображаемое имя: {userData?.displayName}
         </Typography>
-        <Typography variant="subtitle1">
-          Отображаемое имя: {userData.display_name}
-        </Typography>
-        <Typography variant="subtitle1">Логин: {userData.login}</Typography>
-        <Typography variant="subtitle1">
-          Электронная почта: {userData.email}
-        </Typography>
-        <Typography variant="subtitle1">Телефон: {userData.phone}</Typography>
       </Paper>
     </Container>
   )
