@@ -5,8 +5,8 @@ export const adaptUserData = (userDataFromApi: UserFromApi): User => {
   return {
     id: userDataFromApi.id?.toString(),
     firstName: userDataFromApi.first_name,
-    lastName: userDataFromApi.second_name,
-    nickName: userDataFromApi.display_name,
+    secondName: userDataFromApi.second_name,
+    displayName: userDataFromApi.display_name,
     login: userDataFromApi.login,
     phone: userDataFromApi.phone,
     email: userDataFromApi.email,

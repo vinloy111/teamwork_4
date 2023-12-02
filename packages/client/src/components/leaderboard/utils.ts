@@ -1,5 +1,5 @@
 import { Player } from 'types/LidearBoard'
-import { mockAllUsers } from '../../mocks/users'
+import { mockAllUsers } from 'mocks/users'
 import { User } from 'types/User'
 
 export const fillUserData = (leaderBoard: Player[]): Player[] | [] => {
@@ -24,7 +24,7 @@ export const fillUserData = (leaderBoard: Player[]): Player[] | [] => {
 export const getUserName = (user: User | null) => {
   if (!user) return `Unknown`
   return (
-    user.nickName ??
-    (user.firstName ? `${user.firstName} ${user.lastName || ''}` : `Unknown`)
+    user.displayName ??
+    (user.firstName ? `${user.firstName} ${user.secondName || ''}` : `Unknown`)
   )
 }

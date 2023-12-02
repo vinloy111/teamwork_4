@@ -4,7 +4,7 @@ import React from 'react'
 import Button from '@mui/material/Button'
 import yApiService from '../../services/y-api-service'
 import { useDispatch } from 'react-redux'
-import { clearUser } from '../../features/authSlice'
+import { clearUser } from 'features/authSlice'
 
 const Menu = () => {
   const dispatch = useDispatch()
@@ -42,6 +42,11 @@ const Menu = () => {
           <MenuItem component={Link} to={'/leaderboard'}>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               Leaderboard
+            </Typography>
+          </MenuItem>
+          <MenuItem component={Link} to={'/settings'}>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              Settings
             </Typography>
           </MenuItem>
           <Button color="inherit" onClick={handleLogout}>

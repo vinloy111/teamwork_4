@@ -5,7 +5,7 @@ export const mockUser1: User = {
   firstName: 'Vania',
   id: '1',
   login: 'vv',
-  nickName: 'Vangen',
+  displayName: 'Vangen',
 }
 
 export const mockUser2: User = {
@@ -13,21 +13,21 @@ export const mockUser2: User = {
   firstName: 'Lena',
   id: '2',
   login: 'll',
-  nickName: 'Lendrin',
+  displayName: 'Lendrin',
 }
 export const mockUser3: User = {
   avatar: 'ufo1.png',
   firstName: 'Vania',
   id: '3',
   login: 'rr',
-  nickName: 'Vangen',
+  displayName: 'Vangen',
 }
 export const mockUser4: User = {
   avatar: 'ufo2.png',
   firstName: 'Gena',
   id: '4',
   login: 'dd',
-  nickName: 'Gennna',
+  displayName: 'Gennna',
 }
 export const mockUser5: User = {
   avatar: 'ufo3.png',
