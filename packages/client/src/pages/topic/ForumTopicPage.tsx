@@ -3,10 +3,10 @@ import { theme } from '../../theme'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import { Topic } from 'types/Forum'
-import { mockAllTopics } from '../../mocks/forum'
-import { LoaderComponent } from '../../components/loader/LoaderComponent'
+import { mockAllTopics } from 'mocks/forum'
+import { LoaderComponent } from 'components/loader/LoaderComponent'
 import Button from '@mui/material/Button'
-import { TopicMessagesComponent } from '../../components/topic-messages/TopicMessagesComponent'
+import { TopicMessagesComponent } from 'components/topic-messages/TopicMessagesComponent'
 import { useNavigate } from 'react-router-dom'
 
 const getTopicById = (topicId: string): Topic | null => {

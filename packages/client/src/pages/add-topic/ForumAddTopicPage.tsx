@@ -1,18 +1,14 @@
 import { Box, Stack, Typography } from '@mui/material'
 import { theme } from '../../theme'
-import React, { ChangeEvent, useEffect, useState } from 'react'
-import { useParams } from 'react-router'
+import React, { ChangeEvent, useState } from 'react'
 import { Topic } from 'types/Forum'
-import { mockAllTopics } from '../../mocks/forum'
-import { LoaderComponent } from '../../components/loader/LoaderComponent'
+import { mockAllTopics } from 'mocks/forum'
 import Button from '@mui/material/Button'
-import { TopicMessagesComponent } from '../../components/topic-messages/TopicMessagesComponent'
 import TextField from '@mui/material/TextField'
-import yApiService from 'services/y-api-service'
 import { useNavigate } from 'react-router-dom'
 
 const HELPER_TEXT_MIN = 'Минимум 5 символов!'
-const HELPER_TEXT_MAX = 'Maximum 100 символов!'
+const HELPER_TEXT_MAX = 'Максимум 100 символов!'
 
 const getTopicById = (topicId: string): Topic | null => {
   return mockAllTopics.find(topic => topic.id === topicId) || null
