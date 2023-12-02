@@ -13,6 +13,7 @@ function StyledHeader({ text }: { text: string }) {
         p: theme.spacing(2),
         m: theme.spacing(2),
         borderRadius: 5,
+        textAlign: 'center',
       }}>
       {text}
     </Typography>
