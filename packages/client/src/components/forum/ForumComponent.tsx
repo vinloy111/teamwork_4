@@ -1,5 +1,5 @@
 import { CardMedia, Stack, Typography } from '@mui/material'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { DataGrid } from '@mui/x-data-grid'
 import ImageForBackground1 from '../../assets/images/fon1.png'
 import ImageForBackground2 from '../../assets/images/fon2.png'
@@ -9,6 +9,7 @@ import { mockForum } from '../../mocks/forum'
 import { getColumns } from './settingForum'
 import { CardStyled } from '../leaderboard/style'
 import { useNavigate } from 'react-router-dom'
+import Button from '@mui/material/Button'
 
 export const ForumComponent = () => {
   const [forum, setForum] = useState<Forum | null>(null)
@@ -19,6 +20,7 @@ export const ForumComponent = () => {
   useEffect(() => {
     getForum()
   }, [])
+
   return (
     <Stack
       alignItems="center"
@@ -55,6 +57,14 @@ export const ForumComponent = () => {
           sx={{ zIndex: 10 }}
         />
       )}
+      <Button
+        type="button"
+        variant="outlined"
+        className="submit"
+        onClick={() => navigate(`/forum/add-topic`)}
+        sx={{ m: 2 }}>
+        создать тему
+      </Button>
       <CardStyled
         sx={{
           right: 0,

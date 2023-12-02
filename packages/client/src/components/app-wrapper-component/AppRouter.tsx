@@ -21,6 +21,7 @@ import SettingsPage from 'pages/settings/SettingsPage'
 import ChangePasswordPage from 'pages/change-password/ChangePasswordPage'
 import UserProfilePage from 'pages/user-profile/UserProfilePage'
 import ChangeAvatarPage from 'pages/change-avatar/ChangeAvatarPage'
+import { ForumAddTopicPage } from 'pages/add-topic/ForumAddTopicPage'
 
 export const AppRouter = () => {
   const user = useSelector((state: Store) => {
@@ -46,8 +47,15 @@ export const AppRouter = () => {
         />
         <Route path="/game" element={protectedRoute(GamePage)} />
         <Route path="/leaderboard" element={protectedRoute(LeaderBoardPage)} />
-        <Route path="/forum" element={<ForumPage />} />
-        <Route path="/forum/:topicId" element={<ForumTopicPage />} />
+        <Route path="/forum" element={protectedRoute(ForumPage)} />
+        <Route
+          path="/forum/:topicId"
+          element={protectedRoute(ForumTopicPage)}
+        />
+        <Route
+          path="/forum/add-topic"
+          element={protectedRoute(ForumAddTopicPage)}
+        />
         <Route path="/settings" element={protectedRoute(SettingsPage)} />
         <Route
           path="/change-password"
