@@ -2,6 +2,7 @@ import axios from 'axios'
 import { UserFromApi } from 'types/UserFromApi'
 import { LoginData } from 'types/LoginData'
 import { RegistrationDto } from 'types/RegistrationDto'
+import { UserSettingsUpdateDto } from 'types/UserSettingsUpdateDto'
 
 export const Y_API_BASE_URL = 'https://ya-praktikum.tech/api/v2'
 
@@ -36,6 +37,12 @@ const yApiService = {
 
   getUserById(id: string) {
     return axios.get<UserFromApi>(`${Y_API_BASE_URL}/user/${id}`, {
+      withCredentials: true,
+    })
+  },
+
+  updateUserProfile(userData: UserSettingsUpdateDto) {
+    return axios.put<UserFromApi>(`${Y_API_BASE_URL}/user/profile`, userData, {
       withCredentials: true,
     })
   },
