@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import axios from 'axios'
 import { createTheme, ThemeProvider, useMediaQuery } from '@mui/material'
 import { themeOptions } from '../../theme'
 import { RouterProvider } from 'react-router'
