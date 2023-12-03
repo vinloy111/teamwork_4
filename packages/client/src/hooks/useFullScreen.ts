@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react'
 
+/**
+ * Хук для использования web api full screen
+ */
 const useFullScreen = (): {
   isFullscreen: boolean
   handleFullScreen: () => void
