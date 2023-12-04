@@ -62,10 +62,10 @@ export const GamePage = (): JSX.Element => {
   }, [resources?.audio, gameSettings])
 
   useEffect(() => {
-    if (gameStatus === GameScreen.gameScreen)
-      resources?.audio?.backgroundMusic?.play()
-    return () => resources?.audio?.backgroundMusic?.pause()
-  }, [])
+    if (resources?.audio?.backgroundMusic) {
+      return () => resources?.audio?.backgroundMusic?.pause()
+    }
+  }, [resources?.audio?.backgroundMusic])
 
   const runGame = () => {
     const backgroundMusic = resources?.audio?.backgroundMusic
