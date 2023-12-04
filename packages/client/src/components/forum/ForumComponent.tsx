@@ -1,13 +1,10 @@
-import { CardMedia, Stack, Typography } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { DataGrid } from '@mui/x-data-grid'
-import ImageForBackground1 from '../../assets/images/fon1.png'
-import ImageForBackground2 from '../../assets/images/fon2.png'
+import { Stack, Typography } from '@mui/material'
 import { theme } from '../../theme'
 import { Forum } from 'types/Forum'
 import { mockForum } from '../../mocks/forum'
 import { getColumns } from './settingForum'
-import { CardStyled } from '../leaderboard/style'
 import { useNavigate } from 'react-router-dom'
 import Button from '@mui/material/Button'
 
@@ -63,27 +60,8 @@ export const ForumComponent = () => {
         className="submit"
         onClick={() => navigate(`/forum/add-topic`)}
         sx={{ m: 2 }}>
-        создать тему
+        Создать тему
       </Button>
-      <CardStyled
-        sx={{
-          right: 0,
-          bottom: 0,
-          width: 500,
-          height: 342,
-        }}>
-        <CardMedia component="img" alt="fon1" image={ImageForBackground1} />
-      </CardStyled>
-      <CardStyled
-        sx={{
-          left: 0,
-          top: 64,
-          width: 500,
-          height: 397,
-          opacity: '60%',
-        }}>
-        <CardMedia component="img" alt="fon2" image={ImageForBackground2} />
-      </CardStyled>
     </Stack>
   )
 }
