@@ -1,11 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { createTheme, ThemeProvider, useMediaQuery } from '@mui/material'
+import useNotifications from 'hooks/useNotifications'
+import useAuthCheck from 'hooks/useAuthCheck'
+import { APP_CONSTS } from 'consts/index'
 import { themeOptions } from '../../theme'
 import { RouterProvider } from 'react-router'
 import { AppRouter } from './AppRouter'
 import './App.css'
-import useAuthCheck from '../../hooks/useAuthCheck'
-import useNotifications from 'hooks/useNotifications'
 
 function App() {
   const router = AppRouter()
@@ -27,12 +28,17 @@ function App() {
   )
 
   useEffect(() => {
+    document.title = APP_CONSTS.gameName
+  }, [])
+
+  useEffect(() => {
     sendNotification({
       text: 'Давай захватим вселенную!',
       title: 'Привет из игры!',
       iconUrl: '/avatars/ufo1.png',
     })
   }, [permitted])
+
   return (
     <ThemeProvider theme={theme}>
       {isAuthChecked ? (

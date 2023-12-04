@@ -7,14 +7,21 @@ import {
   Typography,
 } from '@mui/material'
 import { Link, useNavigate } from 'react-router-dom'
-import React from 'react'
-import Button from '@mui/material/Button'
 import yApiService from '../../services/y-api-service'
 import { useDispatch } from 'react-redux'
 import { clearUser } from 'features/authSlice'
 import FullscreenIcon from '@mui/icons-material/Fullscreen'
 import FullscreenExitIcon from '@mui/icons-material/FullscreenExit'
+import LogoutIcon from '@mui/icons-material/Logout'
 import useFullScreen from 'hooks/useFullScreen'
+
+const menu = [
+  { id: 1, title: 'Главная', link: '' },
+  { id: 2, title: 'Игра', link: 'game' },
+  { id: 3, title: 'Форум', link: 'forum' },
+  { id: 4, title: 'Таблица лидеров', link: 'leaderboard' },
+  { id: 5, title: 'Настройки', link: 'settings' },
+]
 
 const Menu = () => {
   const dispatch = useDispatch()
@@ -31,44 +38,38 @@ const Menu = () => {
     }
   }
 
+  const renderMenuLink = ({
+    id,
+    title,
+    link,
+  }: {
+    id: number
+    title: string
+    link: string
+  }) => {
+    return (
+      <MenuItem key={id} component={Link} to={`/${link}`}>
+        <Typography variant="h6" component="div">
+          {title}
+        </Typography>
+      </MenuItem>
+    )
+  }
+
   return (
     <Box>
-      <AppBar position="static">
+      <AppBar position="sticky">
         <Toolbar sx={{ flexGrow: 1, direction: 'row' }}>
-          <MenuItem component={Link} to={'/'}>
-            <Typography variant="h6" component="div">
-              Home
-            </Typography>
-          </MenuItem>
-          <MenuItem component={Link} to={'/game'}>
-            <Typography variant="h6" component="div">
-              Game
-            </Typography>
-          </MenuItem>
-          <MenuItem component={Link} to={'/forum'}>
-            <Typography variant="h6" component="div">
-              Forum
-            </Typography>
-          </MenuItem>
-          <MenuItem component={Link} to={'/leaderboard'}>
-            <Typography variant="h6" component="div">
-              Leaderboard
-            </Typography>
-          </MenuItem>
-          <MenuItem component={Link} to={'/settings'}>
-            <Typography variant="h6" component="div">
-              Settings
-            </Typography>
-          </MenuItem>
-          <Button color="inherit" onClick={handleLogout}>
-            Logout
-          </Button>
+          {menu.map(renderMenuLink)}
           <Box sx={{ flexGrow: 1 }}></Box>
           <IconButton
             onClick={handleFullScreen}
             aria-label="delete"
             size="large">
             {isFullscreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
+          </IconButton>
+          <IconButton onClick={handleLogout} aria-label="delete" size="large">
+            <LogoutIcon />
           </IconButton>
         </Toolbar>
       </AppBar>

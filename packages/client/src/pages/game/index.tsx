@@ -29,14 +29,24 @@ export const GamePage = (): JSX.Element => {
   }>({ width: 0, height: 0 })
   const [gameInfo, setGameInfo] = useState<GameResult | undefined>(undefined)
 
+  // TODO: Доработать чтобы изменения размера экрана в процессе игры, могли корректно перерисовывать
+  // игровую область пропорционально разнице начальных размеров и новых размеров
   useEffect(() => {
-    if (gameWrapper.current?.clientWidth && gameWrapper.current?.clientHeight) {
-      setCanvasSize({
-        width: gameWrapper.current?.clientWidth,
-        height: gameWrapper.current?.clientHeight,
-      })
+    const handleResize = () => {
+      const width = gameWrapper.current?.clientWidth
+      const height = gameWrapper.current?.clientHeight
+      if (width && height) {
+        setCanvasSize({
+          width,
+          height,
+        })
+      }
     }
-  }, [gameWrapper.current?.clientWidth, gameWrapper.current?.clientHeight])
+    handleResize()
+    window.addEventListener('resize', handleResize)
+
+    return () => window.removeEventListener('resize', handleResize)
+  }, [gameWrapper])
 
   useEffect(() => {
     if (resources?.audio) {

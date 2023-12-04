@@ -15,8 +15,9 @@ export const TopicMessagesComponent = ({ topic }: TopicMessagesProps) => {
   return (
     <Stack
       display="flex"
-      height="90%"
-      width="100%"
+      width="auto"
+      minWidth={1000} // TODO: В перспективе задать фиксированную относительную ширину для всех экранов, хак для показа
+      height="auto"
       alignItems="center"
       justifyContent="center">
       {messages.length > 0 &&

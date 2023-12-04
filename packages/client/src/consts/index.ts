@@ -2,7 +2,7 @@ import { AreaOwner } from 'types/GameData'
 import { GameDifficulty, Player } from 'types/GameStats'
 
 export const APP_CONSTS = {
-  gameName: 'Безжалостные космические завоевания',
+  gameName: 'Галактические войны',
   gameResourcesConfig: {
     areas: new Array(24) // это число изображений в каталоге /images/planets
       .fill({})

@@ -1,4 +1,4 @@
-import { CardMedia, Stack } from '@mui/material'
+import { Stack } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { fillUserData } from './utils'
 import { mockLeaderboardList } from '../../mocks/leaderboard'
@@ -6,9 +6,6 @@ import { Player } from 'types/LidearBoard'
 import { DataGrid } from '@mui/x-data-grid'
 import Box from '@mui/system/Box'
 import { columns } from './settingsGrid'
-import Fon1 from '../../assets/images/fon1.png'
-import Fon2 from '../../assets/images/fon2.png'
-import { CardStyled } from './style'
 import { theme } from '../../theme'
 import StyledHeader from '../styled-header/StyledHeader'
 
@@ -26,8 +23,7 @@ export const LeaderBoardComponent = () => {
       justifyContent={'center'}
       height={'auto'}
       width={'100%'}
-      marginTop={theme.spacing(1)}
-      sx={{ backgroundImage: Fon1 }}>
+      marginTop={theme.spacing(1)}>
       <StyledHeader text="Таблица Лидеров" />
       {usersBoard && usersBoard.length > 0 && (
         <Box sx={{ width: '50%' }}>
@@ -49,25 +45,6 @@ export const LeaderBoardComponent = () => {
           />
         </Box>
       )}
-      <CardStyled
-        sx={{
-          right: 0,
-          bottom: 0,
-          width: 500,
-          height: 342,
-        }}>
-        <CardMedia component="img" alt="fon1" image={Fon1} />
-      </CardStyled>
-      <CardStyled
-        sx={{
-          left: 0,
-          top: 64,
-          width: 500,
-          height: 397,
-          opacity: '60%',
-        }}>
-        <CardMedia component="img" alt="fon2" image={Fon2} />
-      </CardStyled>
     </Stack>
   )
 }

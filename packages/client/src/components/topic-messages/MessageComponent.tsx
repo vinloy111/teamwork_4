@@ -92,7 +92,7 @@ export const MessageComponent = ({
                   onClick={() => {
                     onTextChange(rteRef.current?.editor?.getHTML() ?? '')
                   }}>
-                  Save
+                  Отправить
                 </Button>
               </Stack>
             ),
