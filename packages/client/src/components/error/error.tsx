@@ -1,4 +1,5 @@
 import Box from '@mui/material/Box'
+import { useRouteError } from 'react-router-dom'
 import { Grid, Stack, Typography } from '@mui/material'
 import Button from '@mui/material/Button'
 import Image404 from '../../assets/images/404.png'
@@ -7,10 +8,13 @@ import { theme } from '../../theme'
 
 declare type ErrorProps = {
   type: '404' | '500'
-  message: string
+  message?: string
 }
 export const ErrorComponent = ({ type, message }: ErrorProps) => {
+  const error = useRouteError()
+  const errorFromRouter = error ? String(error) : 'Произошла неизвестная ошибка'
   const image = type === '404' ? Image404 : Image500
+
   return (
     <Grid
       container
@@ -32,7 +36,7 @@ export const ErrorComponent = ({ type, message }: ErrorProps) => {
             sx={{ fontWeight: 'bold' }}>
             {type}
           </Typography>
-          <Typography variant="h3">{message}</Typography>
+          <Typography variant="h3">{message || errorFromRouter}</Typography>
           <Button href={'/'}>Домой</Button>
         </Stack>
       </Grid>

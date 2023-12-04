@@ -125,7 +125,7 @@ export const GamePage = (): JSX.Element => {
   }
 
   return (
-    <div ref={gameWrapper} className="game-wrapper">
+    <div style={{ zIndex: 2 }} ref={gameWrapper} className="game-wrapper">
       <ResourcesLoader />
       <CanvasStarBackground canvasSize={canvasSize} />
       {content[gameStatus]}

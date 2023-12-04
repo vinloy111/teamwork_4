@@ -45,7 +45,7 @@ const randomPlaceAreas = (
       x = Math.random() * availableWidth + xOffset
       y = Math.random() * availableHeight + yOffset
       attempts++
-      if (attempts > 200) {
+      if (attempts > 2000) {
         throw new Error(
           'Слишком большое кол-во планет, не удается их разместить. Уменьшите кол-во планет в настройках для возможности запустить игру'
         )
