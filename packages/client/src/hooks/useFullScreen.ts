@@ -8,6 +8,14 @@ const useFullScreen = (): {
   handleFullScreen: () => void
 } => {
   const [isFullscreen, setIsFullscreen] = useState(false)
+  const handleFullScreen = async () => {
+    if (!isFullscreen) {
+      await document.documentElement.requestFullscreen()
+    } else if (document.exitFullscreen || isFullscreen) {
+      await document.exitFullscreen()
+    }
+  }
+
   useEffect(() => {
     function onFullscreenChange() {
       setIsFullscreen(Boolean(document.fullscreenElement))
@@ -30,13 +38,7 @@ const useFullScreen = (): {
 
     return () => document.removeEventListener('keydown', onEnterF11)
   }, [])
-  const handleFullScreen = async () => {
-    if (!isFullscreen) {
-      await document.documentElement.requestFullscreen()
-    } else if (document.exitFullscreen || isFullscreen) {
-      await document.exitFullscreen()
-    }
-  }
+
   return { isFullscreen, handleFullScreen }
 }
 
