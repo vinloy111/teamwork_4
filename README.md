@@ -1,6 +1,6 @@
 ### Демо 06.12.2023
 
-- Видео - https://www.youtube.com/watch?v=rnY8A_pTwR8
+- Видео - https://www.youtube.com/watch?v=N67c5CtMZts
 - Тестовый стенд - https://admirable-squirrel-6ed150.netlify.app/
 
 ### Как запускать?
