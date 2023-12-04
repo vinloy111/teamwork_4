@@ -59,7 +59,7 @@ export const CanvasAreas = React?.memo((props: Props): JSX.Element => {
         })
       }
     }
-  }, [ctx, areas, isMouseDown, isMouseMove])
+  }, [ctx, areas, isMouseDown, isMouseMove, canvasSize])
 
   const onMouseDown = (e: MouseEvent<HTMLCanvasElement>): void => {
     const finded = areas.find(i =>
