@@ -33,7 +33,7 @@ export const LayoutBackground = () => {
       <CardStyled
         sx={{
           left: 0,
-          top: 64,
+          top: 0,
           width: 500,
           height: 397,
           opacity: '60%',

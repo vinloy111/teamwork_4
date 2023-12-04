@@ -58,7 +58,7 @@ const Menu = () => {
 
   return (
     <Box>
-      <AppBar position="static">
+      <AppBar position="sticky">
         <Toolbar sx={{ flexGrow: 1, direction: 'row' }}>
           {menu.map(renderMenuLink)}
           <Box sx={{ flexGrow: 1 }}></Box>

@@ -10,11 +10,11 @@ const Layout = () => {
 
   return (
     <GridStyled>
+      <LayoutBackground />
       {user && <Menu />}
       <div style={{ overflow: 'auto', height: '100%' }}>
         <Outlet />
       </div>
-      <LayoutBackground />
     </GridStyled>
   )
 }
