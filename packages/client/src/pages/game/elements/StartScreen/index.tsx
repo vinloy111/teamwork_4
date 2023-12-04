@@ -13,7 +13,6 @@ import TableRow from '@mui/material/TableRow'
 import Typography from '@mui/material/Typography'
 import { GameDifficulty, Player, PlayerSettings } from 'types/GameStats'
 import { APP_CONSTS } from 'consts/index'
-import { getPaintedRow } from 'pages/game/utils/others'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
@@ -138,7 +137,16 @@ export const StartScreen = (props: Props): JSX.Element => {
         <TableBody>
           {playersSettings?.map((row, index) => (
             <TableRow key={index}>
-              <TableCell>{getPaintedRow(row.colorName, row.color)}</TableCell>
+              <TableCell>
+                <img
+                  src={
+                    APP_CONSTS.gameResourcesConfig.armies.find(
+                      i => i.name === row.color
+                    )?.src
+                  }
+                  alt={row.color}
+                />
+              </TableCell>
               <TableCell>{renderSelectPlayer(row)}</TableCell>
               <TableCell>{renderSelectDifficulty(row)}</TableCell>
             </TableRow>
