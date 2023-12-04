@@ -46,6 +46,22 @@ const yApiService = {
       withCredentials: true,
     })
   },
+
+  updateUserAvatar(file: File) {
+    const formData = new FormData()
+    formData.append('avatar', file)
+
+    return axios.put<UserFromApi>(
+      `${Y_API_BASE_URL}/user/profile/avatar`,
+      formData,
+      {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    )
+  },
 }
 
 export default yApiService
