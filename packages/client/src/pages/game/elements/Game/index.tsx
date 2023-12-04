@@ -218,6 +218,7 @@ export const Game = (props: Props): JSX.Element => {
       .map(i => {
         return i.difficulty ? (
           <CPULogic
+            key={i.color}
             owner={i.color}
             difficulty={i.difficulty}
             areas={areas}

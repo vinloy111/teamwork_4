@@ -14,6 +14,9 @@ import Typography from '@mui/material/Typography'
 import { GameDifficulty, Player, PlayerSettings } from 'types/GameStats'
 import { APP_CONSTS } from 'consts/index'
 import { getPaintedRow } from 'pages/game/utils/others'
+import Select from '@mui/material/Select'
+import MenuItem from '@mui/material/MenuItem'
+import FormControl from '@mui/material/FormControl'
 
 type Props = {
   runGame: () => void
@@ -37,8 +40,8 @@ export const StartScreen = (props: Props): JSX.Element => {
   const title = (
     <>
       <Typography
-        variant="h3"
-        sx={{ textAlign: 'center', mb: '50px' }}
+        variant="h1"
+        sx={{ textAlign: 'center', mb: '50px', fontSize: '30px' }}
         gutterBottom>
         {APP_CONSTS.gameName}
       </Typography>
@@ -53,20 +56,20 @@ export const StartScreen = (props: Props): JSX.Element => {
   ]
 
   const playerConf = [
-    { value: Player.user, label: 'Пользователь' },
+    { value: Player.user, label: 'Игрок' },
     { value: Player.computer, label: 'Компьютер' },
     { value: Player.none, label: 'Отсутствует' },
   ]
 
   const renderSelectPlayer = (conf: PlayerSettings) => {
     return (
-      <RadioGroup
-        row
+      <Select
+        sx={{ width: '150px' }}
         value={conf.player}
-        onChange={(_, changedValue) =>
+        onChange={e =>
           setPlayersSettings(v =>
             v.map(i => {
-              const newPlayerValue = changedValue as Player
+              const newPlayerValue = e.target.value as Player
               const changeDefaultDifficult = {
                 [Player.user]: undefined,
                 [Player.computer]: GameDifficulty.easy,
@@ -89,40 +92,34 @@ export const StartScreen = (props: Props): JSX.Element => {
           )
         }>
         {playerConf.map(i => (
-          <FormControlLabel
-            key={i.value}
-            value={i.value}
-            control={<Radio />}
-            label={i.label}
-          />
+          <MenuItem key={i.value} value={i.value}>
+            {i.label}
+          </MenuItem>
         ))}
-      </RadioGroup>
+      </Select>
     )
   }
 
   const renderSelectDifficulty = (conf: PlayerSettings) => {
     return conf.player === Player.computer ? (
-      <RadioGroup
-        row
+      <Select
+        sx={{ width: '150px' }}
         value={conf.difficulty}
-        onChange={(_, changedValue) =>
+        onChange={e => {
           setPlayersSettings(v =>
             v.map(i => {
               return i.color === conf.color
-                ? { ...i, difficulty: changedValue as GameDifficulty }
+                ? { ...i, difficulty: e.target.value as GameDifficulty }
                 : i
             })
           )
-        }>
+        }}>
         {difficultyConf.map(i => (
-          <FormControlLabel
-            key={i.value}
-            value={i.value}
-            control={<Radio />}
-            label={i.label}
-          />
+          <MenuItem key={i.value} value={i.value}>
+            {i.label}
+          </MenuItem>
         ))}
-      </RadioGroup>
+      </Select>
     ) : (
       <></>
     )
@@ -134,7 +131,7 @@ export const StartScreen = (props: Props): JSX.Element => {
         <TableHead>
           <TableRow>
             <TableCell>Цвет</TableCell>
-            <TableCell>Игрок</TableCell>
+            <TableCell>Управление</TableCell>
             <TableCell>Сложность</TableCell>
           </TableRow>
         </TableHead>
@@ -154,31 +151,33 @@ export const StartScreen = (props: Props): JSX.Element => {
   const areasConf = [{ value: 12 }, { value: 16 }, { value: 20 }, { value: 24 }]
 
   const selectAreas = (
-    <RadioGroup
-      row
-      sx={{ display: 'inline-block' }}
-      value={areasCount}
-      onChange={(_, v) => setAreasCount(Number(v))}>
-      {areasConf.map(i => (
-        <FormControlLabel
-          key={i.value}
-          value={i.value}
-          control={<Radio />}
-          label={i.value}
-        />
-      ))}
-    </RadioGroup>
+    <FormControl>
+      <RadioGroup
+        row
+        sx={{ display: 'inline-block' }}
+        value={areasCount}
+        onChange={(_, v) => setAreasCount(Number(v))}>
+        {areasConf.map(i => (
+          <FormControlLabel
+            key={i.value}
+            value={i.value}
+            control={<Radio />}
+            label={i.value}
+          />
+        ))}
+      </RadioGroup>
+    </FormControl>
   )
 
   const settingsBlock = (
     <>
-      <Typography variant="h6" gutterBottom>
-        Настройки игроков:
+      <Typography variant="subtitle1" gutterBottom>
+        Настройки сторон конфликта:
       </Typography>
       {configTable}
       <Typography
-        sx={{ mt: '20px', mr: '20px', display: 'inline-block' }}
-        variant="h6"
+        sx={{ mt: '10px', mr: '20px', display: 'inline-block' }}
+        variant="subtitle1"
         gutterBottom>
         Количество планет:
       </Typography>
@@ -204,8 +203,10 @@ export const StartScreen = (props: Props): JSX.Element => {
   return (
     <Box
       sx={{
-        width: '100%',
+        width: '600px',
         height: '100%',
+        ml: 'auto',
+        mr: 'auto',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',

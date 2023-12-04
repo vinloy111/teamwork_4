@@ -7,7 +7,7 @@ const CardStyled = styled(Card)<CardProps>(() => ({
   position: 'absolute',
   right: 0,
   bottom: 0,
-  zIndex: 0,
+  zIndex: 1,
   width: 500,
   height: 342,
   backgroundColor: 'transparent',
