@@ -62,6 +62,15 @@ const yApiService = {
       }
     )
   },
+
+  changeUserPassword(passwordData: {
+    oldPassword: string
+    newPassword: string
+  }) {
+    return axios.put<void>(`${Y_API_BASE_URL}/user/password`, passwordData, {
+      withCredentials: true,
+    })
+  },
 }
 
 export default yApiService
