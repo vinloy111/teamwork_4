@@ -1,13 +1,18 @@
 import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
 import { theme } from '../../theme'
+import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { useState } from 'react'
 
 type Props = {
   title?: string
   items: string[]
+  isExpanded?: boolean
 }
 
-export const HomeCard = ({ title, items }: Props) => {
+export const HomeCard = ({ title, items, isExpanded }: Props) => {
+  const [expanded, setExpanded] = useState<boolean>(isExpanded || false)
   const titleBlock = (
     <Typography
       variant="h5"
@@ -25,17 +30,18 @@ export const HomeCard = ({ title, items }: Props) => {
   }
 
   return (
-    <Paper
-      sx={{
-        padding: '20px',
-        borderRadius: '10px',
-        overflow: 'auto',
-        display: 'flex',
-        flexDirection: 'column',
-        flexGrow: '1',
-      }}>
-      {title && titleBlock}
-      {items.map(renderItem)}
-    </Paper>
+    <>
+      <Accordion expanded={expanded} onChange={() => setExpanded(!expanded)}>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header">
+          <Typography>{title && titleBlock}</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography> {items.map(renderItem)}</Typography>
+        </AccordionDetails>
+      </Accordion>
+    </>
   )
 }

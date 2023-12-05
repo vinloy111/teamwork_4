@@ -1,5 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
-import { createTheme, ThemeProvider, useMediaQuery } from '@mui/material'
+import {
+  createTheme,
+  CssBaseline,
+  ThemeProvider,
+  useMediaQuery,
+} from '@mui/material'
 import { ErrorBoundary } from 'react-error-boundary'
 import { ErrorComponent } from 'components/error/error'
 import useNotifications from 'hooks/useNotifications'
@@ -44,11 +49,14 @@ function App() {
   return (
     <ErrorBoundary fallback={<ErrorComponent type="500" />}>
       <ThemeProvider theme={theme}>
-        {isAuthChecked ? (
-          <RouterProvider router={router} />
-        ) : (
-          <div>Авторизация...</div>
-        )}
+        <>
+          <CssBaseline />
+          {isAuthChecked ? (
+            <RouterProvider router={router} />
+          ) : (
+            <div>Авторизация...</div>
+          )}
+        </>
       </ThemeProvider>
     </ErrorBoundary>
   )

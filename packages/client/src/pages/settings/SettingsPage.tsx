@@ -5,6 +5,7 @@ import {
   Container,
   Typography,
   Snackbar,
+  Avatar,
 } from '@mui/material'
 import StyledHeader from '../../components/styled-header/StyledHeader'
 import { Link } from 'react-router-dom'
@@ -15,6 +16,7 @@ import { setUser } from 'features/authSlice'
 import { settingsFormToDto } from 'utils/settingsFormToDto'
 import { isAxiosError } from 'axios'
 import { adaptUserData } from 'utils/adaptUserData'
+import { theme } from 'theme/index'
 
 function SettingsPage() {
   const ERROR_TEXT = 'Ошибка при сохранении изменений'
@@ -75,10 +77,11 @@ function SettingsPage() {
         <form noValidate onSubmit={handleSubmit}>
           <div style={{ margin: '20px 0' }}>
             {user?.avatar ? (
-              <img
+              <Avatar
                 src={user.avatar}
                 alt="Аватар"
-                style={{ maxWidth: '100px', maxHeight: '100px' }}
+                sx={{ m: theme.spacing(1), width: 100, height: 100 }}
+                variant={'circular'}
               />
             ) : (
               <Typography variant="subtitle2">Аватар отсутствует</Typography>
