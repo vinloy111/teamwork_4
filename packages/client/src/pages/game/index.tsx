@@ -4,7 +4,7 @@ import { StartScreen } from './elements/StartScreen'
 import { FinalScreen } from './elements/FinalScreen'
 import { Game } from './elements/Game'
 import { GameScreen, Player, PlayerSettings } from 'types/GameStats'
-import { GameResources, GameResult } from 'types/GameData'
+import { GameResult } from 'types/GameData'
 import { ResourcesLoader } from './elements/ResourcesLoader'
 import { useSelector } from 'react-redux'
 import { Store } from 'src/store'
@@ -13,13 +13,14 @@ import './style.css'
 
 export const GamePage = (): JSX.Element => {
   const gameWrapper = useRef<HTMLDivElement>(null)
-  const { gameSettings } = useSelector((state: Store) => state)
+  const { gameSettings, gameResources: resources } = useSelector(
+    (state: Store) => state
+  )
   const [playersSettings, setPlayersSettings] = useState<PlayerSettings[]>(
     APP_CONSTS.defaultPlayersSettings
   )
   const actualPlayers = playersSettings.filter(i => i.player !== Player.none)
   const [areasCount, setAreasCount] = useState<number>(12)
-  const [resources, setResources] = useState<GameResources | null>(null)
   const [gameStatus, setGameStatus] = useState<GameScreen>(
     GameScreen.startScreen
   )
@@ -59,6 +60,12 @@ export const GamePage = (): JSX.Element => {
       if (win) win.volume = soundVolume
     }
   }, [resources?.audio, gameSettings])
+
+  useEffect(() => {
+    if (resources?.audio?.backgroundMusic) {
+      return () => resources?.audio?.backgroundMusic?.pause()
+    }
+  }, [resources?.audio?.backgroundMusic])
 
   const runGame = () => {
     const backgroundMusic = resources?.audio?.backgroundMusic
@@ -118,8 +125,8 @@ export const GamePage = (): JSX.Element => {
   }
 
   return (
-    <div ref={gameWrapper} className="game-wrapper">
-      <ResourcesLoader setResources={setResources} />
+    <div style={{ zIndex: 2 }} ref={gameWrapper} className="game-wrapper">
+      <ResourcesLoader />
       <CanvasStarBackground canvasSize={canvasSize} />
       {content[gameStatus]}
     </div>

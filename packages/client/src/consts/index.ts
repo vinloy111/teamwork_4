@@ -27,6 +27,9 @@ export const APP_CONSTS = {
       { name: 'lose', src: '/sounds/fall.wav' },
     ],
   },
+  keyboardCode: {
+    space: 'Space',
+  },
   defaultPlayersSettings: [
     {
       color: AreaOwner.blue,

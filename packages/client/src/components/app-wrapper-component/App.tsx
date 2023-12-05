@@ -1,5 +1,7 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { createTheme, ThemeProvider, useMediaQuery } from '@mui/material'
+import { ErrorBoundary } from 'react-error-boundary'
+import { ErrorComponent } from 'components/error/error'
 import useNotifications from 'hooks/useNotifications'
 import useAuthCheck from 'hooks/useAuthCheck'
 import { APP_CONSTS } from 'consts/index'
@@ -40,13 +42,15 @@ function App() {
   }, [permitted])
 
   return (
-    <ThemeProvider theme={theme}>
-      {isAuthChecked ? (
-        <RouterProvider router={router} />
-      ) : (
-        <div>Авторизация...</div>
-      )}
-    </ThemeProvider>
+    <ErrorBoundary fallback={<ErrorComponent type="500" />}>
+      <ThemeProvider theme={theme}>
+        {isAuthChecked ? (
+          <RouterProvider router={router} />
+        ) : (
+          <div>Авторизация...</div>
+        )}
+      </ThemeProvider>
+    </ErrorBoundary>
   )
 }
 
