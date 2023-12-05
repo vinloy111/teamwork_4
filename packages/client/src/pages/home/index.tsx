@@ -41,11 +41,8 @@ export const HomePage = () => {
         gap: '10px',
         maxWidth: '1000px',
         margin: 'auto',
-        pt: '10px',
-        pb: '10px',
-        boxSizing: 'border-box',
       }}>
-      <HomeCard title="О приложении" items={projectInfo} />
+      <HomeCard title="О приложении" items={projectInfo} isExpanded />
       <HomeCard title="Правила игры" items={gameRules} />
       <HomeCard title="Обновления игры" items={updates} />
     </Box>
