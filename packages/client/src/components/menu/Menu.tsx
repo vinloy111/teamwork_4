@@ -70,7 +70,9 @@ const Menu = () => {
         key={id}
         component={NavLink}
         to={`/${link}`}
-        selected={pathname.includes(`/${link}`)}>
+        selected={
+          link ? pathname.includes(`/${link}`) : pathname === `/${link}`
+        }>
         <Typography variant="h6" component="div">
           {title}
         </Typography>
