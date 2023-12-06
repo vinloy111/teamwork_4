@@ -16,7 +16,7 @@ import { setUser } from 'features/authSlice'
 import { adaptUserData } from 'utils/adaptUserData'
 import { useDispatch, useSelector } from 'react-redux'
 import { Store } from '../../store'
-import { validationSchema } from 'utils/validationSchema'
+import { registerValidationSchema } from 'utils/userValidationSchema'
 import { useFormik } from 'formik'
 
 function RegisterPage() {
@@ -35,7 +35,7 @@ function RegisterPage() {
       password: '',
       phone: '',
     },
-    validationSchema: validationSchema,
+    validationSchema: registerValidationSchema,
     onSubmit: async values => {
       try {
         await yApiService.register(registerFormToDto(values))
