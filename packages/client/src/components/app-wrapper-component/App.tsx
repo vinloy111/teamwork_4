@@ -14,6 +14,7 @@ import { themeOptions } from '../../theme'
 import { RouterProvider } from 'react-router'
 import { AppRouter } from './AppRouter'
 import './App.css'
+import { LoaderComponent } from 'components/loader/LoaderComponent'
 
 function App() {
   const router = AppRouter()
@@ -54,7 +55,7 @@ function App() {
           {isAuthChecked ? (
             <RouterProvider router={router} />
           ) : (
-            <div>Авторизация...</div>
+            <LoaderComponent />
           )}
         </>
       </ThemeProvider>
