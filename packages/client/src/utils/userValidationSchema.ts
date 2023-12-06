@@ -61,6 +61,11 @@ const settingsValidationSchema = yup.object({
   phone: phoneValidator,
 })
 
+const changePasswordValidationSchema = yup.object({
+  oldPassword: passwordValidator,
+  newPassword: passwordValidator,
+})
+
 export {
   firstNameValidator,
   secondNameValidator,
@@ -71,4 +76,5 @@ export {
   registerValidationSchema,
   loginValidationSchema,
   settingsValidationSchema,
+  changePasswordValidationSchema,
 }
