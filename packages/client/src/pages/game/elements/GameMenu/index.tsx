@@ -81,7 +81,7 @@ export const GameMenu = React?.memo((props: Props): JSX.Element => {
         flexDirection: 'row',
         justifyContent: 'center',
       }}>
-      <Box sx={{ fontSize: '30px', lineHeight: '30px' }}>
+      <Box sx={{ pt: '6px', fontSize: '24px', lineHeight: '24px' }}>
         {getTime(seconds)}
       </Box>
       <Button sx={btnStyle} variant="contained" onClick={changeVolume}>
