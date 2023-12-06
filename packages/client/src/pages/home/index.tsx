@@ -4,7 +4,7 @@ import { HomeCard } from 'components/home-card'
 import { useState } from 'react'
 
 export const HomePage = () => {
-  const [expanded, setExpanded] = useState<number>(1)
+  const [expanded, setExpanded] = useState<number | undefined>(1)
 
   const projectInfo = [
     `Приветствуем вас на сайте нашей игры '${APP_CONSTS.gameName}', которую мы старательно делаем во 2м модуле обучения.`,

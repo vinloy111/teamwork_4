@@ -6,9 +6,9 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 type Props = {
   title?: string
   items: string[]
-  setExpanded: React.Dispatch<React.SetStateAction<number>>
+  setExpanded: React.Dispatch<React.SetStateAction<number | undefined>>
   idForExpand: number
-  expanded: number
+  expanded?: number
 }
 
 export const HomeCard = ({
@@ -22,7 +22,7 @@ export const HomeCard = ({
     <Typography
       variant="h5"
       sx={{
-        mb: '20px',
+        mb: '0',
         color: theme.palette.warning.main,
       }}
       gutterBottom>
@@ -34,11 +34,14 @@ export const HomeCard = ({
     return <Typography key={index}>{text}</Typography>
   }
 
+  const isExpanded = idForExpand === expanded
+
   return (
     <>
       <Accordion
-        expanded={idForExpand === expanded}
-        onChange={() => setExpanded(idForExpand)}>
+        sx={{ margin: '0 !important' }}
+        expanded={isExpanded}
+        onChange={() => setExpanded(isExpanded ? undefined : idForExpand)}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
