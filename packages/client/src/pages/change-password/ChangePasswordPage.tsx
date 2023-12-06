@@ -3,40 +3,36 @@ import { Button, TextField, Container, Snackbar } from '@mui/material'
 import StyledHeader from '../../components/styled-header/StyledHeader'
 import yApiService from 'services/y-api-service'
 import { useNavigate } from 'react-router-dom'
+import { useFormik } from 'formik'
+import { changePasswordValidationSchema } from 'utils/userValidationSchema'
 
 function ChangePasswordPage() {
   const ERROR_MESSAGE = 'Ошибка при изменении пароля'
-
-  const [passwordData, setPasswordData] = useState({
-    oldPassword: '',
-    newPassword: '',
-  })
   const [error, setError] = useState('')
   const navigate = useNavigate()
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPasswordData({
-      ...passwordData,
-      [event.target.name]: event.target.value,
-    })
-  }
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    try {
-      await yApiService.changeUserPassword(passwordData)
-      navigate('/settings')
-    } catch (error) {
-      setError(ERROR_MESSAGE)
-      console.error(`${ERROR_MESSAGE} :`, error)
-    }
-  }
+  const formik = useFormik({
+    initialValues: {
+      oldPassword: '',
+      newPassword: '',
+    },
+    validationSchema: changePasswordValidationSchema,
+    onSubmit: async values => {
+      try {
+        await yApiService.changeUserPassword(values)
+        navigate('/settings')
+      } catch (error) {
+        setError(ERROR_MESSAGE)
+        console.error(`${ERROR_MESSAGE} :`, error)
+      }
+    },
+  })
 
   return (
     <Container component="main" maxWidth="xs">
       <div className="change-password-form">
         <StyledHeader text="Смена пароля" />
-        <form noValidate onSubmit={handleSubmit}>
+        <form noValidate onSubmit={formik.handleSubmit}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -47,8 +43,11 @@ function ChangePasswordPage() {
             type="password"
             id="oldPassword"
             autoComplete="current-password"
-            value={passwordData.oldPassword}
-            onChange={handleChange}
+            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}
+            value={formik.values.oldPassword}
+            error={formik.touched.oldPassword && !!formik.errors.oldPassword}
+            helperText={formik.touched.oldPassword && formik.errors.oldPassword}
           />
           <TextField
             variant="outlined"
@@ -60,8 +59,11 @@ function ChangePasswordPage() {
             type="password"
             id="newPassword"
             autoComplete="new-password"
-            value={passwordData.newPassword}
-            onChange={handleChange}
+            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}
+            value={formik.values.newPassword}
+            error={formik.touched.newPassword && !!formik.errors.newPassword}
+            helperText={formik.touched.newPassword && formik.errors.newPassword}
           />
           <Button
             type="submit"

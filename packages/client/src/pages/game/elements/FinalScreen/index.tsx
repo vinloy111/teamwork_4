@@ -3,9 +3,10 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
-import { getPaintedRow, getTime } from '../../utils/others'
+import { getTime } from '../../utils/others'
 import { PlayerSettings } from 'types/GameStats'
 import { useEffect } from 'react'
+import { APP_CONSTS } from 'consts/index'
 
 type Props = {
   runGame: () => void
@@ -52,6 +53,17 @@ export const FinalScreen = (props: Props): JSX.Element => {
     }
   }, [recordPoints])
 
+  const winnerImg = (
+    <img
+      src={
+        APP_CONSTS.gameResourcesConfig.armies.find(
+          i => i.name === winnerSettings?.color
+        )?.src
+      }
+      alt={winnerSettings?.color}
+    />
+  )
+
   const result =
     winner && winnerSettings ? (
       <>
@@ -73,7 +85,7 @@ export const FinalScreen = (props: Props): JSX.Element => {
           Длительность - {getTime(seconds)}
         </Typography>
         <Typography variant="body1" gutterBottom>
-          Победитель - {getPaintedRow(winnerSettings?.colorName, winner.color)}
+          Победитель - {winnerImg}
         </Typography>
         <Typography variant="body1" gutterBottom>
           Захвачено планет - {`${winner.areasCount} / ${areasCount}`}

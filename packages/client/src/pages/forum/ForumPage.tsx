@@ -1,4 +1,4 @@
-import { ForumComponent } from '../../components/forum/ForumComponent'
+import { ForumComponent } from 'components/forum/ForumComponent'
 
 const ForumPage = () => {
   return <ForumComponent />

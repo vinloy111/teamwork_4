@@ -6,7 +6,7 @@ type GameSettings = {
 }
 
 const initialState: GameSettings = {
-  backgroundMusicVolume: 0.2,
+  backgroundMusicVolume: 0.05,
   soundVolume: 0.3,
 }
 

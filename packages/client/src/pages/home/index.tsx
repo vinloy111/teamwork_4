@@ -1,8 +1,11 @@
 import Box from '@mui/system/Box'
 import { APP_CONSTS } from '../../consts'
 import { HomeCard } from 'components/home-card'
+import { useState } from 'react'
 
 export const HomePage = () => {
+  const [expanded, setExpanded] = useState<number | undefined>(1)
+
   const projectInfo = [
     `Приветствуем вас на сайте нашей игры '${APP_CONSTS.gameName}', которую мы старательно делаем во 2м модуле обучения.`,
     'Помимо самой игры в нашем приложении будет форум, страница с лучшими результатами и профиль пользователя.',
@@ -19,6 +22,7 @@ export const HomePage = () => {
   ]
 
   const updates = [
+    '04.12.2023 Поправлен баг с дублированием фоновой музыки в игре, поправлен баг с частой ошибкой при генерации карты, доработан стартовый экран игры',
     '26.11.2023 Добавлена возможность запускать игру с кол-вом сторон конфликта от 2х до 4х. Добавлена возможность запускать игру между ботами. Внесены изменения в логику бота. Добавлена 4я сложность для бота. Доработан курсор между планетами при отправке армий. Теперь по завершению игры в случае победы ведется подсчет очков. Внесены изменения в стартовый и финальный экраны. Изменен вид внутриигрового интерфейса',
     '24.11.2023 Добавлена фоновая музыка, звук для отправки юнитов, звуки для удачных/неудачных результатов столкновения. В меню игры добавлена кнопка выключения звука. Произведены мелкие доработки механик',
     '20.11.2023 Добавлена новая графика для планет, появились 3 сложности бота настройки и возможность случайной генерации карты игры с выбором кол-ва планет. Добавлена возможность ставить игру на паузу и переработан механизм рендера кадров игры',
@@ -32,7 +36,6 @@ export const HomePage = () => {
     <Box
       sx={{
         display: 'flex',
-        overflow: 'hidden',
         height: '100%',
         flex: '1',
         flexDirection: 'column',
@@ -40,13 +43,30 @@ export const HomePage = () => {
         gap: '10px',
         maxWidth: '1000px',
         margin: 'auto',
-        pt: '10px',
-        pb: '10px',
-        boxSizing: 'border-box',
+        pt: '20px',
+        pb: '20px',
       }}>
-      <HomeCard title="О приложении" items={projectInfo} />
-      <HomeCard title="Правила игры" items={gameRules} />
-      <HomeCard title="Обновления игры" items={updates} />
+      <HomeCard
+        title="О приложении"
+        items={projectInfo}
+        idForExpand={1}
+        expanded={expanded}
+        setExpanded={setExpanded}
+      />
+      <HomeCard
+        title="Правила игры"
+        items={gameRules}
+        idForExpand={2}
+        expanded={expanded}
+        setExpanded={setExpanded}
+      />
+      <HomeCard
+        title="Обновления игры"
+        items={updates}
+        idForExpand={3}
+        expanded={expanded}
+        setExpanded={setExpanded}
+      />
     </Box>
   )
 }

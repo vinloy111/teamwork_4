@@ -32,6 +32,7 @@
     "prettier": "^2.7.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-error-boundary": "^4.0.11",
     "react-redux": "^8.1.3",
     "react-router": "^6.18.0",
     "react-router-dom": "^6.18.0",
@@ -39,8 +40,10 @@
     "yup": "^1.3.2"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.1.5",
     "@testing-library/react": "^13.3.0",
-    "@types/jest": "^28.1.8",
+    "@testing-library/user-event": "^14.5.1",
+    "@types/jest": "^29.5.11",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "@typescript-eslint/eslint-plugin": "^5.35.1",
@@ -51,7 +54,7 @@
     "jest-environment-jsdom": "^29.0.1",
     "lefthook": "^1.3.9",
     "prettier": "^2.7.1",
-    "ts-jest": "^28.0.8",
+    "ts-jest": "^29.1.1",
     "typescript": "^4.8.2",
     "vite": "^3.0.7",
     "vite-plugin-pwa": "0.12.8",

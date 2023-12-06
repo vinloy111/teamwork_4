@@ -1,5 +1,12 @@
-import React, { useEffect, useMemo, useState } from 'react'
-import { createTheme, ThemeProvider, useMediaQuery } from '@mui/material'
+import { useEffect, useMemo, useState } from 'react'
+import {
+  createTheme,
+  CssBaseline,
+  ThemeProvider,
+  useMediaQuery,
+} from '@mui/material'
+import { ErrorBoundary } from 'react-error-boundary'
+import { ErrorComponent } from 'components/error/error'
 import useNotifications from 'hooks/useNotifications'
 import useAuthCheck from 'hooks/useAuthCheck'
 import { APP_CONSTS } from 'consts/index'
@@ -7,6 +14,7 @@ import { themeOptions } from '../../theme'
 import { RouterProvider } from 'react-router'
 import { AppRouter } from './AppRouter'
 import './App.css'
+import { LoaderComponent } from 'components/loader/LoaderComponent'
 
 function App() {
   const router = AppRouter()
@@ -40,13 +48,18 @@ function App() {
   }, [permitted])
 
   return (
-    <ThemeProvider theme={theme}>
-      {isAuthChecked ? (
-        <RouterProvider router={router} />
-      ) : (
-        <div>Авторизация...</div>
-      )}
-    </ThemeProvider>
+    <ErrorBoundary fallback={<ErrorComponent type="500" />}>
+      <ThemeProvider theme={theme}>
+        <>
+          <CssBaseline />
+          {isAuthChecked ? (
+            <RouterProvider router={router} />
+          ) : (
+            <LoaderComponent />
+          )}
+        </>
+      </ThemeProvider>
+    </ErrorBoundary>
   )
 }
 

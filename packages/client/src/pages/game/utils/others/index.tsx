@@ -217,7 +217,3 @@ export const getTime = (seconds?: number): string => {
     remainingSeconds < 10 ? `0${remainingSeconds}` : `${remainingSeconds}`
   return `${formattedMinutes}:${formattedSeconds}`
 }
-
-export const getPaintedRow = (str: string, color: string): JSX.Element => {
-  return <span style={{ color }}>{str}</span>
-}

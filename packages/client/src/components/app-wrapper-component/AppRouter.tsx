@@ -22,6 +22,7 @@ import ChangePasswordPage from 'pages/change-password/ChangePasswordPage'
 import UserProfilePage from 'pages/user-profile/UserProfilePage'
 import ChangeAvatarPage from 'pages/change-avatar/ChangeAvatarPage'
 import { ForumAddTopicPage } from 'pages/add-topic/ForumAddTopicPage'
+import { ErrorComponent } from 'components/error/error'
 
 export const AppRouter = () => {
   const user = useSelector((state: Store) => {
@@ -33,7 +34,13 @@ export const AppRouter = () => {
 
   return createBrowserRouter(
     createRoutesFromElements(
-      <Route element={<Layout />}>
+      <Route
+        element={<Layout />}
+        errorElement={
+          <Layout>
+            <ErrorComponent type="500" />
+          </Layout>
+        }>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/500" element={<ServerErrorPage />} />

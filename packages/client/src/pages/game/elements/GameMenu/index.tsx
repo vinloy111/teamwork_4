@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -9,6 +9,7 @@ import {
 } from 'features/gameSettingsSlice'
 import { getTime } from '../../utils/others'
 import { Store } from 'src/store'
+import { APP_CONSTS } from 'consts/index'
 
 type Props = {
   seconds: number
@@ -24,6 +25,15 @@ export const GameMenu = React?.memo((props: Props): JSX.Element => {
     (state: Store) => state.gameSettings
   )
   const hasVolume = backgroundMusicVolume && soundVolume
+
+  useEffect(() => {
+    const keydownHandler = (key: KeyboardEvent) => {
+      if (APP_CONSTS.keyboardCode.space === key.code) setPause()
+    }
+
+    window.addEventListener('keydown', keydownHandler)
+    return () => window.removeEventListener('keydown', keydownHandler)
+  }, [])
 
   const pauseWrapper = (
     <Box
@@ -71,7 +81,7 @@ export const GameMenu = React?.memo((props: Props): JSX.Element => {
         flexDirection: 'row',
         justifyContent: 'center',
       }}>
-      <Box sx={{ fontSize: '30px', lineHeight: '30px' }}>
+      <Box sx={{ pt: '6px', fontSize: '24px', lineHeight: '24px' }}>
         {getTime(seconds)}
       </Box>
       <Button sx={btnStyle} variant="contained" onClick={changeVolume}>
