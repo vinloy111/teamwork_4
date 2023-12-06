@@ -36,6 +36,8 @@ const phoneValidator = yup
   .matches(phoneRegex, 'Неверный формат телефона')
   .required('Обязательное поле')
 
+const displayNameValidator = yup.string().required('Обязательное поле')
+
 const registerValidationSchema = yup.object({
   firstName: firstNameValidator,
   secondName: secondNameValidator,
@@ -50,6 +52,15 @@ const loginValidationSchema = yup.object({
   password: passwordValidator,
 })
 
+const settingsValidationSchema = yup.object({
+  firstName: firstNameValidator,
+  secondName: secondNameValidator,
+  displayName: displayNameValidator,
+  login: loginValidator,
+  email: emailValidator,
+  phone: phoneValidator,
+})
+
 export {
   firstNameValidator,
   secondNameValidator,
@@ -59,4 +70,5 @@ export {
   phoneValidator,
   registerValidationSchema,
   loginValidationSchema,
+  settingsValidationSchema,
 }
