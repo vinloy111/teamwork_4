@@ -1,8 +1,11 @@
 import Box from '@mui/system/Box'
 import { APP_CONSTS } from '../../consts'
 import { HomeCard } from 'components/home-card'
+import { useState } from 'react'
 
 export const HomePage = () => {
+  const [expanded, setExpanded] = useState<number | undefined>(1)
+
   const projectInfo = [
     `Приветствуем вас на сайте нашей игры '${APP_CONSTS.gameName}', которую мы старательно делаем во 2м модуле обучения.`,
     'Помимо самой игры в нашем приложении будет форум, страница с лучшими результатами и профиль пользователя.',
@@ -33,7 +36,6 @@ export const HomePage = () => {
     <Box
       sx={{
         display: 'flex',
-        overflow: 'hidden',
         height: '100%',
         flex: '1',
         flexDirection: 'column',
@@ -41,10 +43,30 @@ export const HomePage = () => {
         gap: '10px',
         maxWidth: '1000px',
         margin: 'auto',
+        pt: '20px',
+        pb: '20px',
       }}>
-      <HomeCard title="О приложении" items={projectInfo} isExpanded />
-      <HomeCard title="Правила игры" items={gameRules} />
-      <HomeCard title="Обновления игры" items={updates} />
+      <HomeCard
+        title="О приложении"
+        items={projectInfo}
+        idForExpand={1}
+        expanded={expanded}
+        setExpanded={setExpanded}
+      />
+      <HomeCard
+        title="Правила игры"
+        items={gameRules}
+        idForExpand={2}
+        expanded={expanded}
+        setExpanded={setExpanded}
+      />
+      <HomeCard
+        title="Обновления игры"
+        items={updates}
+        idForExpand={3}
+        expanded={expanded}
+        setExpanded={setExpanded}
+      />
     </Box>
   )
 }
