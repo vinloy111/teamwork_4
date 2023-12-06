@@ -15,7 +15,7 @@ export const HomeCard = ({ title, items, isExpanded }: Props) => {
   const [expanded, setExpanded] = useState<boolean>(isExpanded || false)
   const titleBlock = (
     <Typography
-      variant="h5"
+      variant="subtitle1"
       sx={{
         mb: '20px',
         color: theme.palette.warning.main,
@@ -36,11 +36,9 @@ export const HomeCard = ({ title, items, isExpanded }: Props) => {
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
           id="panel1a-header">
-          <Typography>{title && titleBlock}</Typography>
+          {title && titleBlock}
         </AccordionSummary>
-        <AccordionDetails>
-          <Typography> {items.map(renderItem)}</Typography>
-        </AccordionDetails>
+        <AccordionDetails>{items.map(renderItem)}</AccordionDetails>
       </Accordion>
     </>
   )

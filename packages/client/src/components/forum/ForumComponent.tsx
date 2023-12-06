@@ -3,7 +3,7 @@ import { DataGrid } from '@mui/x-data-grid'
 import { Stack, Typography } from '@mui/material'
 import { theme } from '../../theme'
 import { Forum } from 'types/Forum'
-import { mockForum } from '../../mocks/forum'
+import { mockForum } from 'mocks/forum'
 import { getColumns } from './settingForum'
 import { useNavigate } from 'react-router-dom'
 import Button from '@mui/material/Button'
@@ -42,12 +42,16 @@ export const ForumComponent = () => {
           rows={forum.listOfTopics}
           columns={getColumns(navigate)}
           initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: 5,
-              },
-            },
+            pagination:
+              forum.listOfTopics.length > 5
+                ? {
+                    paginationModel: {
+                      pageSize: 5,
+                    },
+                  }
+                : undefined,
           }}
+          pageSizeOptions={[5]}
           disableRowSelectionOnClick
           disableColumnMenu
           rowHeight={120}
