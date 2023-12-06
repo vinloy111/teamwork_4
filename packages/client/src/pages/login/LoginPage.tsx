@@ -77,7 +77,6 @@ function LoginPage() {
             label="Логин"
             name="login"
             autoComplete="login"
-            autoFocus
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.login}

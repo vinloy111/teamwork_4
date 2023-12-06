@@ -82,7 +82,6 @@ function RegisterPage() {
             label="Имя"
             name="firstName"
             autoComplete="fname"
-            autoFocus
             onChange={formik.handleChange}
             value={formik.values.firstName}
             onBlur={formik.handleBlur}
