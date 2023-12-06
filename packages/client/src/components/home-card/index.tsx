@@ -1,18 +1,23 @@
-import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
 import { theme } from '../../theme'
 import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import { useState } from 'react'
 
 type Props = {
   title?: string
   items: string[]
-  isExpanded?: boolean
+  setExpanded: React.Dispatch<React.SetStateAction<number>>
+  idForExpand: number
+  expanded: number
 }
 
-export const HomeCard = ({ title, items, isExpanded }: Props) => {
-  const [expanded, setExpanded] = useState<boolean>(isExpanded || false)
+export const HomeCard = ({
+  title,
+  items,
+  idForExpand,
+  expanded,
+  setExpanded,
+}: Props) => {
   const titleBlock = (
     <Typography
       variant="h5"
@@ -26,21 +31,21 @@ export const HomeCard = ({ title, items, isExpanded }: Props) => {
   )
 
   const renderItem = (text: string, index: number) => {
-    return <div key={index}>{text}</div>
+    return <Typography key={index}>{text}</Typography>
   }
 
   return (
     <>
-      <Accordion expanded={expanded} onChange={() => setExpanded(!expanded)}>
+      <Accordion
+        expanded={idForExpand === expanded}
+        onChange={() => setExpanded(idForExpand)}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
           id="panel1a-header">
-          <Typography>{title && titleBlock}</Typography>
+          {title && titleBlock}
         </AccordionSummary>
-        <AccordionDetails>
-          <Typography> {items.map(renderItem)}</Typography>
-        </AccordionDetails>
+        <AccordionDetails>{items.map(renderItem)}</AccordionDetails>
       </Accordion>
     </>
   )
