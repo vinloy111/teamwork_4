@@ -20,7 +20,7 @@ export const HomeCard = ({
 }: Props) => {
   const titleBlock = (
     <Typography
-      variant="h5"
+      variant="subtitle1"
       sx={{
         mb: '0',
         color: theme.palette.warning.main,
