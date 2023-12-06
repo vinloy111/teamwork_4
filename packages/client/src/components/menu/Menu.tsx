@@ -7,13 +7,7 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material'
-import {
-  Link,
-  NavLink,
-  useHref,
-  useLocation,
-  useNavigate,
-} from 'react-router-dom'
+import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import yApiService from '../../services/y-api-service'
 import { useDispatch, useSelector } from 'react-redux'
 import { clearUser } from 'features/authSlice'
@@ -22,7 +16,6 @@ import FullscreenExitIcon from '@mui/icons-material/FullscreenExit'
 import LogoutIcon from '@mui/icons-material/Logout'
 import useFullScreen from 'hooks/useFullScreen'
 import { theme } from 'theme/index'
-import React from 'react'
 import { Store } from '../../store'
 
 const menu = [
@@ -32,14 +25,16 @@ const menu = [
   { id: 4, title: 'Таблица лидеров', link: 'leaderboard' },
   { id: 5, title: 'Настройки', link: 'settings' },
 ]
-function stringAvatar(name: string) {
-  return {
-    sx: {
-      bgcolor: theme.palette.success,
-    },
-    children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
-  }
-}
+// TODO: Неиспользуемый код
+// function stringAvatar(name: string) {
+//   return {
+//     sx: {
+//       bgcolor: theme.palette.success,
+//     },
+//     children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
+//   }
+// }
+
 const Menu = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
