@@ -47,12 +47,6 @@ export const FinalScreen = (props: Props): JSX.Element => {
       : 0
   const recordPoints = preRecordPoints > 0 ? preRecordPoints : 0
 
-  useEffect(() => {
-    if (gameHasUser && isUserWin) {
-      console.log('Отправка результатов в таблицу лидеров')
-    }
-  }, [recordPoints])
-
   const winnerImg = (
     <img
       src={

@@ -1,4 +1,4 @@
-import { LeaderBoardComponent } from '../../components/leaderboard/LeaderBoardComponent'
+import { LeaderBoardComponent } from 'components/leaderboard/LeaderBoardComponent'
 
 const LeaderBoardPage = () => {
   return <LeaderBoardComponent />

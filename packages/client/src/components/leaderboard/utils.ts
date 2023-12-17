@@ -1,8 +1,10 @@
-import { Player } from 'types/LidearBoard'
+import { PlayerLeaderBoard } from 'types/LidearBoard'
 import { mockAllUsers } from 'mocks/users'
-import { User } from 'types/User'
+import { getUserName } from 'utils/adaptUserData'
 
-export const fillUserData = (leaderBoard: Player[]): Player[] | [] => {
+export const fillUserData = (
+  leaderBoard: PlayerLeaderBoard[]
+): PlayerLeaderBoard[] | [] => {
   if (!leaderBoard || leaderBoard.length === 0) return []
   try {
     leaderBoard.forEach(player => {
@@ -19,12 +21,4 @@ export const fillUserData = (leaderBoard: Player[]): Player[] | [] => {
   }
 
   return leaderBoard
-}
-
-export const getUserName = (user: User | null) => {
-  if (!user) return `Unknown`
-  return (
-    user.displayName ??
-    (user.firstName ? `${user.firstName} ${user.secondName || ''}` : `Unknown`)
-  )
 }

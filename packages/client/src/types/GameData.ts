@@ -59,6 +59,10 @@ export type GameStats = {
   armiesPercent: number
   color: string
   isWinner?: boolean
+  playerType?: Player
+  playerName?: string
+  playerAvatar?: string
+  playerId?: string
 }
 
 export type GameResult = { stats: GameStats[]; seconds: number }

@@ -3,6 +3,8 @@ import { GameDifficulty, Player } from 'types/GameStats'
 
 export const APP_CONSTS = {
   gameName: 'Галактические войны',
+  ratingFieldName: 'teamGalacticWars',
+  teamName: 'team4GalacticWars',
   gameResourcesConfig: {
     areas: new Array(24) // это число изображений в каталоге /images/planets
       .fill({})

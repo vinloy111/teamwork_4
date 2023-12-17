@@ -17,3 +17,11 @@ export const adaptUserData = (userDataFromApi: UserFromApi): User => {
     avatar: buildPathToResource(userDataFromApi.avatar) || NOT_PHOTO_URL,
   }
 }
+
+export const getUserName = (user: User | null) => {
+  if (!user) return `Unknown`
+  return (
+    user.displayName ??
+    (user.firstName ? `${user.firstName} ${user.secondName || ''}` : `Unknown`)
+  )
+}

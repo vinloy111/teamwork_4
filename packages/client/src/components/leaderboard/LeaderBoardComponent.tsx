@@ -1,18 +1,26 @@
 import { Stack } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { fillUserData } from './utils'
-import { mockLeaderboardList } from '../../mocks/leaderboard'
-import { Player } from 'types/LidearBoard'
+import { PlayerLeaderBoard } from 'types/LidearBoard'
 import { DataGrid } from '@mui/x-data-grid'
 import Box from '@mui/system/Box'
 import { columns } from './settingsGrid'
 import { theme } from '../../theme'
 import StyledHeader from '../styled-header/StyledHeader'
+import { getLeaderBoard } from 'pages/leaderboard/leaderboard.controller'
 
+/** TODO: додумать пагинацию - пока просто получаем 50 строк, для серверной пагинации DATA-GRID хочет общее число строк - api не дает его */
+const LEADERBOARD_PAGE_LIMIT = 50
 export const LeaderBoardComponent = () => {
-  const [usersBoard, setUsersBoard] = useState<Player[]>([])
+  const [usersBoard, setUsersBoard] = useState<PlayerLeaderBoard[]>([])
   const getData = () => {
-    setUsersBoard(fillUserData(mockLeaderboardList))
+    getLeaderBoard(0, LEADERBOARD_PAGE_LIMIT).then(result => {
+      if (result) {
+        const leaderBoard = result.map((item, index) => {
+          return { ...item.data, id: String(index) }
+        })
+        setUsersBoard(leaderBoard)
+      }
+    })
   }
   useEffect(() => {
     getData()

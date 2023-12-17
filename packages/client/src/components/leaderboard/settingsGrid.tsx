@@ -12,7 +12,7 @@ export const columns: GridColDef[] = [
     sortable: false,
     renderCell: props => (
       <Avatar
-        src={`/avatars/` + props.value}
+        src={props.value || `/avatars/ufo1.png`}
         alt={props.field}
         sx={{ width: 'auto', height: 100, m: theme.spacing(1) }}
         variant={'square'}
