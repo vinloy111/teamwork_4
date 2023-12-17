@@ -5,7 +5,6 @@ import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
 import { getTime } from '../../utils/others'
 import { PlayerSettings } from 'types/GameStats'
-import { useEffect } from 'react'
 import { APP_CONSTS } from 'consts/index'
 
 type Props = {
