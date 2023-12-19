@@ -1,5 +1,5 @@
 import {
-  createBrowserRouter,
+  createMemoryRouter,
   createRoutesFromElements,
   Navigate,
   Route,
@@ -32,7 +32,7 @@ export const AppRouter = () => {
   const protectedRoute = (PageComponent: React.ComponentType) =>
     user ? <PageComponent /> : <Navigate to="/login" />
 
-  return createBrowserRouter(
+  return createMemoryRouter(
     createRoutesFromElements(
       <Route
         element={<Layout />}
