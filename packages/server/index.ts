@@ -17,9 +17,14 @@ async function startServer() {
   const port = Number(process.env.SERVER_PORT) || 3001
 
   let vite: ViteDevServer | undefined
-  const distPath = path.dirname(require.resolve('client/dist/index.html'))
+  // Добавил проверки на isDev, так как если запускаешь dev и нет папок с билдами, то все падает
+  const distPath = !isDev()
+    ? path.dirname(require.resolve('client/dist/index.html'))
+    : ''
   const srcPath = path.dirname(require.resolve('client'))
-  const ssrClientPath = require.resolve('client/dist-ssr/client.cjs')
+  const ssrClientPath = !isDev()
+    ? require.resolve('client/dist-ssr/client.cjs')
+    : ''
 
   if (isDev()) {
     vite = await createViteServer({
@@ -37,6 +42,8 @@ async function startServer() {
 
   if (!isDev()) {
     app.use('/assets', express.static(path.resolve(distPath, 'assets')))
+    app.use('/avatars', express.static(path.resolve(distPath, 'avatars')))
+    app.use('/images', express.static(path.resolve(distPath, 'images')))
   }
 
   app.use('*', async (req, res, next) => {

@@ -1,4 +1,5 @@
 import {
+  createBrowserRouter,
   createMemoryRouter,
   createRoutesFromElements,
   Navigate,
@@ -24,7 +25,7 @@ import ChangeAvatarPage from 'pages/change-avatar/ChangeAvatarPage'
 import { ForumAddTopicPage } from 'pages/add-topic/ForumAddTopicPage'
 import { ErrorComponent } from 'components/error/error'
 
-export const AppRouter = () => {
+export const AppRouter = (isServer = false) => {
   const user = useSelector((state: Store) => {
     return state.auth.user
   })
@@ -32,47 +33,38 @@ export const AppRouter = () => {
   const protectedRoute = (PageComponent: React.ComponentType) =>
     user ? <PageComponent /> : <Navigate to="/login" />
 
-  return createMemoryRouter(
-    createRoutesFromElements(
-      <Route
-        element={<Layout />}
-        errorElement={
-          <Layout>
-            <ErrorComponent type="500" />
-          </Layout>
-        }>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/500" element={<ServerErrorPage />} />
-        <Route path="*" element={<NotFoundPage />} />
+  const elements = createRoutesFromElements(
+    <Route
+      element={<Layout />}
+      errorElement={
+        <Layout>
+          <ErrorComponent type="500" />
+        </Layout>
+      }>
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
+      <Route path="/500" element={<ServerErrorPage />} />
+      <Route path="*" element={<NotFoundPage />} />
 
-        {/* Приватные страницы */}
-        <Route path="/" element={protectedRoute(HomePage)} />
-        <Route
-          path="/users/:userId"
-          element={protectedRoute(UserProfilePage)}
-        />
-        <Route path="/game" element={protectedRoute(GamePage)} />
-        <Route path="/leaderboard" element={protectedRoute(LeaderBoardPage)} />
-        <Route path="/forum" element={protectedRoute(ForumPage)} />
-        <Route
-          path="/forum/:topicId"
-          element={protectedRoute(ForumTopicPage)}
-        />
-        <Route
-          path="/forum/add-topic"
-          element={protectedRoute(ForumAddTopicPage)}
-        />
-        <Route path="/settings" element={protectedRoute(SettingsPage)} />
-        <Route
-          path="/change-password"
-          element={protectedRoute(ChangePasswordPage)}
-        />
-        <Route
-          path="/change-avatar"
-          element={protectedRoute(ChangeAvatarPage)}
-        />
-      </Route>
-    )
+      {/* Приватные страницы */}
+      <Route path="/" element={protectedRoute(HomePage)} />
+      <Route path="/users/:userId" element={protectedRoute(UserProfilePage)} />
+      <Route path="/game" element={protectedRoute(GamePage)} />
+      <Route path="/leaderboard" element={protectedRoute(LeaderBoardPage)} />
+      <Route path="/forum" element={protectedRoute(ForumPage)} />
+      <Route path="/forum/:topicId" element={protectedRoute(ForumTopicPage)} />
+      <Route
+        path="/forum/add-topic"
+        element={protectedRoute(ForumAddTopicPage)}
+      />
+      <Route path="/settings" element={protectedRoute(SettingsPage)} />
+      <Route
+        path="/change-password"
+        element={protectedRoute(ChangePasswordPage)}
+      />
+      <Route path="/change-avatar" element={protectedRoute(ChangeAvatarPage)} />
+    </Route>
   )
+
+  return isServer ? createMemoryRouter(elements) : createBrowserRouter(elements)
 }

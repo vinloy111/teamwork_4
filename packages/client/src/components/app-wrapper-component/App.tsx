@@ -17,7 +17,8 @@ import './App.css'
 import { LoaderComponent } from 'components/loader/LoaderComponent'
 
 function App() {
-  const router = AppRouter()
+  const isServer = typeof window === 'undefined'
+  const router = AppRouter(isServer)
   const [isAuthChecked, setIsAuthChecked] = useState(false)
 
   useAuthCheck(() => setIsAuthChecked(true))
