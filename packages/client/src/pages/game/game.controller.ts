@@ -34,6 +34,6 @@ export const saveResultToLeaderBoard = (stats: GameResult, user: User) => {
   }
   if (!dataPlayer) return
   yApiService.leaderboardNewLeaderRequest(dataPlayer).catch(error => {
-    console.error('Ошибка при получении данных пользователя:', error)
+    console.error('Ошибка при получении лидерборда:', error)
   })
 }
