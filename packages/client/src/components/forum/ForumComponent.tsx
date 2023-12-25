@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react'
+import { Store } from 'src/store'
+import { useSelector } from 'react-redux'
 import { DataGrid } from '@mui/x-data-grid'
 import { Stack, Typography } from '@mui/material'
 import { theme } from '../../theme'
@@ -10,6 +12,7 @@ import Button from '@mui/material/Button'
 
 export const ForumComponent = () => {
   const [forum, setForum] = useState<Forum | null>(null)
+  const user = useSelector((state: Store) => state.auth.user)
   const navigate = useNavigate()
   const getForum = () => {
     setForum(mockForum)
@@ -62,9 +65,12 @@ export const ForumComponent = () => {
         type="button"
         variant="outlined"
         className="submit"
+        disabled={!user?.id}
         onClick={() => navigate(`/forum/add-topic`)}
         sx={{ m: 2 }}>
-        Создать тему
+        {!user?.id
+          ? 'Для создания тем требуется авторизоваться или зарегистрироваться'
+          : 'Создать тему'}
       </Button>
     </Stack>
   )

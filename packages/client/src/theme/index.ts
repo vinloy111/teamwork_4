@@ -57,8 +57,18 @@ export const themeOptions: ThemeOptions = {
     MuiCssBaseline: {
       styleOverrides: {
         body: {
+          width: '100vw',
+          height: '100vh',
+          margin: 0,
           fontFamily: ['Chilanka', 'cursive', 'Arial'].join(','),
           boxSizing: 'border-box',
+        },
+        '#root': {
+          width: '100%',
+          height: '100%',
+        },
+        a: {
+          color: '#ffff00',
         },
       },
     },

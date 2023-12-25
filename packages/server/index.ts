@@ -1,6 +1,7 @@
 import dotenv from 'dotenv'
 import cors from 'cors'
 import { createServer as createViteServer } from 'vite'
+import { store } from './node_modules/client/src/store'
 import type { ViteDevServer } from 'vite'
 
 dotenv.config()
@@ -63,7 +64,7 @@ async function startServer() {
         template = await vite!.transformIndexHtml(url, template)
       }
 
-      let render: () => Promise<string>
+      let render: (url: string, store: any) => Promise<string>
 
       if (!isDev()) {
         render = (await import(ssrClientPath)).render
@@ -72,9 +73,24 @@ async function startServer() {
           .render
       }
 
-      const appHtml = await render()
+      // packages\server\index.ts
 
-      const html = template.replace(`<!--ssr-outlet-->`, appHtml)
+      // 1. Откуда импортировать store
+      // ?? import { store } from './node_modules/client/src/store'
+      // Если дулаю так, то все заканчивается ошибкой и кмк это не верно
+      // 2. Откуда импортировать dispatch для сохранения запроса в store
+      // 3. Как сделать запрос к северу?
+      const preloadedState = store.getState()
+      const preloadedStateScript = `<script>window.__PRELOADED_STATE__ = ${JSON.stringify(
+        preloadedState
+      ).replace(/</g, '\u003c')}</script>`
+
+      const appHtml = await render(url, store)
+
+      const html = template.replace(
+        `<!--ssr-outlet-->`,
+        appHtml + preloadedStateScript
+      )
 
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
     } catch (e) {
