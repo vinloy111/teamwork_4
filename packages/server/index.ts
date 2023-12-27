@@ -75,7 +75,7 @@ async function startServer() {
         template = await vite!.transformIndexHtml(url, template)
       }
 
-      let render: (url: string, store: any) => Promise<string>
+      let render: (url: string, cookie?: string) => Promise<string>
 
       if (!isDev()) {
         render = (await import(ssrClientPath)).render

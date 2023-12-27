@@ -16,7 +16,7 @@ const useAuthCheck = (onComplete: () => void) => {
         dispatch(clearUser())
         console.error('Неавторизованный доступ:', error)
       } finally {
-        onComplete?.()
+        onComplete()
       }
     }
 
