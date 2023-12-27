@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
   createTheme,
   CssBaseline,
@@ -6,20 +6,20 @@ import {
   useMediaQuery,
 } from '@mui/material'
 import { ErrorBoundary } from 'react-error-boundary'
-import { useSelector } from 'react-redux'
-import { Store } from 'src/store'
 import { ErrorComponent } from 'components/error/error'
 import useNotifications from 'hooks/useNotifications'
 import useAuthCheck from 'hooks/useAuthCheck'
 import { APP_CONSTS } from 'consts/index'
 import { themeOptions } from '../../theme'
 import { AppRouter } from './AppRouter'
+import { LoaderComponent } from 'components/loader/LoaderComponent'
 
 function App() {
-  useAuthCheck()
-  const user = useSelector((state: Store) => state.auth.user)
-  const { sendNotification, permitted } = useNotifications()
+  const [isAuthChecked, setIsAuthChecked] = useState(false)
+
+  useAuthCheck(() => setIsAuthChecked(true))
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
+  const { permitted, sendNotification } = useNotifications()
 
   const theme = useMemo(
     () =>
@@ -37,13 +37,11 @@ function App() {
   }, [])
 
   useEffect(() => {
-    if (permitted && !user?.id) {
-      sendNotification({
-        title: 'Вы не авторизованы',
-        text: 'Для сохранения ваших рекордов и общения на форуме необходимо авторизоваться или зарегистрироваться',
-        iconUrl: '/avatars/ufo1.png',
-      })
-    }
+    sendNotification({
+      text: 'Давай захватим вселенную!',
+      title: 'Привет из игры!',
+      iconUrl: '/avatars/ufo1.png',
+    })
   }, [permitted])
 
   return (
@@ -51,7 +49,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <>
           <CssBaseline />
-          <AppRouter />
+          {isAuthChecked ? <AppRouter /> : <LoaderComponent />}
         </>
       </ThemeProvider>
     </ErrorBoundary>

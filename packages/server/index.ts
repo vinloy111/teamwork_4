@@ -1,7 +1,7 @@
 import dotenv from 'dotenv'
 import cors from 'cors'
 import { createServer as createViteServer } from 'vite'
-import { store } from './node_modules/client/src/store'
+import { createProxyMiddleware } from 'http-proxy-middleware'
 import type { ViteDevServer } from 'vite'
 
 dotenv.config()
@@ -41,6 +41,17 @@ async function startServer() {
     res.json('👋 Howdy from the server :)')
   })
 
+  app.use(
+    '/api/v2',
+    createProxyMiddleware({
+      changeOrigin: true,
+      cookieDomainRewrite: {
+        '*': '',
+      },
+      target: 'https://ya-praktikum.tech',
+    })
+  )
+
   if (!isDev()) {
     app.use('/assets', express.static(path.resolve(distPath, 'assets')))
     app.use('/avatars', express.static(path.resolve(distPath, 'avatars')))
@@ -73,24 +84,16 @@ async function startServer() {
           .render
       }
 
-      // packages\server\index.ts
+      const [initialState, appHtml] = await render(url, req.headers['cookie'])
 
-      // 1. Откуда импортировать store
-      // ?? import { store } from './node_modules/client/src/store'
-      // Если дулаю так, то все заканчивается ошибкой и кмк это не верно
-      // 2. Откуда импортировать dispatch для сохранения запроса в store
-      // 3. Как сделать запрос к северу?
-      const preloadedState = store.getState()
-      const preloadedStateScript = `<script>window.__PRELOADED_STATE__ = ${JSON.stringify(
-        preloadedState
-      ).replace(/</g, '\u003c')}</script>`
-
-      const appHtml = await render(url, store)
-
-      const html = template.replace(
-        `<!--ssr-outlet-->`,
-        appHtml + preloadedStateScript
+      const initStateSerialized = JSON.stringify(initialState).replace(
+        /</g,
+        '\\u003c'
       )
+
+      const html = template
+        .replace(`<!--ssr-outlet-->`, appHtml)
+        .replace('<!--store-data-->', initStateSerialized)
 
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
     } catch (e) {

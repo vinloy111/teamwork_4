@@ -22,7 +22,7 @@ export const AppRouter = () => {
   const user = useSelector((state: Store) => state.auth.user)
 
   const protectedRoute = (PageComponent: React.ComponentType) =>
-    user ? <PageComponent /> : <Navigate to="/" />
+    user ? <PageComponent /> : <Navigate to="/login" />
 
   return (
     <Routes>
@@ -31,20 +31,22 @@ export const AppRouter = () => {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/500" element={<ServerErrorPage />} />
         <Route path="*" element={<NotFoundPage />} />
-
-        <Route path="/" element={<HomePage />} />
-        <Route path="/game" element={<GamePage />} />
-        <Route path="/leaderboard" element={<LeaderBoardPage />} />
-        <Route path="/forum" element={<ForumPage />} />
-        <Route path="/forum/:topicId" element={<ForumTopicPage />} />
         {/* Приватные страницы */}
-        <Route
-          path="/forum/add-topic"
-          element={protectedRoute(ForumAddTopicPage)}
-        />
+        <Route path="/" element={protectedRoute(HomePage)} />
         <Route
           path="/users/:userId"
           element={protectedRoute(UserProfilePage)}
+        />
+        <Route path="/game" element={protectedRoute(GamePage)} />
+        <Route path="/leaderboard" element={protectedRoute(LeaderBoardPage)} />
+        <Route path="/forum" element={protectedRoute(ForumPage)} />
+        <Route
+          path="/forum/:topicId"
+          element={protectedRoute(ForumTopicPage)}
+        />
+        <Route
+          path="/forum/add-topic"
+          element={protectedRoute(ForumAddTopicPage)}
         />
         <Route path="/settings" element={protectedRoute(SettingsPage)} />
         <Route

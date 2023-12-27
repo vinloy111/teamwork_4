@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { setUser, clearUser } from '../features/authSlice'
-import yApiService from '../services/y-api-service'
-import { adaptUserData } from '../utils/adaptUserData'
+import { setUser, clearUser } from 'features/authSlice'
+import yApiService from 'services/y-api-service'
+import { adaptUserData } from 'utils/adaptUserData'
 
-const useAuthCheck = (onComplete?: () => void) => {
+const useAuthCheck = (onComplete: () => void) => {
   const dispatch = useDispatch()
 
   useEffect(() => {

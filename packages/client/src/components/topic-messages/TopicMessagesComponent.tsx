@@ -1,8 +1,6 @@
-import { useState } from 'react'
-import { useSelector } from 'react-redux'
-import { Store } from 'src/store'
 import { Stack } from '@mui/material'
 import { Message, Topic } from 'types/Forum'
+import { useState } from 'react'
 import { MessageComponent } from './MessageComponent'
 
 declare type TopicMessagesProps = {
@@ -10,19 +8,9 @@ declare type TopicMessagesProps = {
 }
 export const TopicMessagesComponent = ({ topic }: TopicMessagesProps) => {
   const [messages, setMessages] = useState(topic.listOfMessages || [])
-  const user = useSelector((state: Store) => state.auth.user)
   const onSaveMessage = (message: Message) => {
     setMessages(prevState => [...prevState, message])
   }
-
-  const addMessage = (
-    <MessageComponent
-      initMessage={null}
-      isEditable={true}
-      onSaveMessage={onSaveMessage}
-    />
-  )
-
   return (
     <Stack
       display="flex"
@@ -40,7 +28,11 @@ export const TopicMessagesComponent = ({ topic }: TopicMessagesProps) => {
             onSaveMessage={onSaveMessage}
           />
         ))}
-      {user?.id && addMessage}
+      <MessageComponent
+        initMessage={null}
+        isEditable={true}
+        onSaveMessage={onSaveMessage}
+      />
     </Stack>
   )
 }
