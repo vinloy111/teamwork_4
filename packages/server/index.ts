@@ -1,6 +1,7 @@
 import dotenv from 'dotenv'
 import cors from 'cors'
 import { createServer as createViteServer } from 'vite'
+import { createProxyMiddleware } from 'http-proxy-middleware'
 import type { ViteDevServer } from 'vite'
 
 dotenv.config()
@@ -40,6 +41,17 @@ async function startServer() {
     res.json('👋 Howdy from the server :)')
   })
 
+  app.use(
+    '/api/v2',
+    createProxyMiddleware({
+      changeOrigin: true,
+      cookieDomainRewrite: {
+        '*': '',
+      },
+      target: 'https://ya-praktikum.tech',
+    })
+  )
+
   if (!isDev()) {
     app.use('/assets', express.static(path.resolve(distPath, 'assets')))
     app.use('/avatars', express.static(path.resolve(distPath, 'avatars')))
@@ -63,7 +75,7 @@ async function startServer() {
         template = await vite!.transformIndexHtml(url, template)
       }
 
-      let render: () => Promise<string>
+      let render: (url: string, cookie?: string) => Promise<string>
 
       if (!isDev()) {
         render = (await import(ssrClientPath)).render
@@ -72,9 +84,16 @@ async function startServer() {
           .render
       }
 
-      const appHtml = await render()
+      const [initialState, appHtml] = await render(url, req.headers['cookie'])
 
-      const html = template.replace(`<!--ssr-outlet-->`, appHtml)
+      const initStateSerialized = JSON.stringify(initialState).replace(
+        /</g,
+        '\\u003c'
+      )
+
+      const html = template
+        .replace(`<!--ssr-outlet-->`, appHtml)
+        .replace('<!--store-data-->', initStateSerialized)
 
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
     } catch (e) {

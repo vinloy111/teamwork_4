@@ -2,7 +2,7 @@ import React from 'react'
 import App from './App'
 import { render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
-import { store } from '../../store' // убедитесь, что путь до вашего хранилища верный
+import { createStore } from '../../store' // убедитесь, что путь до вашего хранилища верный
 
 const appContent = 'Home Page'
 
@@ -14,7 +14,7 @@ global.fetch = jest.fn(() =>
 describe('my suite', () => {
   test.skip('Example test', async () => {
     /*    render(
-      <Provider store={store}>
+      <Provider store={createStore()}>
         <App />
       </Provider>
     )

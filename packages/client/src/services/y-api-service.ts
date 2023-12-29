@@ -29,9 +29,12 @@ const yApiService = {
     })
   },
 
-  getUser() {
+  getUser(cookie?: string) {
     return axios.get<UserFromApi>(`${Y_API_BASE_URL}/auth/user`, {
       withCredentials: true,
+      headers: {
+        cookie,
+      },
     })
   },
 

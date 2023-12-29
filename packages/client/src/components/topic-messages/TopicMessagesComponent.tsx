@@ -1,5 +1,4 @@
 import { Stack } from '@mui/material'
-
 import { Message, Topic } from 'types/Forum'
 import { useState } from 'react'
 import { MessageComponent } from './MessageComponent'

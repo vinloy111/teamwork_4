@@ -11,14 +11,10 @@ import useNotifications from 'hooks/useNotifications'
 import useAuthCheck from 'hooks/useAuthCheck'
 import { APP_CONSTS } from 'consts/index'
 import { themeOptions } from '../../theme'
-import { RouterProvider } from 'react-router'
 import { AppRouter } from './AppRouter'
-import './App.css'
 import { LoaderComponent } from 'components/loader/LoaderComponent'
 
 function App() {
-  const isServer = typeof window === 'undefined'
-  const router = AppRouter(isServer)
   const [isAuthChecked, setIsAuthChecked] = useState(false)
 
   useAuthCheck(() => setIsAuthChecked(true))
@@ -53,11 +49,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <>
           <CssBaseline />
-          {isAuthChecked ? (
-            <RouterProvider router={router} />
-          ) : (
-            <LoaderComponent />
-          )}
+          {isAuthChecked ? <AppRouter /> : <LoaderComponent />}
         </>
       </ThemeProvider>
     </ErrorBoundary>
