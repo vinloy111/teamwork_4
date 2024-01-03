@@ -5,7 +5,6 @@ import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
 import { getTime } from '../../utils/others'
 import { PlayerSettings } from 'types/GameStats'
-import { useEffect } from 'react'
 import { APP_CONSTS } from 'consts/index'
 
 type Props = {
@@ -46,12 +45,6 @@ export const FinalScreen = (props: Props): JSX.Element => {
         seconds * 2
       : 0
   const recordPoints = preRecordPoints > 0 ? preRecordPoints : 0
-
-  useEffect(() => {
-    if (gameHasUser && isUserWin) {
-      console.log('Отправка результатов в таблицу лидеров')
-    }
-  }, [recordPoints])
 
   const winnerImg = (
     <img
