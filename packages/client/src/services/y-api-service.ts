@@ -114,6 +114,29 @@ const yApiService = {
     )
     return response.data
   },
+
+  getServiceId() {
+    return axios.get<{ service_id: string }>(
+      `${Y_API_BASE_URL}/oauth/yandex/service-id`,
+      {
+        params: { redirect_uri: window.location.origin },
+        withCredentials: true,
+      }
+    )
+  },
+
+  oauthLogin(code: string) {
+    return axios.post(
+      `${Y_API_BASE_URL}/oauth/yandex`,
+      {
+        code: code,
+        redirect_uri: window.location.origin,
+      },
+      {
+        withCredentials: true,
+      }
+    )
+  },
 }
 
 export default yApiService

@@ -17,6 +17,7 @@ import { adaptUserData } from '../../utils/adaptUserData'
 import { Store } from '../../store'
 import { useFormik } from 'formik'
 import { loginValidationSchema } from 'utils/userValidationSchema'
+import YandexLogo from '../../assets/images/yandex-logo.png'
 
 function LoginPage() {
   const navigate = useNavigate()
@@ -64,6 +65,18 @@ function LoginPage() {
     }
   }
 
+  const handleOAuthLogin = async () => {
+    try {
+      const CLIENT_ID = await yApiService
+        .getServiceId()
+        .then(({ data }) => data.service_id)
+      const REDIRECT_URI = encodeURIComponent(window.location.origin)
+      window.location.href = `https://oauth.yandex.ru/authorize?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}`
+    } catch (e) {
+      setError('Не удалось получить id приложения')
+    }
+  }
+
   return (
     <Container component="main" maxWidth="xs">
       <div className="login-form">
@@ -105,6 +118,18 @@ function LoginPage() {
             className="submit">
             Войти
           </Button>
+
+          <section className="alternative-logins">
+            Войти с помощью:
+            <Button
+              onClick={handleOAuthLogin}
+              variant="contained"
+              color="secondary"
+              type="button"
+              className="yandex-login-button">
+              <img src={YandexLogo} alt="Войти через Яндекс" />
+            </Button>
+          </section>
           <Typography
             variant="body2"
             style={{ marginTop: '20px', textAlign: 'center' }}>
