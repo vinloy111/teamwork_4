@@ -9,12 +9,16 @@ dotenv.config()
 import express from 'express'
 import * as fs from 'fs'
 import * as path from 'path'
+import { createClientAndConnect } from './db'
 
 const isDev = () => process.env.NODE_ENV === 'development'
 
 async function startServer() {
   const app = express()
   app.use(cors())
+
+  createClientAndConnect()
+
   const port = Number(process.env.SERVER_PORT) || 3000
 
   let vite: ViteDevServer | undefined

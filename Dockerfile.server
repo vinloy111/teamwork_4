@@ -1,27 +1,49 @@
-ARG NODE_VERSION=16
-ARG SERVER_PORT=3001
+ARG NODE_VERSION=18
+ARG SERVER_PORT=3000
 
-FROM node:$NODE_VERSION-buster as base
+# Устанавливаем базовый образ для сборки
+FROM node:$NODE_VERSION-buster as builder
 
+RUN apt-get update
+
+# Устанавливаем рабочую директорию
 WORKDIR /app
 
-FROM base as builder
-
+# Копируем файлы package.json и yarn.lock
 COPY package.json yarn.lock ./
+
+# Устанавливаем зависимости
 RUN yarn install --frozen-lockfile
 
+# Копируем весь проект
 COPY . .
 
 RUN yarn lerna bootstrap
-RUN rm -rf /app/packages/server/dist/ && yarn build --scope=server
 
+# Собираем клиент
+RUN cd packages/client && yarn build:ssr && yarn build
 
+# Собираем сервер
+RUN cd packages/server && yarn build
+
+# Устанавливаем базовый образ для запуска
 FROM node:$NODE_VERSION-buster-slim as production
+
 WORKDIR /app
 
+# Копируем собранные файлы сервера в рабочую директорию
 COPY --from=builder /app/packages/server/dist/ /app/
+
+# Копируем package.json сервера
 COPY --from=builder /app/packages/server/package.json /app/package.json
+
 RUN yarn install --production=true
 
+# Скопируйте собранный 'client' в 'node_modules' сервера
+COPY --from=builder /app/packages/client /app/node_modules/client
+
+# Открываем порт, который будет использоваться сервером
 EXPOSE $SERVER_PORT
+
+# Запускаем сервер
 CMD [ "node", "/app/index.js" ]
