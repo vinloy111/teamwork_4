@@ -39,7 +39,7 @@ COPY --from=builder /app/packages/server/package.json /app/package.json
 
 RUN yarn install --production=true
 
-# Скопируйте собранный 'client' в 'node_modules' сервера
+# Копируем собранный 'client' в 'node_modules' сервера
 COPY --from=builder /app/packages/client /app/node_modules/client
 
 # Открываем порт, который будет использоваться сервером
