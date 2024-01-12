@@ -13,10 +13,12 @@ import {
 import Button from '@mui/material/Button'
 import { StarterKit } from '@tiptap/starter-kit'
 import Box from '@mui/material/Box'
+import { TopicReactionsButtons } from 'components/topic-reactions-buttons'
 
 export declare type MessageProps = {
   initMessage?: Message | null
   isEditable?: boolean
+  topicId?: string
   onSaveMessage: (message: Message) => void
 }
 
@@ -36,6 +38,7 @@ export declare type MessageProps = {
 export const MessageComponent = ({
   initMessage,
   isEditable,
+  topicId,
   onSaveMessage,
 }: MessageProps) => {
   const [message, setMessage] = useState<Message | null>(initMessage || null)
@@ -79,6 +82,7 @@ export const MessageComponent = ({
               <Stack
                 direction="row"
                 spacing={2}
+                justifyContent="space-between"
                 sx={{
                   borderTopStyle: 'solid',
                   borderTopWidth: 1,
@@ -94,6 +98,7 @@ export const MessageComponent = ({
                   }}>
                   Отправить
                 </Button>
+                <TopicReactionsButtons topicId={topicId} />
               </Stack>
             ),
           }}

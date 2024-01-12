@@ -1,5 +1,6 @@
 import { Sequelize, SequelizeOptions } from 'sequelize-typescript'
 import { userModel, IUser } from '../models/user'
+import { reactionModel } from '../models/reaction'
 
 const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT } =
   process.env
@@ -28,6 +29,7 @@ export const sequelize = new Sequelize(sequelizeOptions)
 
 // Инициализируем модели
 export const User = sequelize.define('User', userModel, {})
+export const Reaction = sequelize.define('Reaction', reactionModel, {})
 
 export async function dbConnect() {
   try {
