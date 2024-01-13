@@ -10,6 +10,7 @@ import express from 'express'
 import * as fs from 'fs'
 import * as path from 'path'
 import themeRoutes from './routes/themeRoutes'
+import reactionRoutes from './routes/reactionRoutes'
 import { dbConnect } from './init'
 import forumRoutes from './routes/forumRoutes'
 
@@ -18,6 +19,7 @@ const isDev = () => process.env.NODE_ENV === 'development'
 async function startServer() {
   dbConnect().then(async () => {
     const app = express()
+    app.use(express.json())
     app.use(cors())
 
     const port = Number(process.env.SERVER_PORT) || 3000
@@ -43,6 +45,7 @@ async function startServer() {
     }
 
     app.use('/api/theme', themeRoutes)
+    app.use('/api/reaction', reactionRoutes)
     app.use('/api/forum', forumRoutes)
 
     app.get('/api', (_, res) => {

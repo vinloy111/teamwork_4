@@ -1,5 +1,6 @@
 import { Sequelize, SequelizeOptions } from 'sequelize-typescript'
-import { userModel } from '../models/user'
+import { userModel, IUser } from '../models/user'
+import { reactionModel } from '../models/reaction'
 import { forumModel, commentModel, topicModel } from '../models/forum'
 
 const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT } =
@@ -30,6 +31,9 @@ export const sequelize = new Sequelize(sequelizeOptions)
 // Инициализируем модели
 export const UserTable = sequelize.define('Users', userModel, {
   tableName: 'users',
+})
+export const ReactionTable = sequelize.define('Reaction', reactionModel, {
+  tableName: 'reactions',
 })
 export const ForumTable = sequelize.define('Forum', forumModel, {
   tableName: 'forum',

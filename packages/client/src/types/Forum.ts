@@ -19,3 +19,22 @@ export declare type Message = {
   text: string
   date: string
 }
+
+export type Emoji = {
+  id: string
+  img: string
+  description: string
+}
+
+export type Reaction = {
+  id: string
+  userId: string
+  topicId: string
+  emojiId: string
+}
+
+export type ReactionSave = {
+  userId: string
+  topicId: string
+  emojiId: string
+}
