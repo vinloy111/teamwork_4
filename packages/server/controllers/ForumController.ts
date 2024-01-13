@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express'
-import { ForumTable, ReactionTable, TopicsTable } from '../init'
+import { ForumTable, TopicsTable } from '../init'
 
 class ForumController {
   /** Получение данных форума */
@@ -7,7 +7,7 @@ class ForumController {
     try {
       /* const forum = await ForumTable.create({caption : "Форум Игры" });
        console.log("Jane's auto-generated ID:", forum);*/
-      const forumFromBd = await ForumTable.findAll()
+      const forumFromBd = await ForumTable.findOne()
       return res.status(200).json(forumFromBd)
     } catch (error) {
       return res.status(500).json({

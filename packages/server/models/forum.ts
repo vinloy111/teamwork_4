@@ -17,15 +17,13 @@ export declare type IComment = {
 }
 
 export declare type IReply = {
-  idParentMessage: string
+  idComment: string
   idMessage: string
 }
 
 export declare type IMessage = {
   idAuthor: string
   content: string
-  dateCreate: string
-  dateUpdate: string
 }
 export const forumModel: ModelAttributes<Model, IForum> = {
   idAuthor: {
@@ -49,7 +47,7 @@ export const topicModel: ModelAttributes<Model, ITopic> = {
 }
 export const commentModel: ModelAttributes<Model, IComment> = {
   idMessage: {
-    type: DataType.STRING,
+    type: DataType.INTEGER,
     allowNull: false,
   },
   idTopic: {
@@ -58,12 +56,12 @@ export const commentModel: ModelAttributes<Model, IComment> = {
   },
 }
 export const replyModel: ModelAttributes<Model, IReply> = {
-  idParentMessage: {
+  idComment: {
     type: DataType.STRING,
     allowNull: false,
   },
   idMessage: {
-    type: DataType.STRING,
+    type: DataType.INTEGER,
     allowNull: false,
   },
 }
@@ -73,14 +71,6 @@ export const messageModel: ModelAttributes<Model, IMessage> = {
     allowNull: false,
   },
   content: {
-    type: DataType.STRING,
-    allowNull: false,
-  },
-  dateCreate: {
-    type: DataType.STRING,
-    allowNull: false,
-  },
-  dateUpdate: {
     type: DataType.STRING,
     allowNull: false,
   },
