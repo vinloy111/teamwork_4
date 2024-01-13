@@ -1,5 +1,5 @@
 import { Sequelize, SequelizeOptions } from 'sequelize-typescript'
-import { userModel, IUser } from '../models/user'
+import { userModel } from '../models/user'
 import { reactionModel } from '../models/reaction'
 import { forumModel, commentModel, topicModel } from '../models/forum'
 

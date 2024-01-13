@@ -32,6 +32,7 @@ export declare type MessageProps = {
  * есть смысл выделить RichTextEditor в отдельный компонент
  * @param initMessage
  * @param isEditable
+ * @param topicId
  * @param onSaveMessage
  * @constructor
  */
