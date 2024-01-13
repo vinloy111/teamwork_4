@@ -1,5 +1,6 @@
 import type { Request, Response } from 'express'
 import { ForumTable, TopicsTable } from '../init'
+import MessagesController from './MessagesController'
 
 class ForumController {
   /** Получение данных форума */
@@ -8,7 +9,12 @@ class ForumController {
       /* const forum = await ForumTable.create({caption : "Форум Игры" });
        console.log("Jane's auto-generated ID:", forum);*/
       const forumFromBd = await ForumTable.findOne()
-      return res.status(200).json(forumFromBd)
+      const topics = await TopicsTable.findAll()
+      if (!forumFromBd)
+        return res.status(404).json({ error: 'Forum not created' })
+      return res
+        .status(200)
+        .json({ ...forumFromBd?.dataValues, listOfTopics: topics })
     } catch (error) {
       return res.status(500).json({
         message: 'Error - getForum',

@@ -7,12 +7,13 @@ import { mockForum } from 'mocks/forum'
 import { getColumns } from './settingForum'
 import { useNavigate } from 'react-router-dom'
 import Button from '@mui/material/Button'
+import backendService from 'services/backend-service'
 
 export const ForumComponent = () => {
   const [forum, setForum] = useState<Forum | null>(null)
   const navigate = useNavigate()
   const getForum = () => {
-    setForum(mockForum)
+    backendService.getForum().then(res => setForum(res.data))
   }
   useEffect(() => {
     getForum()

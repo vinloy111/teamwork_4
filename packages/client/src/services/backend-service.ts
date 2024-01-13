@@ -1,7 +1,7 @@
 import axios from 'axios'
-import { ReactionSave, Reaction } from 'types/Forum'
+import { ReactionSave, Reaction, Forum, Topic } from 'types/Forum'
 
-export const SERVER_BASE_URL = 'http://localhost:3001'
+export const SERVER_BASE_URL = 'http://localhost:3000'
 
 const backendService = {
   getReactions(id: string) {
@@ -20,6 +20,12 @@ const backendService = {
     return axios.delete<Reaction[]>(
       `${SERVER_BASE_URL}/api/reaction/${id}/delete/topic/${topicId}`
     )
+  },
+  getForum() {
+    return axios.get<Forum>(`${SERVER_BASE_URL}/api/forum`)
+  },
+  getTopic(id: string) {
+    return axios.get<Topic>(`${SERVER_BASE_URL}/api/forum/topic/${id}`)
   },
 }
 
