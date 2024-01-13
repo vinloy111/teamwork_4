@@ -1,5 +1,6 @@
 import { Sequelize, SequelizeOptions } from 'sequelize-typescript'
 import { userModel, IUser } from '../models/user'
+import { forumModel, commentModel, topicModel } from '../models/forum'
 
 const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT } =
   process.env
@@ -27,7 +28,24 @@ const sequelizeOptions: SequelizeOptions =
 export const sequelize = new Sequelize(sequelizeOptions)
 
 // Инициализируем модели
-export const User = sequelize.define('User', userModel, {})
+export const UserTable = sequelize.define('Users', userModel, {
+  tableName: 'users',
+})
+export const ForumTable = sequelize.define('Forum', forumModel, {
+  tableName: 'forum',
+})
+export const TopicsTable = sequelize.define('Topics', topicModel, {
+  tableName: 'topics',
+})
+export const CommentsTable = sequelize.define('Comments', commentModel, {
+  tableName: 'comments',
+})
+export const RepliesTable = sequelize.define('Replies', commentModel, {
+  tableName: 'replies',
+})
+export const MessagesTable = sequelize.define('Messages', commentModel, {
+  tableName: 'messages',
+})
 
 export async function dbConnect() {
   try {
