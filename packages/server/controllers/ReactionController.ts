@@ -1,12 +1,12 @@
 import type { Request, Response } from 'express'
-import { Reaction } from '../init'
+import { ReactionTable } from '../init'
 
 class ReactionController {
   async getReactions(req: Request, res: Response): Promise<Response> {
     try {
       const { topicId } = req.params
 
-      const reactions = await Reaction.findAll({
+      const reactions = await ReactionTable.findAll({
         where: {
           topicId,
         },
@@ -24,8 +24,8 @@ class ReactionController {
     try {
       const { userId, emojiId, topicId } = req.body
 
-      await Reaction.create({ userId, emojiId, topicId })
-      const reactions = await Reaction.findAll({
+      await ReactionTable.create({ userId, emojiId, topicId })
+      const reactions = await ReactionTable.findAll({
         where: {
           topicId,
         },
@@ -44,13 +44,13 @@ class ReactionController {
       const { id } = req.params
       const { userId, emojiId, topicId } = req.body
 
-      await Reaction.update(
+      await ReactionTable.update(
         { userId, emojiId, topicId },
         {
           where: { id },
         }
       )
-      const reactions = await Reaction.findAll({
+      const reactions = await ReactionTable.findAll({
         where: {
           topicId,
         },
@@ -68,11 +68,11 @@ class ReactionController {
     try {
       const { id, topicId } = req.params
 
-      const item = await Reaction.findOne({
+      const item = await ReactionTable.findOne({
         where: { id },
       })
       await item?.destroy()
-      const reactions = await Reaction.findAll({
+      const reactions = await ReactionTable.findAll({
         where: {
           topicId,
         },
