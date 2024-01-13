@@ -1,4 +1,4 @@
-import { DataType, Model, Table, Column } from 'sequelize-typescript'
+import { DataType, Model } from 'sequelize-typescript'
 import type { ModelAttributes } from 'sequelize/types'
 
 export interface IUser {

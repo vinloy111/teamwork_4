@@ -1,5 +1,5 @@
 import { Sequelize, SequelizeOptions } from 'sequelize-typescript'
-import { userModel, IUser } from '../models/user'
+import { userModel } from '../models/user'
 import { forumModel, commentModel, topicModel } from '../models/forum'
 
 const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT } =
