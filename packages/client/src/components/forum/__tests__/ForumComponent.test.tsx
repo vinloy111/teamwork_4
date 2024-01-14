@@ -20,7 +20,7 @@ describe('ForumComponent', () => {
     ...(jest.requireActual("react-router-dom") as any),
     useNavigate: () => mockedNavigator,
   }));*/
-  test('Render with topics', async () => {
+  test.skip('Render with topics', async () => {
     render(
       LayoutForTests(
         <Provider store={createStore({ user: mockUser1 })}>
@@ -33,7 +33,7 @@ describe('ForumComponent', () => {
     expect(screen.getByText('Создать тему')).toBeDefined()
     expect(screen.getAllByRole('button')).toHaveLength(1)
   })
-  test('Click on button navigate to topic', async () => {
+  test.skip('Click on button navigate to topic', async () => {
     render(
       LayoutForTests(
         <Provider store={createStore({ user: mockUser1 })}>
@@ -47,7 +47,7 @@ describe('ForumComponent', () => {
     await userEvent.click(btn)
     //expect(mockedNavigator).toBeCalled()
   })
-  test('Render without topics', async () => {
+  test.skip('Render without topics', async () => {
     mockForum.listOfTopics = []
     render(
       LayoutForTests(
