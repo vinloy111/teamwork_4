@@ -57,6 +57,23 @@ const backendService = {
       { content }
     )
   },
+  sendReply(content: string, idComment: string, user: User) {
+    const newComment = {
+      idComment,
+      userName: getUserName(user),
+      idAuthor: user.id,
+      content,
+    }
+    return axios.post<Message>(
+      `${SERVER_BASE_URL}/api/forum/reply/`,
+      newComment
+    )
+  },
+  deleteReply(idReply: string) {
+    return axios.delete<{ deletedId: string }>(
+      `${SERVER_BASE_URL}/api/forum/reply/${idReply}`
+    )
+  },
 }
 
 export default backendService

@@ -40,7 +40,8 @@ import Paper from '@mui/material/Paper'
 export declare type MessageProps = {
   initMessage?: Message | null
   topicId?: string
-  onSaveMessage: (content: string) => void
+  onAddReply: (content: string) => void
+  onDeleteReply: (idReply: string) => void
 }
 
 /**
@@ -52,22 +53,15 @@ export declare type MessageProps = {
  */
 export const ReplyComponent = ({
   initMessage,
-  onSaveMessage,
+  onAddReply,
+  onDeleteReply,
 }: MessageProps) => {
-  const [message, setMessage] = useState<Message | null>(initMessage || null)
-  const [text, setText] = useState(initMessage?.content || '')
+  const [reply, setReply] = useState<Message | null>(initMessage || null)
   const [isEditable, setIsEditable] = useState(false)
-  useEffect(() => {
-    //setMessage({ createdAt: '', updatedAt: '', id: 'new', idAuthor: '', content: text })
-  }, [text])
-  const onTextChange = (value: string) => {
-    setText(value)
-    //onSaveMessage({ createdAt: '', updatedAt: '', id: 'new', idAuthor: '', content: value })
-  }
-  const rteRef = useRef<RichTextEditorRef>(null)
   const user = useSelector((state: Store) => state.auth.user)
-  const fullPermission = user?.id === message?.idAuthor
+  const fullPermission = user?.id === reply?.idAuthor
 
+  if (!reply) return null
   return (
     <Paper sx={{ my: 2, minWidth: isEditable ? '100%' : '50%' }}>
       <Stack
@@ -77,15 +71,16 @@ export const ReplyComponent = ({
           paddingBottom: 3,
         }}>
         <HeaderMessageComponent
-          userName={message?.userName}
+          userName={reply?.userName}
           fullPermission={fullPermission}
           editing={isEditable}
           setEditing={setIsEditable}
+          onDelete={() => onDeleteReply(reply.id)}
         />
         <MessageComponent
-          initMessage={message}
+          initMessage={reply}
           isEditable={isEditable}
-          onSaveMessage={onSaveMessage}
+          onSaveMessage={onAddReply}
         />
       </Stack>
     </Paper>

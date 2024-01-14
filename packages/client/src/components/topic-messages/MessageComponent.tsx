@@ -1,17 +1,16 @@
 import { Message } from 'types/Forum'
-import { ReactNode, useEffect, useRef, useState } from 'react'
+import { MouseEvent, useRef, useState } from 'react'
+import { Alert, ButtonGroup, Collapse, IconButton, Stack } from '@mui/material'
 import {
-  Accordion,
-  AccordionSummary,
-  Avatar,
-  ButtonGroup,
-  IconButton,
-  MenuItem,
-  Stack,
-} from '@mui/material'
-import {
+  MenuButtonAddImage,
+  MenuButtonBlockquote,
   MenuButtonBold,
+  MenuButtonCode,
+  MenuButtonCodeBlock,
   MenuButtonItalic,
+  MenuButtonOrderedList,
+  MenuButtonRedo,
+  MenuButtonUndo,
   MenuControlsContainer,
   MenuDivider,
   MenuSelectHeading,
@@ -20,20 +19,8 @@ import {
 } from 'mui-tiptap'
 import Button from '@mui/material/Button'
 import { StarterKit } from '@tiptap/starter-kit'
-import Box from '@mui/material/Box'
 import { TopicReactionsButtons } from 'components/topic-reactions-buttons'
-import DeleteIcon from '@mui/icons-material/Delete'
-import ReplyIcon from '@mui/icons-material/Reply'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import EditIcon from '@mui/icons-material/Edit'
-import ExpandLessIcon from '@mui/icons-material/ExpandLess'
-import { useSelector } from 'react-redux'
-import { Store } from '../../store'
-import { NavLink } from 'react-router-dom'
-import { theme } from 'theme/index'
-import Typography from '@mui/material/Typography'
-import { getUserName } from 'utils/adaptUserData'
-import backendService from 'services/backend-service'
+import CloseIcon from '@mui/icons-material/Close'
 
 export declare type MessageProps = {
   initMessage?: Message | null
@@ -61,70 +48,100 @@ export const MessageComponent = ({
 }: MessageProps) => {
   const [message, setMessage] = useState<Message | null>(initMessage || null)
   const [text, setText] = useState(initMessage?.content || '')
-  useEffect(() => {
-    //setMessage({ createdAt: '', updatedAt: '', id: 'new', idAuthor: '', content: text })
-  }, [text])
-  const onTextChange = (value: string) => {
-    setText(value)
-    if (onSaveMessage) onSaveMessage(value)
-    if (onUpdateMessage) onUpdateMessage(value)
-  }
+
+  const [error, setError] = useState<string | null>(null)
 
   const rteRef = useRef<RichTextEditorRef>(null)
+  const editor = rteRef.current?.editor
 
+  const onSendMessage = (value: string) => {
+    if (onSaveMessage) onSaveMessage(value)
+    if (onUpdateMessage) onUpdateMessage(value)
+
+    editor?.chain().setContent('')
+  }
   return (
-    <RichTextEditor
-      ref={rteRef}
-      extensions={[StarterKit]}
-      content={text}
-      editable={isEditable}
-      renderControls={() => (
-        <MenuControlsContainer>
-          <MenuSelectHeading />
-          <MenuDivider />
-          <MenuButtonBold />
-          <MenuButtonItalic />
-        </MenuControlsContainer>
-      )}
-      RichTextFieldProps={{
-        variant: 'outlined',
-        MenuBarProps: {
-          hide: !isEditable,
-        },
-        footer: isEditable && (
-          <Stack
-            direction="row"
-            spacing={2}
-            justifyContent="space-between"
-            sx={{
-              borderTopStyle: 'solid',
-              borderTopWidth: 1,
-              borderTopColor: theme => theme.palette.divider,
-              py: 1,
-              px: 1.5,
-            }}>
-            <ButtonGroup>
-              <Button
-                variant="contained"
-                size="small"
-                onClick={() => {
-                  onTextChange(rteRef.current?.editor?.getHTML() ?? '')
-                }}>
-                Отправить
-              </Button>
-              {handleCancel && (
+    <Stack width={'100%'}>
+      <Collapse in={error !== null}>
+        <Alert
+          severity="error"
+          action={
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              size="small"
+              onClick={() => {
+                setError(null)
+              }}>
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
+          }
+          sx={{ mb: 2 }}>
+          {error}
+        </Alert>
+      </Collapse>
+      <RichTextEditor
+        ref={rteRef}
+        extensions={[StarterKit]}
+        content={text}
+        editable={isEditable}
+        renderControls={() => (
+          <MenuControlsContainer>
+            <MenuButtonUndo />
+            <MenuButtonRedo />
+            <MenuDivider />
+            <MenuSelectHeading />
+            <MenuDivider />
+            <MenuButtonBold />
+            <MenuButtonItalic />
+            <MenuButtonCode />
+            <MenuButtonCodeBlock />
+            <MenuButtonBlockquote />
+            <MenuButtonOrderedList />
+          </MenuControlsContainer>
+        )}
+        RichTextFieldProps={{
+          variant: 'outlined',
+          MenuBarProps: {
+            hide: !isEditable,
+          },
+          footer: isEditable && (
+            <Stack
+              direction="row"
+              spacing={2}
+              justifyContent="space-between"
+              sx={{
+                borderTopStyle: 'solid',
+                borderTopWidth: 1,
+                borderTopColor: theme => theme.palette.divider,
+                py: 1,
+                px: 1.5,
+              }}>
+              <ButtonGroup>
                 <Button
-                  variant="outlined"
+                  variant="contained"
                   size="small"
-                  onClick={() => handleCancel()}>
-                  Отмена
+                  onClick={() => {
+                    if (!rteRef.current?.editor?.getText())
+                      setError('Введите сообщение')
+                    else onSendMessage(rteRef.current?.editor?.getHTML() ?? '')
+                  }}>
+                  Отправить
                 </Button>
-              )}
-            </ButtonGroup>
-            <TopicReactionsButtons topicId={message?.idTopic} />
-          </Stack>
-        ),
-      }}
-    />
+                {handleCancel && (
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    onClick={() => handleCancel()}>
+                    Отмена
+                  </Button>
+                )}
+              </ButtonGroup>
+              <TopicReactionsButtons topicId={message?.idTopic} />
+            </Stack>
+          ),
+        }}
+      />
+    </Stack>
   )
 }

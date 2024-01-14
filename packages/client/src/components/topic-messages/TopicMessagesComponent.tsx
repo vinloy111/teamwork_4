@@ -9,6 +9,7 @@ import { setReactions } from 'features/reactionsSlice'
 import { CommentComponent } from 'components/topic-messages/CommentComponent'
 import { getUserName } from 'utils/adaptUserData'
 import { Store } from '../../store'
+import Paper from '@mui/material/Paper'
 
 declare type TopicMessagesProps = {
   topic: Topic
@@ -65,11 +66,13 @@ export const TopicMessagesComponent = ({ topic }: TopicMessagesProps) => {
           />
         ))}
       <TopicReactionsShow />
-      <MessageComponent
-        initMessage={null}
-        isEditable
-        onSaveMessage={onSaveMessage}
-      />
+      <Paper sx={{ width: '90%', m: 1 }}>
+        <MessageComponent
+          initMessage={null}
+          isEditable
+          onSaveMessage={onSaveMessage}
+        />
+      </Paper>
     </Stack>
   )
 }

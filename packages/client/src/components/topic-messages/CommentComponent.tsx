@@ -60,6 +60,23 @@ export const CommentComponent = ({
       setIsEditable(false)
     })
   }
+  const onDeleteReply = (id: string) => {
+    backendService
+      .deleteReply(id)
+      .then(res =>
+        setReplies(prevState => [
+          ...prevState.filter(comment => comment.id != res.data.deletedId),
+        ])
+      )
+  }
+
+  const onAddReply = (content: string) => {
+    if (!user || !message) return
+    backendService
+      .sendReply(content, message.id, user)
+      .then(reply => setReplies(prevState => [...prevState, reply.data]))
+  }
+
   const fullPermission = user?.id === message?.idAuthor
   const renderReplies = () => (
     <Stack alignItems={'end'} my={2}>
@@ -68,14 +85,15 @@ export const CommentComponent = ({
           <ReplyComponent
             key={reply.id}
             initMessage={reply}
-            onSaveMessage={onSaveMessage}
+            onAddReply={onAddReply}
+            onDeleteReply={onDeleteReply}
           />
         ))}
       <Box width={'100%'}>
         <MessageComponent
           initMessage={null}
           isEditable={true}
-          onSaveMessage={onSaveMessage}
+          onSaveMessage={onAddReply}
           handleCancel={() => setExpandedReplies(false)}
         />
         <Divider sx={{ my: 3 }} />
