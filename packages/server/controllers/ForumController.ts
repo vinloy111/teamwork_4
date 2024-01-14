@@ -79,15 +79,28 @@ class ForumController {
         where: {
           idTopic: id,
         },
-        include: MessagesTable,
+        include: [
+          { model: MessagesTable, attributes: ['content', 'idAuthor'] },
+        ],
       })
-      return res
-        .status(200)
-        .json({
-          ...topic?.dataValues,
-          listOfMessages: comments,
-          countOfMessage: comments.length,
-        })
+
+      return res.status(200).json({
+        ...topic?.dataValues,
+        listOfMessages: comments.map(comment => {
+          const { id, idMessage, idTopic, createdAt, updatedAt, Message } =
+            comment.dataValues
+          return {
+            id,
+            idMessage,
+            idTopic,
+            createdAt,
+            updatedAt,
+            content: Message.content,
+            idAuthor: Message.idAuthor,
+          }
+        }),
+        countOfMessage: comments.length,
+      })
     } catch (error) {
       return res.status(500).json({
         message: 'Error - updateTopic',
@@ -126,6 +139,7 @@ class ForumController {
       })
     }
   }
+
   getTest(req: Request, res: Response) {
     res.json({ forum: 'name' })
   }
