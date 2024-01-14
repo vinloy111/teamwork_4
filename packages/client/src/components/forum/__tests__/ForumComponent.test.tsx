@@ -13,6 +13,7 @@ const LayoutForTests = (component: React.ReactNode, route?: string) => {
     <MemoryRouter initialEntries={[route || '/']}>{component}</MemoryRouter>
   )
 }
+
 describe('ForumComponent', () => {
   /*  const mockedNavigator = jest.fn();
   jest.mock("react-router-dom", () => ({
