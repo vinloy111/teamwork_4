@@ -3,7 +3,6 @@ import { DataGrid } from '@mui/x-data-grid'
 import { Stack, Typography } from '@mui/material'
 import { theme } from '../../theme'
 import { Forum } from 'types/Forum'
-import { mockForum } from 'mocks/forum'
 import { getColumns } from './settingForum'
 import { useNavigate } from 'react-router-dom'
 import Button from '@mui/material/Button'
@@ -23,7 +22,7 @@ export const ForumComponent = () => {
   }, [])
 
   const onDeleteTopic = (id: string) => {
-    backendService.deleteTopic(id).then(res => getForum())
+    backendService.deleteTopic(id).then(() => getForum())
   }
   return (
     <Stack

@@ -1,11 +1,5 @@
 import type { Request, Response } from 'express'
-import {
-  CommentsTable,
-  ForumTable,
-  MessagesTable,
-  sequelize,
-  TopicsTable,
-} from '../init'
+import { CommentsTable, ForumTable, MessagesTable, TopicsTable } from '../init'
 
 class ForumController {
   /** Получение данных форума */

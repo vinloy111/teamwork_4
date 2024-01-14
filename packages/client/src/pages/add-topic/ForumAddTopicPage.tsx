@@ -13,9 +13,6 @@ import { Store } from '../../store'
 const HELPER_TEXT_MIN = 'Минимум 5 символов!'
 const HELPER_TEXT_MAX = 'Максимум 100 символов!'
 
-const getTopicById = (topicId: string): Topic | null => {
-  return mockAllTopics.find(topic => topic.id === topicId) || null
-}
 export const ForumAddTopicPage = () => {
   const [topic, setTopic] = useState('')
   const [error, setError] = useState<string | null>(null)

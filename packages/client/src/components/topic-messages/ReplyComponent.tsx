@@ -8,7 +8,7 @@ import { MessageComponent } from 'components/topic-messages/MessageComponent'
 import Paper from '@mui/material/Paper'
 
 export declare type MessageProps = {
-  initMessage?: Message | null
+  reply?: Message | null
   topicId?: string
   onAddReply: (content: string) => void
   onDeleteReply: (idReply: string) => void
@@ -17,16 +17,13 @@ export declare type MessageProps = {
 /**
  * Компонент Ответа на комментарий в топике
  * @param initMessage
- * @param isEditable
- * @param onSaveMessage
  * @constructor
  */
 export const ReplyComponent = ({
-  initMessage,
+  reply,
   onAddReply,
   onDeleteReply,
 }: MessageProps) => {
-  const [reply, setReply] = useState<Message | null>(initMessage || null)
   const [isEditable, setIsEditable] = useState(false)
   const user = useSelector((state: Store) => state.auth.user)
   const fullPermission = user?.id === reply?.idAuthor

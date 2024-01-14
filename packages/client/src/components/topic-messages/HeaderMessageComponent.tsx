@@ -31,6 +31,8 @@ export declare type HeaderMessageProps = {
  * @param showReply
  * @param setEditing
  * @param editing
+ * @param clickOnReply
+ * @param onDelete
  * @constructor
  */
 export const HeaderMessageComponent = ({

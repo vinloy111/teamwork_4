@@ -28,7 +28,6 @@ export declare type CommentComponent = {
  * есть смысл выделить RichTextEditor в отдельный компонент
  * @param initMessage
  * @param isEditable
- * @param topicId
  * @constructor
  */
 export const CommentComponent = ({
@@ -53,7 +52,7 @@ export const CommentComponent = ({
   }
   const onUpdateMessage = (content: string) => {
     if (!message) return
-    backendService.updateMessage(content, message.idMessage).then(res => {
+    backendService.updateMessage(content, message.idMessage).then(() => {
       setMessage({ ...message, content })
       setIsEditable(false)
     })
@@ -82,7 +81,7 @@ export const CommentComponent = ({
         replies.map(reply => (
           <ReplyComponent
             key={reply.id}
-            initMessage={reply}
+            reply={reply}
             onAddReply={onAddReply}
             onDeleteReply={onDeleteReply}
           />
