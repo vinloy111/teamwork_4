@@ -33,6 +33,9 @@ import { theme } from 'theme/index'
 import Typography from '@mui/material/Typography'
 import { getUserName } from 'utils/adaptUserData'
 import backendService from 'services/backend-service'
+import { HeaderMessageComponent } from 'components/topic-messages/HeaderMessageComponent'
+import { MessageComponent } from 'components/topic-messages/MessageComponent'
+import Paper from '@mui/material/Paper'
 
 export declare type MessageProps = {
   initMessage?: Message | null
@@ -41,35 +44,21 @@ export declare type MessageProps = {
   onSaveMessage: (message: Message) => void
 }
 
-function Item(props: { children: ReactNode }) {
-  return null
-}
-
 /**
- * Компонент для сообщения в теме форума.
- * Предполагается, что потом каждое сообщение можно будет изменить,
- * если у авторизованного юзера будет на это право (он автор или админ).
- * В header добавятся кнопки 'Изменить', 'Удалить', 'Цитировать'
- * Дальше еще работа с эмоджи.
- * Плюс доработка дизайна
- * есть смысл выделить RichTextEditor в отдельный компонент
+ * Компонент Ответа на комментарий в топике
  * @param initMessage
  * @param isEditable
- * @param topicId
  * @param onSaveMessage
  * @constructor
  */
-export const MessageComponent = ({
+export const ReplyComponent = ({
   initMessage,
   isEditable,
-  topicId,
   onSaveMessage,
 }: MessageProps) => {
   const [message, setMessage] = useState<Message | null>(initMessage || null)
   const [text, setText] = useState(initMessage?.content || '')
   const [showMenuBar, setShowMenuBar] = useState(isEditable || false)
-  const [replies, setReplies] = useState<Message[]>([])
-  const [expandedReplies, setExpandedReplies] = useState(false)
   useEffect(() => {
     //setMessage({ createdAt: '', updatedAt: '', id: 'new', idAuthor: '', content: text })
   }, [text])
@@ -77,116 +66,28 @@ export const MessageComponent = ({
     setText(value)
     //onSaveMessage({ createdAt: '', updatedAt: '', id: 'new', idAuthor: '', content: value })
   }
-  const getReplies = () => {
-    if (!message) return
-    backendService.getReplies(message.id).then(res => setReplies(res.data))
-  }
-  useEffect(() => {
-    getReplies()
-  }, [])
-
   const rteRef = useRef<RichTextEditorRef>(null)
   const user = useSelector((state: Store) => state.auth.user)
   const fullPermission = user?.id === message?.idAuthor
-  const renderHeader = () => (
-    <Stack direction="row" justifyContent="space-between" alignItems="center">
-      <Stack direction="row" justifyContent="space-start" alignItems="center">
-        <Typography>{message?.userName || 'Anonimus'}</Typography>
-      </Stack>
-      <Box>
-        {fullPermission ? (
-          <>
-            <IconButton aria-label="delete" color="secondary" size={'small'}>
-              <DeleteIcon />
-            </IconButton>
-            <IconButton aria-label="delete" color="secondary" size={'small'}>
-              <EditIcon />
-            </IconButton>
-          </>
-        ) : null}
-        <IconButton aria-label="delete" color="secondary">
-          <ReplyIcon />
-        </IconButton>
-        {replies && replies.length > 0 && (
-          <IconButton
-            color="secondary"
-            aria-label="add an alarm"
-            size={'medium'}
-            onClick={() => setExpandedReplies(!expandedReplies)}>
-            <ExpandMoreIcon />
-          </IconButton>
-        )}
-      </Box>
-    </Stack>
-  )
-  const renderContent = () => (
-    <RichTextEditor
-      ref={rteRef}
-      extensions={[StarterKit]}
-      content={text}
-      editable={isEditable}
-      renderControls={() => (
-        <MenuControlsContainer>
-          <MenuSelectHeading />
-          <MenuDivider />
-          <MenuButtonBold />
-          <MenuButtonItalic />
-        </MenuControlsContainer>
-      )}
-      RichTextFieldProps={{
-        variant: 'outlined',
-        MenuBarProps: {
-          hide: !showMenuBar,
-        },
-        footer: isEditable && (
-          <Stack
-            direction="row"
-            spacing={2}
-            justifyContent="space-between"
-            sx={{
-              borderTopStyle: 'solid',
-              borderTopWidth: 1,
-              borderTopColor: theme => theme.palette.divider,
-              py: 1,
-              px: 1.5,
-            }}>
-            <Button
-              variant="contained"
-              size="small"
-              onClick={() => {
-                onTextChange(rteRef.current?.editor?.getHTML() ?? '')
-              }}>
-              Отправить
-            </Button>
-            <TopicReactionsButtons topicId={topicId} />
-          </Stack>
-        ),
-      }}
-    />
-  )
-  const renderReplies = () => (
-    <Stack>
-      {replies.length > 0 &&
-        replies.map(reply => (
-          <MessageComponent
-            key={reply.id}
-            initMessage={reply}
-            isEditable={false}
-            onSaveMessage={onSaveMessage}
-          />
-        ))}
-    </Stack>
-  )
+
   return (
-    <Stack
-      width={'90%'}
-      sx={{
-        py: 1,
-        px: 1.5,
-      }}>
-      {renderHeader()}
-      {renderContent()}
-      {expandedReplies && renderReplies()}
-    </Stack>
+    <Paper sx={{ margin: 2, minWidth: '50%' }}>
+      <Stack
+        sx={{
+          py: 1,
+          px: 2,
+          paddingBottom: 3,
+        }}>
+        <HeaderMessageComponent
+          userName={message?.userName}
+          fullPermission={fullPermission}
+        />
+        <MessageComponent
+          initMessage={message}
+          isEditable={isEditable}
+          onSaveMessage={onSaveMessage}
+        />
+      </Stack>
+    </Paper>
   )
 }

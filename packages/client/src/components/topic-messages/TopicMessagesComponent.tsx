@@ -6,6 +6,7 @@ import { TopicReactionsShow } from 'components/topic-reactions-show'
 import backendService from 'services/backend-service'
 import { useDispatch } from 'react-redux'
 import { setReactions } from 'features/reactionsSlice'
+import { CommentComponent } from 'components/topic-messages/CommentComponent'
 
 declare type TopicMessagesProps = {
   topic: Topic
@@ -39,7 +40,7 @@ export const TopicMessagesComponent = ({ topic }: TopicMessagesProps) => {
       justifyContent="center">
       {messages.length > 0 &&
         messages.map(message => (
-          <MessageComponent
+          <CommentComponent
             key={message.id}
             initMessage={message}
             isEditable={false}
@@ -50,7 +51,6 @@ export const TopicMessagesComponent = ({ topic }: TopicMessagesProps) => {
       <MessageComponent
         initMessage={null}
         isEditable={true}
-        topicId={topic.id}
         onSaveMessage={onSaveMessage}
       />
     </Stack>

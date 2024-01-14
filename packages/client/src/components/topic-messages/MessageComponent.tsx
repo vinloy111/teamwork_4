@@ -37,39 +37,19 @@ import backendService from 'services/backend-service'
 export declare type MessageProps = {
   initMessage?: Message | null
   isEditable?: boolean
-  topicId?: string
   onSaveMessage: (message: Message) => void
 }
 
-function Item(props: { children: ReactNode }) {
-  return null
-}
-
 /**
- * Компонент для сообщения в теме форума.
- * Предполагается, что потом каждое сообщение можно будет изменить,
- * если у авторизованного юзера будет на это право (он автор или админ).
- * В header добавятся кнопки 'Изменить', 'Удалить', 'Цитировать'
- * Дальше еще работа с эмоджи.
- * Плюс доработка дизайна
- * есть смысл выделить RichTextEditor в отдельный компонент
+ * Компонент для отрисовки Текстового редактора сообщения
  * @param initMessage
  * @param isEditable
- * @param topicId
- * @param onSaveMessage
  * @constructor
  */
-export const MessageComponent = ({
-  initMessage,
-  isEditable,
-  topicId,
-  onSaveMessage,
-}: MessageProps) => {
+export const MessageComponent = ({ initMessage, isEditable }: MessageProps) => {
   const [message, setMessage] = useState<Message | null>(initMessage || null)
   const [text, setText] = useState(initMessage?.content || '')
   const [showMenuBar, setShowMenuBar] = useState(isEditable || false)
-  const [replies, setReplies] = useState<Message[]>([])
-  const [expandedReplies, setExpandedReplies] = useState(false)
   useEffect(() => {
     //setMessage({ createdAt: '', updatedAt: '', id: 'new', idAuthor: '', content: text })
   }, [text])
@@ -77,49 +57,10 @@ export const MessageComponent = ({
     setText(value)
     //onSaveMessage({ createdAt: '', updatedAt: '', id: 'new', idAuthor: '', content: value })
   }
-  const getReplies = () => {
-    if (!message) return
-    backendService.getReplies(message.id).then(res => setReplies(res.data))
-  }
-  useEffect(() => {
-    getReplies()
-  }, [])
 
   const rteRef = useRef<RichTextEditorRef>(null)
-  const user = useSelector((state: Store) => state.auth.user)
-  const fullPermission = user?.id === message?.idAuthor
-  const renderHeader = () => (
-    <Stack direction="row" justifyContent="space-between" alignItems="center">
-      <Stack direction="row" justifyContent="space-start" alignItems="center">
-        <Typography>{message?.userName || 'Anonimus'}</Typography>
-      </Stack>
-      <Box>
-        {fullPermission ? (
-          <>
-            <IconButton aria-label="delete" color="secondary" size={'small'}>
-              <DeleteIcon />
-            </IconButton>
-            <IconButton aria-label="delete" color="secondary" size={'small'}>
-              <EditIcon />
-            </IconButton>
-          </>
-        ) : null}
-        <IconButton aria-label="delete" color="secondary">
-          <ReplyIcon />
-        </IconButton>
-        {replies && replies.length > 0 && (
-          <IconButton
-            color="secondary"
-            aria-label="add an alarm"
-            size={'medium'}
-            onClick={() => setExpandedReplies(!expandedReplies)}>
-            <ExpandMoreIcon />
-          </IconButton>
-        )}
-      </Box>
-    </Stack>
-  )
-  const renderContent = () => (
+
+  return (
     <RichTextEditor
       ref={rteRef}
       extensions={[StarterKit]}
@@ -158,35 +99,10 @@ export const MessageComponent = ({
               }}>
               Отправить
             </Button>
-            <TopicReactionsButtons topicId={topicId} />
+            <TopicReactionsButtons topicId={message?.idTopic} />
           </Stack>
         ),
       }}
     />
-  )
-  const renderReplies = () => (
-    <Stack>
-      {replies.length > 0 &&
-        replies.map(reply => (
-          <MessageComponent
-            key={reply.id}
-            initMessage={reply}
-            isEditable={false}
-            onSaveMessage={onSaveMessage}
-          />
-        ))}
-    </Stack>
-  )
-  return (
-    <Stack
-      width={'90%'}
-      sx={{
-        py: 1,
-        px: 1.5,
-      }}>
-      {renderHeader()}
-      {renderContent()}
-      {expandedReplies && renderReplies()}
-    </Stack>
   )
 }

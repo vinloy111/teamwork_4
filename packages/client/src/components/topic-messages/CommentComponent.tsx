@@ -1,48 +1,19 @@
 import { Message } from 'types/Forum'
-import { ReactNode, useEffect, useRef, useState } from 'react'
-import {
-  Accordion,
-  AccordionSummary,
-  Avatar,
-  IconButton,
-  MenuItem,
-  Stack,
-} from '@mui/material'
-import {
-  MenuButtonBold,
-  MenuButtonItalic,
-  MenuControlsContainer,
-  MenuDivider,
-  MenuSelectHeading,
-  RichTextEditor,
-  type RichTextEditorRef,
-} from 'mui-tiptap'
-import Button from '@mui/material/Button'
-import { StarterKit } from '@tiptap/starter-kit'
-import Box from '@mui/material/Box'
-import { TopicReactionsButtons } from 'components/topic-reactions-buttons'
-import DeleteIcon from '@mui/icons-material/Delete'
-import ReplyIcon from '@mui/icons-material/Reply'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import EditIcon from '@mui/icons-material/Edit'
-import ExpandLessIcon from '@mui/icons-material/ExpandLess'
+import { useEffect, useRef, useState } from 'react'
+import { Stack } from '@mui/material'
+import { type RichTextEditorRef } from 'mui-tiptap'
 import { useSelector } from 'react-redux'
 import { Store } from '../../store'
-import { NavLink } from 'react-router-dom'
-import { theme } from 'theme/index'
-import Typography from '@mui/material/Typography'
-import { getUserName } from 'utils/adaptUserData'
 import backendService from 'services/backend-service'
+import { ReplyComponent } from 'components/topic-messages/ReplyComponent'
+import { HeaderMessageComponent } from 'components/topic-messages/HeaderMessageComponent'
+import { MessageComponent } from 'components/topic-messages/MessageComponent'
 
-export declare type MessageProps = {
+export declare type CommentComponent = {
   initMessage?: Message | null
   isEditable?: boolean
   topicId?: string
   onSaveMessage: (message: Message) => void
-}
-
-function Item(props: { children: ReactNode }) {
-  return null
 }
 
 /**
@@ -59,17 +30,16 @@ function Item(props: { children: ReactNode }) {
  * @param onSaveMessage
  * @constructor
  */
-export const MessageComponent = ({
+export const CommentComponent = ({
   initMessage,
-  isEditable,
   topicId,
   onSaveMessage,
-}: MessageProps) => {
+}: CommentComponent) => {
   const [message, setMessage] = useState<Message | null>(initMessage || null)
   const [text, setText] = useState(initMessage?.content || '')
-  const [showMenuBar, setShowMenuBar] = useState(isEditable || false)
   const [replies, setReplies] = useState<Message[]>([])
   const [expandedReplies, setExpandedReplies] = useState(false)
+  const [isEditable, setIsEditable] = useState(false)
   useEffect(() => {
     //setMessage({ createdAt: '', updatedAt: '', id: 'new', idAuthor: '', content: text })
   }, [text])
@@ -88,87 +58,11 @@ export const MessageComponent = ({
   const rteRef = useRef<RichTextEditorRef>(null)
   const user = useSelector((state: Store) => state.auth.user)
   const fullPermission = user?.id === message?.idAuthor
-  const renderHeader = () => (
-    <Stack direction="row" justifyContent="space-between" alignItems="center">
-      <Stack direction="row" justifyContent="space-start" alignItems="center">
-        <Typography>{message?.userName || 'Anonimus'}</Typography>
-      </Stack>
-      <Box>
-        {fullPermission ? (
-          <>
-            <IconButton aria-label="delete" color="secondary" size={'small'}>
-              <DeleteIcon />
-            </IconButton>
-            <IconButton aria-label="delete" color="secondary" size={'small'}>
-              <EditIcon />
-            </IconButton>
-          </>
-        ) : null}
-        <IconButton aria-label="delete" color="secondary">
-          <ReplyIcon />
-        </IconButton>
-        {replies && replies.length > 0 && (
-          <IconButton
-            color="secondary"
-            aria-label="add an alarm"
-            size={'medium'}
-            onClick={() => setExpandedReplies(!expandedReplies)}>
-            <ExpandMoreIcon />
-          </IconButton>
-        )}
-      </Box>
-    </Stack>
-  )
-  const renderContent = () => (
-    <RichTextEditor
-      ref={rteRef}
-      extensions={[StarterKit]}
-      content={text}
-      editable={isEditable}
-      renderControls={() => (
-        <MenuControlsContainer>
-          <MenuSelectHeading />
-          <MenuDivider />
-          <MenuButtonBold />
-          <MenuButtonItalic />
-        </MenuControlsContainer>
-      )}
-      RichTextFieldProps={{
-        variant: 'outlined',
-        MenuBarProps: {
-          hide: !showMenuBar,
-        },
-        footer: isEditable && (
-          <Stack
-            direction="row"
-            spacing={2}
-            justifyContent="space-between"
-            sx={{
-              borderTopStyle: 'solid',
-              borderTopWidth: 1,
-              borderTopColor: theme => theme.palette.divider,
-              py: 1,
-              px: 1.5,
-            }}>
-            <Button
-              variant="contained"
-              size="small"
-              onClick={() => {
-                onTextChange(rteRef.current?.editor?.getHTML() ?? '')
-              }}>
-              Отправить
-            </Button>
-            <TopicReactionsButtons topicId={topicId} />
-          </Stack>
-        ),
-      }}
-    />
-  )
   const renderReplies = () => (
-    <Stack>
+    <Stack alignItems={'end'}>
       {replies.length > 0 &&
         replies.map(reply => (
-          <MessageComponent
+          <ReplyComponent
             key={reply.id}
             initMessage={reply}
             isEditable={false}
@@ -184,8 +78,21 @@ export const MessageComponent = ({
         py: 1,
         px: 1.5,
       }}>
-      {renderHeader()}
-      {renderContent()}
+      <HeaderMessageComponent
+        userName={message?.userName}
+        setExpandedReplies={setExpandedReplies}
+        expandedReplies={expandedReplies}
+        fullPermission={fullPermission}
+        showExpanded={replies && replies.length > 0}
+        editing={isEditable}
+        setEditing={setIsEditable}
+        showReply
+      />
+      <MessageComponent
+        initMessage={message}
+        isEditable={isEditable}
+        onSaveMessage={onSaveMessage}
+      />
       {expandedReplies && renderReplies()}
     </Stack>
   )
