@@ -45,6 +45,7 @@ export declare type HeaderMessageProps = {
   setExpandedReplies?: (res: boolean) => void
   editing?: boolean
   setEditing?: (res: boolean) => void
+  clickOnReply?: () => void
 }
 
 /**
@@ -55,6 +56,8 @@ export declare type HeaderMessageProps = {
  * @param setExpandedReplies
  * @param showExpanded
  * @param showReply
+ * @param setEditing
+ * @param editing
  * @constructor
  */
 export const HeaderMessageComponent = ({
@@ -66,6 +69,7 @@ export const HeaderMessageComponent = ({
   showReply,
   setEditing,
   editing,
+  clickOnReply,
 }: HeaderMessageProps) => {
   return (
     <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -88,8 +92,11 @@ export const HeaderMessageComponent = ({
             )}
           </>
         ) : null}
-        {showReply && (
-          <IconButton aria-label="delete" color="secondary">
+        {showReply && clickOnReply && (
+          <IconButton
+            aria-label="delete"
+            color="secondary"
+            onClick={() => clickOnReply()}>
             <ReplyIcon />
           </IconButton>
         )}

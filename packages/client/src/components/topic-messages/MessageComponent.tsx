@@ -4,6 +4,7 @@ import {
   Accordion,
   AccordionSummary,
   Avatar,
+  ButtonGroup,
   IconButton,
   MenuItem,
   Stack,
@@ -38,18 +39,23 @@ export declare type MessageProps = {
   initMessage?: Message | null
   isEditable?: boolean
   onSaveMessage: (message: Message) => void
+  handleCancel?: () => void
 }
 
 /**
  * Компонент для отрисовки Текстового редактора сообщения
  * @param initMessage
  * @param isEditable
+ * @param handleCancel
  * @constructor
  */
-export const MessageComponent = ({ initMessage, isEditable }: MessageProps) => {
+export const MessageComponent = ({
+  initMessage,
+  isEditable,
+  handleCancel,
+}: MessageProps) => {
   const [message, setMessage] = useState<Message | null>(initMessage || null)
   const [text, setText] = useState(initMessage?.content || '')
-  const [showMenuBar, setShowMenuBar] = useState(isEditable || false)
   useEffect(() => {
     //setMessage({ createdAt: '', updatedAt: '', id: 'new', idAuthor: '', content: text })
   }, [text])
@@ -77,7 +83,7 @@ export const MessageComponent = ({ initMessage, isEditable }: MessageProps) => {
       RichTextFieldProps={{
         variant: 'outlined',
         MenuBarProps: {
-          hide: !showMenuBar,
+          hide: !isEditable,
         },
         footer: isEditable && (
           <Stack
@@ -91,14 +97,24 @@ export const MessageComponent = ({ initMessage, isEditable }: MessageProps) => {
               py: 1,
               px: 1.5,
             }}>
-            <Button
-              variant="contained"
-              size="small"
-              onClick={() => {
-                onTextChange(rteRef.current?.editor?.getHTML() ?? '')
-              }}>
-              Отправить
-            </Button>
+            <ButtonGroup>
+              <Button
+                variant="contained"
+                size="small"
+                onClick={() => {
+                  onTextChange(rteRef.current?.editor?.getHTML() ?? '')
+                }}>
+                Отправить
+              </Button>
+              {handleCancel && (
+                <Button
+                  variant="outlined"
+                  size="small"
+                  onClick={() => handleCancel()}>
+                  Отмена
+                </Button>
+              )}
+            </ButtonGroup>
             <TopicReactionsButtons topicId={message?.idTopic} />
           </Stack>
         ),

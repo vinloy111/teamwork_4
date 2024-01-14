@@ -39,7 +39,6 @@ import Paper from '@mui/material/Paper'
 
 export declare type MessageProps = {
   initMessage?: Message | null
-  isEditable?: boolean
   topicId?: string
   onSaveMessage: (message: Message) => void
 }
@@ -53,12 +52,11 @@ export declare type MessageProps = {
  */
 export const ReplyComponent = ({
   initMessage,
-  isEditable,
   onSaveMessage,
 }: MessageProps) => {
   const [message, setMessage] = useState<Message | null>(initMessage || null)
   const [text, setText] = useState(initMessage?.content || '')
-  const [showMenuBar, setShowMenuBar] = useState(isEditable || false)
+  const [isEditable, setIsEditable] = useState(false)
   useEffect(() => {
     //setMessage({ createdAt: '', updatedAt: '', id: 'new', idAuthor: '', content: text })
   }, [text])
@@ -71,7 +69,7 @@ export const ReplyComponent = ({
   const fullPermission = user?.id === message?.idAuthor
 
   return (
-    <Paper sx={{ margin: 2, minWidth: '50%' }}>
+    <Paper sx={{ my: 2, minWidth: isEditable ? '100%' : '50%' }}>
       <Stack
         sx={{
           py: 1,
@@ -81,6 +79,8 @@ export const ReplyComponent = ({
         <HeaderMessageComponent
           userName={message?.userName}
           fullPermission={fullPermission}
+          editing={isEditable}
+          setEditing={setIsEditable}
         />
         <MessageComponent
           initMessage={message}

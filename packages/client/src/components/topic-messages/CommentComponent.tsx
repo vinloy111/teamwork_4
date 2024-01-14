@@ -1,6 +1,6 @@
 import { Message } from 'types/Forum'
 import { useEffect, useRef, useState } from 'react'
-import { Stack } from '@mui/material'
+import { Divider, Stack } from '@mui/material'
 import { type RichTextEditorRef } from 'mui-tiptap'
 import { useSelector } from 'react-redux'
 import { Store } from '../../store'
@@ -8,6 +8,8 @@ import backendService from 'services/backend-service'
 import { ReplyComponent } from 'components/topic-messages/ReplyComponent'
 import { HeaderMessageComponent } from 'components/topic-messages/HeaderMessageComponent'
 import { MessageComponent } from 'components/topic-messages/MessageComponent'
+import Box from '@mui/system/Box'
+import Paper from '@mui/material/Paper'
 
 export declare type CommentComponent = {
   initMessage?: Message | null
@@ -55,45 +57,53 @@ export const CommentComponent = ({
     getReplies()
   }, [])
 
-  const rteRef = useRef<RichTextEditorRef>(null)
+  const handleReply = () => {
+    setExpandedReplies(true)
+  }
   const user = useSelector((state: Store) => state.auth.user)
   const fullPermission = user?.id === message?.idAuthor
   const renderReplies = () => (
-    <Stack alignItems={'end'}>
+    <Stack alignItems={'end'} my={2}>
       {replies.length > 0 &&
         replies.map(reply => (
           <ReplyComponent
             key={reply.id}
             initMessage={reply}
-            isEditable={false}
             onSaveMessage={onSaveMessage}
           />
         ))}
+      <Box width={'100%'}>
+        <MessageComponent
+          initMessage={null}
+          isEditable={true}
+          onSaveMessage={onSaveMessage}
+          handleCancel={() => setExpandedReplies(false)}
+        />
+        <Divider sx={{ my: 3 }} />
+      </Box>
     </Stack>
   )
   return (
-    <Stack
-      width={'90%'}
-      sx={{
-        py: 1,
-        px: 1.5,
-      }}>
-      <HeaderMessageComponent
-        userName={message?.userName}
-        setExpandedReplies={setExpandedReplies}
-        expandedReplies={expandedReplies}
-        fullPermission={fullPermission}
-        showExpanded={replies && replies.length > 0}
-        editing={isEditable}
-        setEditing={setIsEditable}
-        showReply
-      />
-      <MessageComponent
-        initMessage={message}
-        isEditable={isEditable}
-        onSaveMessage={onSaveMessage}
-      />
-      {expandedReplies && renderReplies()}
+    <Stack width={'90%'} m={1}>
+      <Paper sx={{ padding: 2 }} elevation={10}>
+        <HeaderMessageComponent
+          userName={message?.userName}
+          setExpandedReplies={setExpandedReplies}
+          expandedReplies={expandedReplies}
+          fullPermission={fullPermission}
+          showExpanded={replies && replies.length > 0}
+          editing={isEditable}
+          setEditing={setIsEditable}
+          showReply
+          clickOnReply={handleReply}
+        />
+        <MessageComponent
+          initMessage={message}
+          isEditable={isEditable}
+          onSaveMessage={onSaveMessage}
+        />
+        {expandedReplies && renderReplies()}
+      </Paper>
     </Stack>
   )
 }
