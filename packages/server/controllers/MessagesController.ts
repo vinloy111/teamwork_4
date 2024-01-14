@@ -1,12 +1,5 @@
 import type { Request, Response } from 'express'
-import {
-  CommentsTable,
-  ForumTable,
-  MessagesTable,
-  RepliesTable,
-  TopicsTable,
-} from '../init'
-import { commentModel, messageModel } from '../models/forum'
+import { CommentsTable, MessagesTable, RepliesTable } from '../init'
 
 /**
  * Контроллер для создания, обновления, удаления комментариев и ответов

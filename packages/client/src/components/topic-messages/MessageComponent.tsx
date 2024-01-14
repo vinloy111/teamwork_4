@@ -1,8 +1,7 @@
 import { Message } from 'types/Forum'
-import { MouseEvent, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { Alert, ButtonGroup, Collapse, IconButton, Stack } from '@mui/material'
 import {
-  MenuButtonAddImage,
   MenuButtonBlockquote,
   MenuButtonBold,
   MenuButtonCode,
@@ -46,9 +45,6 @@ export const MessageComponent = ({
   onSaveMessage,
   onUpdateMessage,
 }: MessageProps) => {
-  const [message, setMessage] = useState<Message | null>(initMessage || null)
-  const [text, setText] = useState(initMessage?.content || '')
-
   const [error, setError] = useState<string | null>(null)
 
   const rteRef = useRef<RichTextEditorRef>(null)
@@ -83,7 +79,7 @@ export const MessageComponent = ({
       <RichTextEditor
         ref={rteRef}
         extensions={[StarterKit]}
-        content={text}
+        content={initMessage?.content || ''}
         editable={isEditable}
         renderControls={() => (
           <MenuControlsContainer>
@@ -137,7 +133,7 @@ export const MessageComponent = ({
                   </Button>
                 )}
               </ButtonGroup>
-              <TopicReactionsButtons topicId={message?.idTopic} />
+              <TopicReactionsButtons topicId={initMessage?.idTopic} />
             </Stack>
           ),
         }}

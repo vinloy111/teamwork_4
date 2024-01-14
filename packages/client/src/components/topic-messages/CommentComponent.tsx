@@ -1,7 +1,6 @@
 import { Message } from 'types/Forum'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Divider, Stack } from '@mui/material'
-import { type RichTextEditorRef } from 'mui-tiptap'
 import { useSelector } from 'react-redux'
 import { Store } from '../../store'
 import backendService from 'services/backend-service'
@@ -34,7 +33,6 @@ export declare type CommentComponent = {
  */
 export const CommentComponent = ({
   initMessage,
-  onSaveMessage,
   onDeleteComment,
 }: CommentComponent) => {
   const [message, setMessage] = useState<Message | null>(initMessage || null)

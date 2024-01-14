@@ -1,40 +1,12 @@
-import { Message } from 'types/Forum'
-import { ReactNode, useEffect, useRef, useState } from 'react'
-import {
-  Accordion,
-  AccordionSummary,
-  Avatar,
-  IconButton,
-  MenuItem,
-  Stack,
-} from '@mui/material'
-import {
-  MenuButtonBold,
-  MenuButtonItalic,
-  MenuControlsContainer,
-  MenuDivider,
-  MenuSelectHeading,
-  RichTextEditor,
-  type RichTextEditorRef,
-} from 'mui-tiptap'
-import Button from '@mui/material/Button'
-import { StarterKit } from '@tiptap/starter-kit'
+import { IconButton, Stack } from '@mui/material'
 import Box from '@mui/material/Box'
-import { TopicReactionsButtons } from 'components/topic-reactions-buttons'
 import DeleteIcon from '@mui/icons-material/Delete'
 import ReplyIcon from '@mui/icons-material/Reply'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import EditIcon from '@mui/icons-material/Edit'
-import SaveIcon from '@mui/icons-material/Save'
 import ExpandLessIcon from '@mui/icons-material/ExpandLess'
 import CloseIcon from '@mui/icons-material/Close'
-import { useSelector } from 'react-redux'
-import { Store } from '../../store'
-import { NavLink } from 'react-router-dom'
-import { theme } from 'theme/index'
 import Typography from '@mui/material/Typography'
-import { getUserName } from 'utils/adaptUserData'
-import backendService from 'services/backend-service'
 
 export declare type HeaderMessageProps = {
   showExpanded?: boolean
