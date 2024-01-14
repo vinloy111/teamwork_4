@@ -9,6 +9,7 @@ export declare type IForum = {
 export declare type ITopic = {
   caption: string
   idAuthor: string
+  userName: string
 }
 
 export declare type IComment = {
@@ -24,6 +25,7 @@ export declare type IReply = {
 export declare type IMessage = {
   idAuthor: string
   content: string
+  userName: string
 }
 export const forumModel: ModelAttributes<Model, IForum> = {
   idAuthor: {
@@ -41,6 +43,10 @@ export const topicModel: ModelAttributes<Model, ITopic> = {
     allowNull: false,
   },
   caption: {
+    type: DataType.STRING,
+    allowNull: false,
+  },
+  userName: {
     type: DataType.STRING,
     allowNull: false,
   },
@@ -71,6 +77,10 @@ export const messageModel: ModelAttributes<Model, IMessage> = {
     allowNull: false,
   },
   content: {
+    type: DataType.STRING,
+    allowNull: false,
+  },
+  userName: {
     type: DataType.STRING,
     allowNull: false,
   },

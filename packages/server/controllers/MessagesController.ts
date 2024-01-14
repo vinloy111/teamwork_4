@@ -1,12 +1,5 @@
 import type { Request, Response } from 'express'
-import {
-  CommentsTable,
-  ForumTable,
-  MessagesTable,
-  RepliesTable,
-  TopicsTable,
-} from '../init'
-import { commentModel, messageModel } from '../models/forum'
+import { CommentsTable, MessagesTable, RepliesTable } from '../init'
 
 /**
  * Контроллер для создания, обновления, удаления комментариев и ответов
@@ -24,7 +17,7 @@ class MessagesController {
           where: { id },
         }
       )
-      const newMessage = await MessagesTable.findAll({
+      const newMessage = await MessagesTable.findOne({
         where: {
           id,
         },
@@ -41,19 +34,24 @@ class MessagesController {
   /** Создание комментария */
   async createComment(req: Request, res: Response): Promise<Response> {
     try {
-      const { content, idTopic, idAuthor } = req.body
+      const { content, idTopic, idAuthor, userName } = req.body
 
       const newMessage = await MessagesTable.create({
         content: content,
         idAuthor: idAuthor,
+        userName: userName,
       })
       const newComment = await CommentsTable.create({
         idTopic: idTopic,
         idMessage: newMessage.id,
       })
-      return res
-        .status(200)
-        .json({ ...newComment.dataValues, message: newMessage })
+
+      return res.status(200).json({
+        ...newComment.dataValues,
+        content: newMessage.dataValues.content,
+        idAuthor: newMessage.dataValues.idAuthor,
+        userName: newMessage.dataValues.userName,
+      })
     } catch (error) {
       return res.status(500).json({
         message: 'Error - createComment',
@@ -92,7 +90,7 @@ class MessagesController {
           id,
         },
       })
-      return res.status(200).json({ deleted: true })
+      return res.status(200).json({ deletedId: id })
     } catch (error) {
       return res.status(500).json({
         message: 'Error - deleteTopic',
@@ -139,19 +137,23 @@ class MessagesController {
   /** Создание ответа */
   async createReply(req: Request, res: Response): Promise<Response> {
     try {
-      const { content, idComment, idAuthor } = req.body
+      const { content, idComment, idAuthor, userName } = req.body
 
       const newMessage = await MessagesTable.create({
         content: content,
         idAuthor: idAuthor,
+        userName: userName,
       })
       const newComment = await RepliesTable.create({
         idComment: idComment,
         idMessage: newMessage.id,
       })
-      return res
-        .status(200)
-        .json({ ...newComment.dataValues, message: newMessage })
+      return res.status(200).json({
+        ...newComment.dataValues,
+        content: newMessage.dataValues.content,
+        idAuthor: newMessage.dataValues.idAuthor,
+        userName: newMessage.dataValues.userName,
+      })
     } catch (error) {
       return res.status(500).json({
         message: 'Error - createComment',
@@ -169,7 +171,7 @@ class MessagesController {
           id,
         },
       })
-      return res.status(200).json({ deleted: true })
+      return res.status(200).json({ deletedId: id })
     } catch (error) {
       return res.status(500).json({
         message: 'Error - deleteReplies',
