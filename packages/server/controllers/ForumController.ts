@@ -5,12 +5,13 @@ class ForumController {
   /** Получение данных форума */
   async getForum(req: Request, res: Response): Promise<Response> {
     try {
-      /* const forum = await ForumTable.create({caption : "Форум Игры" });
-       console.log("Jane's auto-generated ID:", forum);*/
       const forumFromBd = await ForumTable.findOne()
+      if (!forumFromBd) {
+        const forum = await ForumTable.create({ caption: 'Форум Игры' })
+        return res.status(404).json({ ...forum?.dataValues, listOfTopics: [] })
+      }
+
       const topics = await TopicsTable.findAll()
-      if (!forumFromBd)
-        return res.status(404).json({ error: 'Forum not created' })
       return res
         .status(200)
         .json({ ...forumFromBd?.dataValues, listOfTopics: topics })
@@ -81,7 +82,10 @@ class ForumController {
           idTopic: id,
         },
         include: [
-          { model: MessagesTable, attributes: ['content', 'idAuthor'] },
+          {
+            model: MessagesTable,
+            attributes: ['content', 'idAuthor', 'userName'],
+          },
         ],
       })
 
@@ -98,6 +102,7 @@ class ForumController {
             updatedAt,
             content: Message.content,
             idAuthor: Message.idAuthor,
+            userName: Message.userName,
           }
         }),
         countOfMessage: comments.length,
