@@ -1,5 +1,7 @@
 import axios from 'axios'
 import { ReactionSave, Reaction, Forum, Topic, Message } from 'types/Forum'
+import { User } from 'types/User'
+import { getUserName } from 'utils/adaptUserData'
 
 export const SERVER_BASE_URL = 'http://localhost:3000'
 
@@ -30,6 +32,29 @@ const backendService = {
   getReplies(commentId: string) {
     return axios.get<Message[]>(
       `${SERVER_BASE_URL}/api/forum/comment/${commentId}/replies`
+    )
+  },
+  sendComment(content: string, topicId: string, user: User) {
+    const newComment = {
+      idTopic: topicId,
+      userName: getUserName(user),
+      idAuthor: user.id,
+      content,
+    }
+    return axios.post<Message>(
+      `${SERVER_BASE_URL}/api/forum/comment/`,
+      newComment
+    )
+  },
+  deleteComment(commentId: string) {
+    return axios.delete<{ deletedId: string }>(
+      `${SERVER_BASE_URL}/api/forum/comment/${commentId}`
+    )
+  },
+  updateMessage(content: string, idMessage: string) {
+    return axios.put<Message>(
+      `${SERVER_BASE_URL}/api/forum/message/${idMessage}`,
+      { content }
     )
   },
 }

@@ -14,8 +14,9 @@ import Paper from '@mui/material/Paper'
 export declare type CommentComponent = {
   initMessage?: Message | null
   isEditable?: boolean
-  topicId?: string
-  onSaveMessage: (message: Message) => void
+  topicId: string
+  onSaveMessage: (res: string) => void
+  onDeleteComment: (idComment: string) => void
 }
 
 /**
@@ -29,26 +30,18 @@ export declare type CommentComponent = {
  * @param initMessage
  * @param isEditable
  * @param topicId
- * @param onSaveMessage
  * @constructor
  */
 export const CommentComponent = ({
   initMessage,
-  topicId,
   onSaveMessage,
+  onDeleteComment,
 }: CommentComponent) => {
   const [message, setMessage] = useState<Message | null>(initMessage || null)
-  const [text, setText] = useState(initMessage?.content || '')
   const [replies, setReplies] = useState<Message[]>([])
   const [expandedReplies, setExpandedReplies] = useState(false)
+  const user = useSelector((state: Store) => state.auth.user)
   const [isEditable, setIsEditable] = useState(false)
-  useEffect(() => {
-    //setMessage({ createdAt: '', updatedAt: '', id: 'new', idAuthor: '', content: text })
-  }, [text])
-  const onTextChange = (value: string) => {
-    setText(value)
-    //onSaveMessage({ createdAt: '', updatedAt: '', id: 'new', idAuthor: '', content: value })
-  }
   const getReplies = () => {
     if (!message) return
     backendService.getReplies(message.id).then(res => setReplies(res.data))
@@ -60,7 +53,13 @@ export const CommentComponent = ({
   const handleReply = () => {
     setExpandedReplies(true)
   }
-  const user = useSelector((state: Store) => state.auth.user)
+  const onUpdateMessage = (content: string) => {
+    if (!message) return
+    backendService.updateMessage(content, message.idMessage).then(res => {
+      setMessage({ ...message, content })
+      setIsEditable(false)
+    })
+  }
   const fullPermission = user?.id === message?.idAuthor
   const renderReplies = () => (
     <Stack alignItems={'end'} my={2}>
@@ -83,6 +82,7 @@ export const CommentComponent = ({
       </Box>
     </Stack>
   )
+  if (!message) return null
   return (
     <Stack width={'90%'} m={1}>
       <Paper sx={{ padding: 2 }} elevation={10}>
@@ -96,11 +96,12 @@ export const CommentComponent = ({
           setEditing={setIsEditable}
           showReply
           clickOnReply={handleReply}
+          onDelete={() => onDeleteComment(message.id)}
         />
         <MessageComponent
           initMessage={message}
           isEditable={isEditable}
-          onSaveMessage={onSaveMessage}
+          onUpdateMessage={onUpdateMessage}
         />
         {expandedReplies && renderReplies()}
       </Paper>

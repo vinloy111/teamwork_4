@@ -22,6 +22,7 @@ export declare type Message = {
   content: string
   createdAt: string
   updatedAt: string
+  idMessage: string
 }
 
 export type Emoji = {

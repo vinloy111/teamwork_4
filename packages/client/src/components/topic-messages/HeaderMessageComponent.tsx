@@ -43,6 +43,7 @@ export declare type HeaderMessageProps = {
   userName?: string
   expandedReplies?: boolean
   setExpandedReplies?: (res: boolean) => void
+  onDelete: () => void
   editing?: boolean
   setEditing?: (res: boolean) => void
   clickOnReply?: () => void
@@ -70,6 +71,7 @@ export const HeaderMessageComponent = ({
   setEditing,
   editing,
   clickOnReply,
+  onDelete,
 }: HeaderMessageProps) => {
   return (
     <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -79,7 +81,10 @@ export const HeaderMessageComponent = ({
       <Box>
         {fullPermission ? (
           <>
-            <IconButton color="secondary" size={'small'}>
+            <IconButton
+              color="secondary"
+              size={'small'}
+              onClick={() => onDelete()}>
               <DeleteIcon />
             </IconButton>
             {setEditing && (

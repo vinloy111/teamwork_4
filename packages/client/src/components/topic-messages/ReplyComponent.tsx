@@ -40,7 +40,7 @@ import Paper from '@mui/material/Paper'
 export declare type MessageProps = {
   initMessage?: Message | null
   topicId?: string
-  onSaveMessage: (message: Message) => void
+  onSaveMessage: (content: string) => void
 }
 
 /**

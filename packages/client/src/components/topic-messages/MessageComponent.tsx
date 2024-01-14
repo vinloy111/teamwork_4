@@ -38,7 +38,8 @@ import backendService from 'services/backend-service'
 export declare type MessageProps = {
   initMessage?: Message | null
   isEditable?: boolean
-  onSaveMessage: (message: Message) => void
+  onSaveMessage?: (content: string) => void
+  onUpdateMessage?: (content: string) => void
   handleCancel?: () => void
 }
 
@@ -47,12 +48,16 @@ export declare type MessageProps = {
  * @param initMessage
  * @param isEditable
  * @param handleCancel
+ * @param onSaveMessage
+ * @param onUpdateMessage
  * @constructor
  */
 export const MessageComponent = ({
   initMessage,
   isEditable,
   handleCancel,
+  onSaveMessage,
+  onUpdateMessage,
 }: MessageProps) => {
   const [message, setMessage] = useState<Message | null>(initMessage || null)
   const [text, setText] = useState(initMessage?.content || '')
@@ -61,7 +66,8 @@ export const MessageComponent = ({
   }, [text])
   const onTextChange = (value: string) => {
     setText(value)
-    //onSaveMessage({ createdAt: '', updatedAt: '', id: 'new', idAuthor: '', content: value })
+    if (onSaveMessage) onSaveMessage(value)
+    if (onUpdateMessage) onUpdateMessage(value)
   }
 
   const rteRef = useRef<RichTextEditorRef>(null)

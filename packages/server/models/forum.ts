@@ -24,6 +24,7 @@ export declare type IReply = {
 export declare type IMessage = {
   idAuthor: string
   content: string
+  userName: string
 }
 export const forumModel: ModelAttributes<Model, IForum> = {
   idAuthor: {
@@ -71,6 +72,10 @@ export const messageModel: ModelAttributes<Model, IMessage> = {
     allowNull: false,
   },
   content: {
+    type: DataType.STRING,
+    allowNull: false,
+  },
+  userName: {
     type: DataType.STRING,
     allowNull: false,
   },
