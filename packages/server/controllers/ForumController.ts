@@ -1,5 +1,11 @@
 import type { Request, Response } from 'express'
-import { CommentsTable, ForumTable, MessagesTable, TopicsTable } from '../init'
+import {
+  CommentsTable,
+  ForumTable,
+  MessagesTable,
+  sequelize,
+  TopicsTable,
+} from '../init'
 
 class ForumController {
   /** Получение данных форума */
@@ -25,11 +31,12 @@ class ForumController {
   /** Создание топика */
   async createTopic(req: Request, res: Response): Promise<Response> {
     try {
-      const { idAuthor, caption } = req.body
+      const { idAuthor, caption, userName } = req.body
 
       const newTopic = await TopicsTable.create({
         caption: caption,
         idAuthor: idAuthor,
+        userName: userName,
       })
       return res.status(200).json(newTopic)
     } catch (error) {

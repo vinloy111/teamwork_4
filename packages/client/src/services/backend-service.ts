@@ -29,6 +29,28 @@ const backendService = {
   getTopic(id: string) {
     return axios.get<Topic>(`${SERVER_BASE_URL}/api/forum/topic/${id}`)
   },
+  deleteTopic(id: string) {
+    return axios.delete<{ deleted: true }>(
+      `${SERVER_BASE_URL}/api/forum/topic/${id}`
+    )
+  },
+  createTopic(caption: string, user: User) {
+    const newTopic = {
+      userName: getUserName(user),
+      idAuthor: user.id,
+      caption,
+    }
+    return axios.post<Topic>(`${SERVER_BASE_URL}/api/forum/topic/`, newTopic)
+  },
+  updateTopic(caption: string, id: string) {
+    const newTopic = {
+      caption,
+    }
+    return axios.put<Topic>(
+      `${SERVER_BASE_URL}/api/forum/topic/${id}`,
+      newTopic
+    )
+  },
   getReplies(commentId: string) {
     return axios.get<Message[]>(
       `${SERVER_BASE_URL}/api/forum/comment/${commentId}/replies`

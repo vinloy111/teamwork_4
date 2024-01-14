@@ -1,9 +1,18 @@
 import { GridColDef } from '@mui/x-data-grid'
 import { theme } from '../../theme'
 import Typography from '@mui/material/Typography'
-import Button from '@mui/material/Button'
+import { IconButton } from '@mui/material'
+import DeleteIcon from '@mui/icons-material/Delete'
+import LaunchIcon from '@mui/icons-material/Launch'
+import EditIcon from '@mui/icons-material/Edit'
+import { Topic } from 'types/Forum'
 
-export const getColumns = (navigate: (url: string) => void) => {
+export const getColumns = (
+  topics: Topic[],
+  navigate: (url: string) => void,
+  userId: string | null,
+  onDelete: (id: string) => void
+) => {
   const columns: GridColDef[] = [
     {
       field: 'caption',
@@ -12,35 +21,66 @@ export const getColumns = (navigate: (url: string) => void) => {
       editable: false,
       sortable: false,
       renderCell: props => (
-        <Typography variant={'h5'} color={theme.palette.warning.main}>
+        <Typography
+          variant={'h5'}
+          color={theme.palette.warning.main}
+          onClick={() => {
+            const topicF = topics.find(topic => topic.caption === props.value)
+            if (topicF) navigate(`/forum/${topicF.id}`)
+          }}
+          sx={{ cursor: 'pointer' }}>
           {props.value}
         </Typography>
       ),
     },
     {
-      field: 'countOfMessage',
-      headerName: 'Ответы',
-      type: 'number',
-      width: 100,
+      field: 'userName',
+      headerName: 'Автор',
+      type: 'string',
+      width: 200,
       editable: true,
       renderCell: props => (
-        <Typography variant={'h6'}>{props.value}</Typography>
+        <Typography variant={'h5'}>{props.value}</Typography>
       ),
     },
     {
       field: 'id',
       headerName: '',
       type: 'string',
-      width: 100,
+      width: 120,
       editable: true,
-      renderCell: props => (
-        <Button
-          onClick={() => navigate(`/forum/${props.value}`)}
-          variant="contained"
-          sx={{ letterSpacing: 0 }}>
-          Открыть
-        </Button>
-      ),
+      renderCell: props => {
+        const topicF = topics.find(topic => topic.id === props.value)
+
+        return (
+          <>
+            <IconButton
+              onClick={() => navigate(`/forum/${props.value}`)}
+              color="secondary"
+              size={'small'}>
+              <LaunchIcon />
+            </IconButton>
+            {topicF?.idAuthor === userId && (
+              <>
+                <IconButton
+                  color="secondary"
+                  size={'small'}
+                  onClick={() => onDelete(props.value)}>
+                  <DeleteIcon />
+                </IconButton>
+                <IconButton
+                  color="secondary"
+                  size={'small'}
+                  onClick={() =>
+                    navigate(`/forum/change-topic/${props.value}`)
+                  }>
+                  <EditIcon />
+                </IconButton>
+              </>
+            )}
+          </>
+        )
+      },
     },
   ]
   return columns

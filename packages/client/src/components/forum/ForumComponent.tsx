@@ -8,10 +8,13 @@ import { getColumns } from './settingForum'
 import { useNavigate } from 'react-router-dom'
 import Button from '@mui/material/Button'
 import backendService from 'services/backend-service'
+import { useSelector } from 'react-redux'
+import { Store } from '../../store'
 
 export const ForumComponent = () => {
   const [forum, setForum] = useState<Forum | null>(null)
   const navigate = useNavigate()
+  const user = useSelector((state: Store) => state.auth.user)
   const getForum = () => {
     backendService.getForum().then(res => setForum(res.data))
   }
@@ -19,6 +22,9 @@ export const ForumComponent = () => {
     getForum()
   }, [])
 
+  const onDeleteTopic = (id: string) => {
+    backendService.deleteTopic(id).then(res => getForum())
+  }
   return (
     <Stack
       alignItems="center"
@@ -41,7 +47,12 @@ export const ForumComponent = () => {
       {forum && forum.listOfTopics && forum.listOfTopics.length > 0 && (
         <DataGrid
           rows={forum.listOfTopics}
-          columns={getColumns(navigate)}
+          columns={getColumns(
+            forum.listOfTopics,
+            navigate,
+            user?.id || null,
+            onDeleteTopic
+          )}
           initialState={{
             pagination:
               forum.listOfTopics.length > 5

@@ -9,6 +9,7 @@ export declare type IForum = {
 export declare type ITopic = {
   caption: string
   idAuthor: string
+  userName: string
 }
 
 export declare type IComment = {
@@ -42,6 +43,10 @@ export const topicModel: ModelAttributes<Model, ITopic> = {
     allowNull: false,
   },
   caption: {
+    type: DataType.STRING,
+    allowNull: false,
+  },
+  userName: {
     type: DataType.STRING,
     allowNull: false,
   },
