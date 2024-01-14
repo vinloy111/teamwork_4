@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { ReactionSave, Reaction, Forum, Topic } from 'types/Forum'
+import { ReactionSave, Reaction, Forum, Topic, Message } from 'types/Forum'
 
 export const SERVER_BASE_URL = 'http://localhost:3000'
 
@@ -26,6 +26,11 @@ const backendService = {
   },
   getTopic(id: string) {
     return axios.get<Topic>(`${SERVER_BASE_URL}/api/forum/topic/${id}`)
+  },
+  getReplies(commentId: string) {
+    return axios.get<Message[]>(
+      `${SERVER_BASE_URL}/api/forum/comment/${commentId}/replies`
+    )
   },
 }
 

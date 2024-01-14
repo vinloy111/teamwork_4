@@ -6,7 +6,7 @@ import {
   RepliesTable,
   TopicsTable,
 } from '../init'
-import { messageModel } from '../models/forum'
+import { commentModel, messageModel } from '../models/forum'
 
 /**
  * Контроллер для создания, обновления, удаления комментариев и ответов
@@ -70,7 +70,9 @@ class MessagesController {
         where: {
           idTopic: id,
         },
-        include: MessagesTable,
+        include: [
+          { model: MessagesTable, attributes: ['content', 'idAuthor'] },
+        ],
       })
       return res.status(200).json(comments)
     } catch (error) {
@@ -103,13 +105,29 @@ class MessagesController {
   async getReplies(req: Request, res: Response): Promise<Response> {
     try {
       const { id } = req.params
-      const comments = await RepliesTable.findAll({
+      const replies = await RepliesTable.findAll({
         where: {
           idComment: id,
         },
-        include: MessagesTable,
+        include: [
+          { model: MessagesTable, attributes: ['content', 'idAuthor'] },
+        ],
       })
-      return res.status(200).json(comments)
+      return res.status(200).json(
+        replies.map(comment => {
+          const { id, idMessage, idTopic, createdAt, updatedAt, Message } =
+            comment.dataValues
+          return {
+            id,
+            idMessage,
+            idTopic,
+            createdAt,
+            updatedAt,
+            content: Message.content,
+            idAuthor: Message.idAuthor,
+          }
+        })
+      )
     } catch (error) {
       return res.status(500).json({
         message: 'Error - getComments',

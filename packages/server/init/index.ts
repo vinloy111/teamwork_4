@@ -44,8 +44,11 @@ export const RepliesTable = sequelize.define('Replies', replyModel)
 export const MessagesTable = sequelize.define('Messages', messageModel)
 
 /** Связи */
-/*TopicsTable.hasMany(CommentsTable,{onDelete:"cascade"});
-CommentsTable.belongsTo(TopicsTable,{foreignKey:"idTopic"})*/
+TopicsTable.hasMany(CommentsTable, {
+  onDelete: 'cascade',
+  foreignKey: 'idTopic',
+})
+CommentsTable.belongsTo(TopicsTable, { foreignKey: 'idTopic' })
 
 MessagesTable.hasOne(CommentsTable)
 CommentsTable.belongsTo(MessagesTable, {

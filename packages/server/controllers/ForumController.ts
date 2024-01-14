@@ -1,6 +1,5 @@
 import type { Request, Response } from 'express'
-import { ForumTable, TopicsTable } from '../init'
-import MessagesController from './MessagesController'
+import { CommentsTable, ForumTable, MessagesTable, TopicsTable } from '../init'
 
 class ForumController {
   /** Получение данных форума */
@@ -76,7 +75,32 @@ class ForumController {
           id,
         },
       })
-      return res.status(200).json(topic)
+      const comments = await CommentsTable.findAll({
+        where: {
+          idTopic: id,
+        },
+        include: [
+          { model: MessagesTable, attributes: ['content', 'idAuthor'] },
+        ],
+      })
+
+      return res.status(200).json({
+        ...topic?.dataValues,
+        listOfMessages: comments.map(comment => {
+          const { id, idMessage, idTopic, createdAt, updatedAt, Message } =
+            comment.dataValues
+          return {
+            id,
+            idMessage,
+            idTopic,
+            createdAt,
+            updatedAt,
+            content: Message.content,
+            idAuthor: Message.idAuthor,
+          }
+        }),
+        countOfMessage: comments.length,
+      })
     } catch (error) {
       return res.status(500).json({
         message: 'Error - updateTopic',
@@ -115,6 +139,7 @@ class ForumController {
       })
     }
   }
+
   getTest(req: Request, res: Response) {
     res.json({ forum: 'name' })
   }

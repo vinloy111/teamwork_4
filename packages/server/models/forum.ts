@@ -51,7 +51,7 @@ export const commentModel: ModelAttributes<Model, IComment> = {
     allowNull: false,
   },
   idTopic: {
-    type: DataType.STRING,
+    type: DataType.INTEGER,
     allowNull: false,
   },
 }
