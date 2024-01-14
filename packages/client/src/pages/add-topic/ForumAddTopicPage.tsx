@@ -1,8 +1,6 @@
 import { Box, Stack, Typography } from '@mui/material'
 import { theme } from '../../theme'
 import React, { ChangeEvent, useState } from 'react'
-import { Topic } from 'types/Forum'
-import { mockAllTopics } from 'mocks/forum'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import { useNavigate } from 'react-router-dom'
