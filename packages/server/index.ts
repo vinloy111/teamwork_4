@@ -12,6 +12,7 @@ import * as path from 'path'
 import themeRoutes from './routes/themeRoutes'
 import reactionRoutes from './routes/reactionRoutes'
 import { dbConnect } from './init'
+import forumRoutes from './routes/forumRoutes'
 
 const isDev = () => process.env.NODE_ENV === 'development'
 
@@ -45,6 +46,7 @@ async function startServer() {
 
     app.use('/api/theme', themeRoutes)
     app.use('/api/reaction', reactionRoutes)
+    app.use('/api/forum', forumRoutes)
 
     app.get('/api', (_, res) => {
       res.json('👋 Howdy from the server :)')

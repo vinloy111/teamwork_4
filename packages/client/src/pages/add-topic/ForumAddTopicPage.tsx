@@ -2,7 +2,6 @@ import { Box, Stack, Typography } from '@mui/material'
 import { theme } from '../../theme'
 import React, { ChangeEvent, useState } from 'react'
 import { Topic } from 'types/Forum'
-import { mockAllTopics } from 'mocks/forum'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import { useNavigate } from 'react-router-dom'
@@ -10,9 +9,6 @@ import { useNavigate } from 'react-router-dom'
 const HELPER_TEXT_MIN = 'Минимум 5 символов!'
 const HELPER_TEXT_MAX = 'Максимум 100 символов!'
 
-const getTopicById = (topicId: string): Topic | null => {
-  return mockAllTopics.find(topic => topic.id === topicId) || null
-}
 export const ForumAddTopicPage = () => {
   const [topic, setTopic] = useState('')
   const [error, setError] = useState<string | null>(null)
