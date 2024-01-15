@@ -17,6 +17,7 @@ import ChangePasswordPage from 'pages/change-password/ChangePasswordPage'
 import UserProfilePage from 'pages/user-profile/UserProfilePage'
 import ChangeAvatarPage from 'pages/change-avatar/ChangeAvatarPage'
 import { ForumAddTopicPage } from 'pages/add-topic/ForumAddTopicPage'
+import { ForumChangeTopicPage } from 'pages/change-topic/ForumChangeTopicPage'
 
 export const AppRouter = () => {
   const user = useSelector((state: Store) => state.auth.user)
@@ -47,6 +48,10 @@ export const AppRouter = () => {
         <Route
           path="/forum/add-topic"
           element={protectedRoute(ForumAddTopicPage)}
+        />
+        <Route
+          path="/forum/change-topic/:idTopic"
+          element={protectedRoute(ForumChangeTopicPage)}
         />
         <Route path="/settings" element={protectedRoute(SettingsPage)} />
         <Route

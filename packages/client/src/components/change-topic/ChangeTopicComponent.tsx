@@ -1,20 +1,25 @@
 import { Box, Stack, Typography } from '@mui/material'
 import { theme } from '../../theme'
 import React, { ChangeEvent, useState } from 'react'
+import { Topic } from 'types/Forum'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import { useNavigate } from 'react-router-dom'
-import backendService from 'services/backend-service'
-import { useSelector } from 'react-redux'
-import { Store } from '../../store'
 
 const HELPER_TEXT_MIN = 'Минимум 5 символов!'
 const HELPER_TEXT_MAX = 'Максимум 100 символов!'
-
-export const ForumAddTopicPage = () => {
-  const [topic, setTopic] = useState('')
+declare type ChangeTopicComponentProps = {
+  topicInit?: Topic
+  type: 'save' | 'create'
+  handleSubmit: (caption: string) => void
+}
+export const ChangeTopicComponent = ({
+  topicInit,
+  type,
+  handleSubmit,
+}: ChangeTopicComponentProps) => {
+  const [topic, setTopic] = useState(topicInit?.caption || '')
   const [error, setError] = useState<string | null>(null)
-  const user = useSelector((state: Store) => state.auth.user)
 
   const navigate = useNavigate()
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -24,14 +29,9 @@ export const ForumAddTopicPage = () => {
     setError(null)
     setTopic(value)
   }
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    if (!user) return
-    try {
-      backendService.createTopic(topic, user).then(() => navigate(`/forum`))
-    } catch (error) {
-      console.log('addTopicPageError: ', error)
-    }
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (topic) handleSubmit(topic)
   }
 
   return (
@@ -51,7 +51,7 @@ export const ForumAddTopicPage = () => {
           m: theme.spacing(2),
           borderRadius: 5,
         }}>
-        Создание темы форума
+        {type === 'save' ? 'Изменение темы форума' : 'Создание темы форума'}
       </Typography>
       <Stack
         component="form"
@@ -60,7 +60,7 @@ export const ForumAddTopicPage = () => {
         }}
         noValidate
         autoComplete="off"
-        onSubmit={handleSubmit}
+        onSubmit={e => onSubmit(e)}
         maxWidth={'500px'}
         width={'50%'}>
         <TextField
@@ -88,7 +88,7 @@ export const ForumAddTopicPage = () => {
             className="submit"
             disabled={!!error || !topic}
             sx={{ m: 2 }}>
-            Создать
+            {type === 'save' ? 'Сохранить' : 'Создать'}
           </Button>
         </Box>
       </Stack>

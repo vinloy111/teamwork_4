@@ -3,21 +3,33 @@ import { DataGrid } from '@mui/x-data-grid'
 import { Stack, Typography } from '@mui/material'
 import { theme } from '../../theme'
 import { Forum } from 'types/Forum'
-import { mockForum } from 'mocks/forum'
 import { getColumns } from './settingForum'
 import { useNavigate } from 'react-router-dom'
 import Button from '@mui/material/Button'
+import backendService from 'services/backend-service'
+import { useSelector } from 'react-redux'
+import { Store } from '../../store'
 
 export const ForumComponent = () => {
   const [forum, setForum] = useState<Forum | null>(null)
   const navigate = useNavigate()
+  const user = useSelector((state: Store) => state.auth.user)
   const getForum = () => {
-    setForum(mockForum)
+    backendService
+      .getForum()
+      .then(res => setForum(res.data))
+      .catch(console.error)
   }
   useEffect(() => {
     getForum()
   }, [])
 
+  const onDeleteTopic = (id: string) => {
+    backendService
+      .deleteTopic(id)
+      .then(() => getForum())
+      .catch(console.error)
+  }
   return (
     <Stack
       alignItems="center"
@@ -40,7 +52,12 @@ export const ForumComponent = () => {
       {forum && forum.listOfTopics && forum.listOfTopics.length > 0 && (
         <DataGrid
           rows={forum.listOfTopics}
-          columns={getColumns(navigate)}
+          columns={getColumns(
+            forum.listOfTopics,
+            navigate,
+            user?.id || null,
+            onDeleteTopic
+          )}
           initialState={{
             pagination:
               forum.listOfTopics.length > 5

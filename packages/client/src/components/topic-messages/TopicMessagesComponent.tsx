@@ -1,11 +1,14 @@
 import { Stack } from '@mui/material'
-import { Message, Topic } from 'types/Forum'
+import { Topic } from 'types/Forum'
 import { useEffect, useState } from 'react'
 import { MessageComponent } from './MessageComponent'
 import { TopicReactionsShow } from 'components/topic-reactions-show'
 import backendService from 'services/backend-service'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setReactions } from 'features/reactionsSlice'
+import { CommentComponent } from 'components/topic-messages/CommentComponent'
+import { Store } from '../../store'
+import Paper from '@mui/material/Paper'
 
 declare type TopicMessagesProps = {
   topic: Topic
@@ -13,9 +16,7 @@ declare type TopicMessagesProps = {
 export const TopicMessagesComponent = ({ topic }: TopicMessagesProps) => {
   const dispatch = useDispatch()
   const [messages, setMessages] = useState(topic.listOfMessages || [])
-  const onSaveMessage = (message: Message) => {
-    setMessages(prevState => [...prevState, message])
-  }
+  const user = useSelector((state: Store) => state.auth.user)
 
   useEffect(() => {
     const getReactions = async () => {
@@ -29,6 +30,23 @@ export const TopicMessagesComponent = ({ topic }: TopicMessagesProps) => {
     getReactions()
   }, [])
 
+  const onSaveMessage = (content: string) => {
+    if (!user) return
+    backendService
+      .sendComment(content, topic.id, user)
+      .then(comment => setMessages(prevState => [...prevState, comment.data]))
+      .catch(console.error)
+  }
+  const onDeleteComment = (id: string) => {
+    backendService
+      .deleteComment(id)
+      .then(res =>
+        setMessages(prevState => [
+          ...prevState.filter(comment => comment.id != res.data.deletedId),
+        ])
+      )
+      .catch(console.error)
+  }
   return (
     <Stack
       display="flex"
@@ -39,20 +57,23 @@ export const TopicMessagesComponent = ({ topic }: TopicMessagesProps) => {
       justifyContent="center">
       {messages.length > 0 &&
         messages.map(message => (
-          <MessageComponent
+          <CommentComponent
             key={message.id}
             initMessage={message}
             isEditable={false}
+            topicId={topic.id}
             onSaveMessage={onSaveMessage}
+            onDeleteComment={onDeleteComment}
           />
         ))}
       <TopicReactionsShow />
-      <MessageComponent
-        initMessage={null}
-        isEditable={true}
-        topicId={topic.id}
-        onSaveMessage={onSaveMessage}
-      />
+      <Paper sx={{ width: '90%', m: 1 }}>
+        <MessageComponent
+          initMessage={null}
+          isEditable
+          onSaveMessage={onSaveMessage}
+        />
+      </Paper>
     </Stack>
   )
 }
