@@ -46,7 +46,7 @@ class MessagesController {
         idMessage: newMessage.id,
       })
 
-      return res.status(200).json({
+      return res.status(201).json({
         ...newComment.dataValues,
         content: newMessage.dataValues.content,
         idAuthor: newMessage.dataValues.idAuthor,
@@ -148,7 +148,7 @@ class MessagesController {
         idComment: idComment,
         idMessage: newMessage.id,
       })
-      return res.status(200).json({
+      return res.status(201).json({
         ...newComment.dataValues,
         content: newMessage.dataValues.content,
         idAuthor: newMessage.dataValues.idAuthor,
