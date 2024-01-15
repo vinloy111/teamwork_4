@@ -33,7 +33,7 @@ class ForumController {
         idAuthor: idAuthor,
         userName: userName,
       })
-      return res.status(200).json(newTopic)
+      return res.status(201).json(newTopic)
     } catch (error) {
       return res.status(500).json({
         message: 'Error - createTopic',
@@ -144,10 +144,6 @@ class ForumController {
         error,
       })
     }
-  }
-
-  getTest(req: Request, res: Response) {
-    res.json({ forum: 'name' })
   }
 }
 
