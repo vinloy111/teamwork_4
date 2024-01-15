@@ -36,6 +36,7 @@ export const TopicMessagesComponent = ({ topic }: TopicMessagesProps) => {
     backendService
       .sendComment(content, topic.id, user)
       .then(comment => setMessages(prevState => [...prevState, comment.data]))
+      .catch(console.error)
   }
   const onDeleteComment = (id: string) => {
     backendService
@@ -45,6 +46,7 @@ export const TopicMessagesComponent = ({ topic }: TopicMessagesProps) => {
           ...prevState.filter(comment => comment.id != res.data.deletedId),
         ])
       )
+      .catch(console.error)
   }
 
   const reactionBlock = (

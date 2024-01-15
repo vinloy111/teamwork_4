@@ -15,14 +15,20 @@ export const ForumComponent = () => {
   const navigate = useNavigate()
   const user = useSelector((state: Store) => state.auth.user)
   const getForum = () => {
-    backendService.getForum().then(res => setForum(res.data))
+    backendService
+      .getForum()
+      .then(res => setForum(res.data))
+      .catch(console.error)
   }
   useEffect(() => {
     getForum()
   }, [])
 
   const onDeleteTopic = (id: string) => {
-    backendService.deleteTopic(id).then(() => getForum())
+    backendService
+      .deleteTopic(id)
+      .then(() => getForum())
+      .catch(console.error)
   }
   return (
     <Stack
