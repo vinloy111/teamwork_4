@@ -52,10 +52,13 @@ export const CommentComponent = ({
   }
   const onUpdateMessage = (content: string) => {
     if (!message) return
-    backendService.updateMessage(content, message.idMessage).then(() => {
-      setMessage({ ...message, content })
-      setIsEditable(false)
-    })
+    backendService
+      .updateMessage(content, message.idMessage)
+      .then(() => {
+        setMessage({ ...message, content })
+        setIsEditable(false)
+      })
+      .catch(console.error)
   }
   const onDeleteReply = (id: string) => {
     backendService
@@ -65,6 +68,7 @@ export const CommentComponent = ({
           ...prevState.filter(comment => comment.id != res.data.deletedId),
         ])
       )
+      .catch(console.error)
   }
 
   const onAddReply = (content: string) => {
@@ -72,6 +76,7 @@ export const CommentComponent = ({
     backendService
       .sendReply(content, message.id, user)
       .then(reply => setReplies(prevState => [...prevState, reply.data]))
+      .catch(console.error)
   }
 
   const fullPermission = user?.id === message?.idAuthor
