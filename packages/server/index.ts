@@ -6,13 +6,14 @@ import type { ViteDevServer } from 'vite'
 
 dotenv.config()
 
-import express from 'express'
+import express, { type Request, type Response } from 'express'
 import * as fs from 'fs'
 import * as path from 'path'
 import themeRoutes from './routes/themeRoutes'
 import reactionRoutes from './routes/reactionRoutes'
 import { dbConnect } from './init'
 import forumRoutes from './routes/forumRoutes'
+import { YandexAPIRepository } from './services/auth-yandex'
 
 const isDev = () => process.env.NODE_ENV === 'development'
 
@@ -43,7 +44,14 @@ async function startServer() {
 
       app.use(vite.middlewares)
     }
-
+    app.all('/api/*', async (req, res, next) => {
+      const auth = new YandexAPIRepository(req.headers['cookie'])
+      const user = await auth.getCurrent()
+      if (user?.error?.response?.status === 401) {
+        return res.status(403).json({ error: 'User not authorized' })
+      }
+      return next()
+    })
     app.use('/api/theme', themeRoutes)
     app.use('/api/reaction', reactionRoutes)
     app.use('/api/forum', forumRoutes)
