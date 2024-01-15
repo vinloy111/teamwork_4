@@ -9,6 +9,7 @@ import { setReactions } from 'features/reactionsSlice'
 import { CommentComponent } from 'components/topic-messages/CommentComponent'
 import { Store } from '../../store'
 import Paper from '@mui/material/Paper'
+import { TopicReactionsButtons } from 'components/topic-reactions-buttons'
 
 declare type TopicMessagesProps = {
   topic: Topic
@@ -45,6 +46,22 @@ export const TopicMessagesComponent = ({ topic }: TopicMessagesProps) => {
         ])
       )
   }
+
+  const reactionBlock = (
+    <Paper
+      sx={{
+        width: '90%',
+        m: 1,
+        padding: '15px',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      }}>
+      <TopicReactionsShow />
+      <TopicReactionsButtons topicId={topic.id} />
+    </Paper>
+  )
+
   return (
     <Stack
       display="flex"
@@ -64,7 +81,7 @@ export const TopicMessagesComponent = ({ topic }: TopicMessagesProps) => {
             onDeleteComment={onDeleteComment}
           />
         ))}
-      <TopicReactionsShow />
+      {messages.length ? reactionBlock : <></>}
       <Paper sx={{ width: '90%', m: 1 }}>
         <MessageComponent
           initMessage={null}

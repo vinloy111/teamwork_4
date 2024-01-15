@@ -18,9 +18,9 @@ export const TopicReactionsShow = () => {
   )
 
   return (
-    <Box textAlign="left">
-      <span style={{ marginRight: 10 }}>Реакции:</span>
-      {content}
+    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+      <div>Реакции:</div>
+      <Box sx={{ display: 'flex' }}>{content}</Box>
     </Box>
   )
 }
