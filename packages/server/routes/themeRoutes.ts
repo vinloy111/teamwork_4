@@ -3,6 +3,12 @@ import ThemeController from '../controllers/ThemeController'
 
 const router = express.Router()
 
-router.get('/', ThemeController.getCurrentTheme)
+// Получение темы пользователя по ID
+router.get('/user/:userId', ThemeController.getUserTheme)
+
+// Обновление темы пользователя
+router.put('/theme/user', ThemeController.updateUserTheme)
+
+router.get('/', ThemeController.getAllThemes)
 
 export default router
