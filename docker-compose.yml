@@ -46,16 +46,3 @@ services:
       user: root
       volumes:
         - ./tmp/pgdata:/var/lib/postgresql/data
-
-    pgadmin:
-      container_name: pgadmin
-      image: dpage/pgadmin8
-      restart: always
-      environment:
-        PGADMIN_DEFAULT_EMAIL: ellevanova@gmail.com
-        PGADMIN_DEFAULT_PASSWORD: secret
-      user: root
-      volumes:
-        - ./tmp/pgadmindata:/var/lib/pgadmin
-      ports:
-        - "80:80"
