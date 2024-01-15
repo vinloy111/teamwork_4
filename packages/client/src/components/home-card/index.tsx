@@ -1,7 +1,7 @@
 import Typography from '@mui/material/Typography'
-import { theme } from '../../theme'
 import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { useTheme } from '@mui/material/styles'
 
 type Props = {
   title?: string
@@ -18,6 +18,8 @@ export const HomeCard = ({
   expanded,
   setExpanded,
 }: Props) => {
+  const theme = useTheme()
+
   const titleBlock = (
     <Typography
       variant="subtitle1"

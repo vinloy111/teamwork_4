@@ -7,7 +7,7 @@ const router = express.Router()
 router.get('/user/:userId', ThemeController.getUserTheme)
 
 // Обновление темы пользователя
-router.put('/theme/user', ThemeController.updateUserTheme)
+router.put('/user', ThemeController.updateUserTheme)
 
 router.get('/', ThemeController.getAllThemes)
 

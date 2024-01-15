@@ -5,6 +5,7 @@ import gameSettingsReducer from 'features/gameSettingsSlice'
 import authReducer from 'features/authSlice'
 import userReducer from 'features/userSlice'
 import reactionsReducer from 'features/reactionsSlice'
+import themeReducer from 'features/themeSlice'
 
 export const createStore = (initialState?: {}) =>
   configureStore({
@@ -14,6 +15,7 @@ export const createStore = (initialState?: {}) =>
       gameResources: gameResourcesSlice,
       user: userReducer,
       reactions: reactionsReducer,
+      theme: themeReducer,
     },
     preloadedState: initialState,
     middleware: getDefaultMiddleware =>
