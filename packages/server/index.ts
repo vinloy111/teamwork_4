@@ -11,7 +11,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import themeRoutes from './routes/themeRoutes'
 import reactionRoutes from './routes/reactionRoutes'
-import { dbConnect } from './init'
+import { dbConnect, SiteTheme } from './init'
 import forumRoutes from './routes/forumRoutes'
 
 const isDev = () => process.env.NODE_ENV === 'development'
@@ -21,6 +21,15 @@ async function startServer() {
     const app = express()
     app.use(express.json())
     app.use(cors())
+
+    // TODO костыль, исправить после добавления миграций
+    const existingThemes = await SiteTheme.count()
+    if (existingThemes === 0) {
+      await SiteTheme.bulkCreate([
+        { theme: 'dark', description: 'Темная тема' },
+        { theme: 'light', description: 'Светлая тема' },
+      ])
+    }
 
     const port = Number(process.env.SERVER_PORT) || 3000
 
