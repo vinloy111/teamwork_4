@@ -3,6 +3,9 @@
 - Видео - https://www.youtube.com/watch?v=N67c5CtMZts
 - Тестовый стенд - https://admirable-squirrel-6ed150.netlify.app/
 
+### Демо 17.01.2024
+- Видео - https://www.youtube.com/watch?v=LFimM7E44N4
+
 ### Как запускать?
 
 1. Убедитесь что у вас установлен `node` и `docker`
@@ -33,7 +36,7 @@
 
 1. docker-compose build
 2. docker-compose up
-4. открыть http://localhost:3000
+3. открыть http://localhost:3000
 
 
 ### Анализ производительности
