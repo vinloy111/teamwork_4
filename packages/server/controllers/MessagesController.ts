@@ -26,7 +26,6 @@ class MessagesController {
     } catch (error) {
       return res.status(500).json({
         message: 'Error - updateMessage',
-        error,
       })
     }
   }
@@ -55,7 +54,6 @@ class MessagesController {
     } catch (error) {
       return res.status(500).json({
         message: 'Error - createComment',
-        error: error,
       })
     }
   }
@@ -76,7 +74,6 @@ class MessagesController {
     } catch (error) {
       return res.status(500).json({
         message: 'Error - getComments',
-        error,
       })
     }
   }
@@ -94,7 +91,6 @@ class MessagesController {
     } catch (error) {
       return res.status(500).json({
         message: 'Error - deleteTopic',
-        error,
       })
     }
   }
@@ -129,7 +125,6 @@ class MessagesController {
     } catch (error) {
       return res.status(500).json({
         message: 'Error - getComments',
-        error,
       })
     }
   }
@@ -157,7 +152,6 @@ class MessagesController {
     } catch (error) {
       return res.status(500).json({
         message: 'Error - createComment',
-        error,
       })
     }
   }
@@ -175,7 +169,6 @@ class MessagesController {
     } catch (error) {
       return res.status(500).json({
         message: 'Error - deleteReplies',
-        error,
       })
     }
   }

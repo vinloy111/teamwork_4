@@ -18,7 +18,6 @@ class ForumController {
     } catch (error) {
       return res.status(500).json({
         message: 'Error - getForum',
-        error,
       })
     }
   }
@@ -37,7 +36,6 @@ class ForumController {
     } catch (error) {
       return res.status(500).json({
         message: 'Error - createTopic',
-        error,
       })
     }
   }
@@ -63,7 +61,6 @@ class ForumController {
     } catch (error) {
       return res.status(500).json({
         message: 'Error - updateTopic',
-        error,
       })
     }
   }
@@ -77,6 +74,9 @@ class ForumController {
           id,
         },
       })
+      if (!topic || !topic.dataValues)
+        return res.status(204).json({ error: 'topic not found' })
+
       const comments = await CommentsTable.findAll({
         where: {
           idTopic: id,
@@ -110,7 +110,6 @@ class ForumController {
     } catch (error) {
       return res.status(500).json({
         message: 'Error - updateTopic',
-        error,
       })
     }
   }
@@ -123,7 +122,6 @@ class ForumController {
     } catch (error) {
       return res.status(500).json({
         message: 'Error - getTopics',
-        error,
       })
     }
   }
@@ -141,7 +139,6 @@ class ForumController {
     } catch (error) {
       return res.status(500).json({
         message: 'Error - deleteTopic',
-        error,
       })
     }
   }
