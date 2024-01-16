@@ -18,7 +18,6 @@ import {
 } from 'mui-tiptap'
 import Button from '@mui/material/Button'
 import { StarterKit } from '@tiptap/starter-kit'
-import { TopicReactionsButtons } from 'components/topic-reactions-buttons'
 import CloseIcon from '@mui/icons-material/Close'
 
 export declare type MessageProps = {
@@ -133,7 +132,6 @@ export const MessageComponent = ({
                   </Button>
                 )}
               </ButtonGroup>
-              <TopicReactionsButtons topicId={initMessage?.idTopic} />
             </Stack>
           ),
         }}

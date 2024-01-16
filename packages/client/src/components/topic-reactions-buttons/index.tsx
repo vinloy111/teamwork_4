@@ -22,21 +22,21 @@ export const TopicReactionsButtons = ({ topicId }: Props) => {
         if (!activeReaction) {
           const res = await backendService.addReaction({
             emojiId,
-            topicId,
+            topicId: String(topicId),
             userId,
           })
           dispatch(setReactions(res.data))
         } else if (activeReaction && activeReaction.emojiId !== emojiId) {
           const res = await backendService.updateReaction(activeReaction.id, {
             emojiId,
-            topicId,
+            topicId: String(topicId),
             userId,
           })
           dispatch(setReactions(res.data))
         } else if (activeReaction && activeReaction.emojiId === emojiId) {
           const res = await backendService.deleteReaction(
             activeReaction.id,
-            topicId
+            String(topicId)
           )
           dispatch(setReactions(res.data))
         }
