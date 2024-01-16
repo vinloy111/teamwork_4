@@ -29,6 +29,13 @@
 6. Выполните команду `yarn link "client"`
 7. Выполните команду `yarn build`
 
+### Как собирать запустить docker?
+
+1. docker-compose build
+2. docker-compose up
+3. Подключиться к бд и создать темы dark, light
+4. открыть http://localhost:3000
+
 
 ### Анализ производительности
 После анализа производительности с помощью DevTools Google Chrome выявлены слабые места:
