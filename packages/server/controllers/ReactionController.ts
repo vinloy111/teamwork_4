@@ -16,7 +16,6 @@ class ReactionController {
     } catch (error) {
       return res.status(500).json({
         message: 'Error - getReactions',
-        error,
       })
     }
   }
@@ -35,7 +34,6 @@ class ReactionController {
     } catch (error) {
       return res.status(500).json({
         message: 'Error - addReaction',
-        error,
       })
     }
   }
@@ -60,7 +58,6 @@ class ReactionController {
     } catch (error) {
       return res.status(500).json({
         message: 'Error - updateReaction',
-        error,
       })
     }
   }
@@ -82,7 +79,6 @@ class ReactionController {
     } catch (error) {
       return res.status(500).json({
         message: 'Error - updateReaction',
-        error,
       })
     }
   }
