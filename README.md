@@ -33,7 +33,7 @@
 
 1. docker-compose build
 2. docker-compose up
-3. Подключиться к бд и создать темы dark, light
+3. Подключиться к бд и создать темы dark, light (этот пункт будет убран после добавления миграций)
 4. открыть http://localhost:3000
 
 
