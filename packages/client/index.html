@@ -8,10 +8,13 @@
       rel="preconnect"
       href="https://fonts.gstatic.com"
       crossorigin="anonymous" />
-      <link href="/fonts/stylesheet.css" rel="stylesheet">
+    <link href="/fonts/stylesheet.css" rel="stylesheet" />
+    <script>
+      window.__PRELOADED_STATE__ = <!--store-data-->;
+    </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"><!--ssr-outlet--></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

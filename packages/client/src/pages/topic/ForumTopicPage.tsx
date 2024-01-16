@@ -3,15 +3,12 @@ import { theme } from '../../theme'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import { Topic } from 'types/Forum'
-import { mockAllTopics } from 'mocks/forum'
 import { LoaderComponent } from 'components/loader/LoaderComponent'
 import Button from '@mui/material/Button'
 import { TopicMessagesComponent } from 'components/topic-messages/TopicMessagesComponent'
 import { useNavigate } from 'react-router-dom'
+import backendService from 'services/backend-service'
 
-const getTopicById = (topicId: string): Topic | null => {
-  return mockAllTopics.find(topic => topic.id === topicId) || null
-}
 export const ForumTopicPage = () => {
   const { topicId } = useParams()
   const [topic, setTopic] = useState<Topic | null>(null)
@@ -20,10 +17,13 @@ export const ForumTopicPage = () => {
   useEffect(() => {
     if (topicId) {
       setIsLoading(true)
-      /**{TODO: В дальнейшем запрос в ручку по topicId }*/
-      setTopic(getTopicById(topicId))
-      /**{TODO: В дальнейшем убрать-для теста лоадера }*/
-      setTimeout(() => setIsLoading(false), 1000)
+      backendService
+        .getTopic(topicId)
+        .then(res => {
+          setIsLoading(false)
+          setTopic(res.data)
+        })
+        .catch(() => setIsLoading(false))
     }
   }, [])
 

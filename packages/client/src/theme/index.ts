@@ -1,7 +1,7 @@
 import { ThemeOptions } from '@mui/material/styles'
 import { createTheme } from '@mui/material'
 
-export const themeOptions: ThemeOptions = {
+export const darkThemeOptions: ThemeOptions = {
   palette: {
     mode: 'dark',
     primary: {
@@ -57,12 +57,105 @@ export const themeOptions: ThemeOptions = {
     MuiCssBaseline: {
       styleOverrides: {
         body: {
+          width: '100vw',
+          height: '100vh',
+          margin: 0,
           fontFamily: ['Chilanka', 'cursive', 'Arial'].join(','),
           boxSizing: 'border-box',
+        },
+        '#root': {
+          width: '100%',
+          height: '100%',
+        },
+        a: {
+          color: '#ffff00',
         },
       },
     },
   },
 }
 
-export const theme = createTheme(themeOptions)
+export const theme = createTheme(darkThemeOptions)
+
+export const lightThemeOptions: ThemeOptions = {
+  palette: {
+    mode: 'light',
+    primary: {
+      main: '#1976d2',
+    },
+    background: {
+      default: '#f0f2f5',
+      paper: '#ffffff',
+    },
+    secondary: {
+      main: '#9c27b0',
+    },
+    info: {
+      main: '#2196f3',
+    },
+    success: {
+      main: '#4caf50',
+    },
+    error: {
+      main: '#f44336',
+    },
+    warning: {
+      main: '#ff9800',
+    },
+  },
+  typography: {
+    fontFamily: ['Chilanka', 'cursive', 'Arial'].join(','),
+    button: {
+      fontWeight: 900,
+    },
+
+    h1: {
+      fontSize: '3rem',
+      color: '#ff9800',
+    },
+
+    h2: {
+      fontSize: '2.4rem',
+      color: '#ff9800',
+    },
+    h3: {
+      fontSize: '2rem',
+      color: '#ff9800',
+    },
+    h4: {
+      fontSize: '1.5rem',
+      color: '#ff9800',
+    },
+    h5: {
+      fontSize: '1.3rem',
+      color: '#ff9800',
+    },
+    h6: {
+      fontSize: '1.2rem',
+      color: '#ff9800',
+    },
+  },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          width: '100vw',
+          height: '100vh',
+          margin: 0,
+          fontFamily: ['Chilanka', 'cursive', 'Arial'].join(','),
+          boxSizing: 'border-box',
+          backgroundColor: '#f0f2f5',
+        },
+        '#root': {
+          width: '100%',
+          height: '100%',
+        },
+        a: {
+          color: '#1976d2',
+        },
+      },
+    },
+  },
+}
+
+export const lightTheme = createTheme(lightThemeOptions)

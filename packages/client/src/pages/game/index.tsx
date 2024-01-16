@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux'
 import { Store } from 'src/store'
 import { APP_CONSTS } from 'consts/index'
 import './style.css'
+import { saveResultToLeaderBoard } from 'pages/game/game.controller'
 
 export const GamePage = (): JSX.Element => {
   const gameWrapper = useRef<HTMLDivElement>(null)
@@ -29,6 +30,7 @@ export const GamePage = (): JSX.Element => {
     height: number
   }>({ width: 0, height: 0 })
   const [gameInfo, setGameInfo] = useState<GameResult | undefined>(undefined)
+  const user = useSelector((state: Store) => state.auth.user)
 
   // TODO: Доработать чтобы изменения размера экрана в процессе игры, могли корректно перерисовывать
   // игровую область пропорционально разнице начальных размеров и новых размеров
@@ -80,6 +82,8 @@ export const GamePage = (): JSX.Element => {
 
   const finishGame = (stats: GameResult) => {
     resources?.audio?.backgroundMusic?.pause()
+    if (!user) return
+    saveResultToLeaderBoard(stats, user)
     setGameInfo(stats)
     setGameStatus(GameScreen.finalScreen)
   }

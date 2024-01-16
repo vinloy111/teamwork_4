@@ -1,6 +1,6 @@
-import { Player } from 'types/LidearBoard'
+import { PlayerLeaderBoard } from 'types/LidearBoard'
 
-export const mockLeaderboardList: Player[] = [
+export const mockLeaderboardList: PlayerLeaderBoard[] = [
   {
     id: '1',
     idUser: '1',

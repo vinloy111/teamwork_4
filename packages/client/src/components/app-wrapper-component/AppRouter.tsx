@@ -1,9 +1,4 @@
-import {
-  createBrowserRouter,
-  createRoutesFromElements,
-  Navigate,
-  Route,
-} from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import { HomePage } from 'pages/home'
 import { GamePage } from 'pages/game'
 import ForumPage from 'pages/forum/ForumPage'
@@ -22,30 +17,21 @@ import ChangePasswordPage from 'pages/change-password/ChangePasswordPage'
 import UserProfilePage from 'pages/user-profile/UserProfilePage'
 import ChangeAvatarPage from 'pages/change-avatar/ChangeAvatarPage'
 import { ForumAddTopicPage } from 'pages/add-topic/ForumAddTopicPage'
-import { ErrorComponent } from 'components/error/error'
+import { ForumChangeTopicPage } from 'pages/change-topic/ForumChangeTopicPage'
 
 export const AppRouter = () => {
-  const user = useSelector((state: Store) => {
-    return state.auth.user
-  })
+  const user = useSelector((state: Store) => state.auth.user)
 
   const protectedRoute = (PageComponent: React.ComponentType) =>
     user ? <PageComponent /> : <Navigate to="/login" />
 
-  return createBrowserRouter(
-    createRoutesFromElements(
-      <Route
-        element={<Layout />}
-        errorElement={
-          <Layout>
-            <ErrorComponent type="500" />
-          </Layout>
-        }>
+  return (
+    <Routes>
+      <Route element={<Layout />}>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/500" element={<ServerErrorPage />} />
         <Route path="*" element={<NotFoundPage />} />
-
         {/* Приватные страницы */}
         <Route path="/" element={protectedRoute(HomePage)} />
         <Route
@@ -63,6 +49,10 @@ export const AppRouter = () => {
           path="/forum/add-topic"
           element={protectedRoute(ForumAddTopicPage)}
         />
+        <Route
+          path="/forum/change-topic/:idTopic"
+          element={protectedRoute(ForumChangeTopicPage)}
+        />
         <Route path="/settings" element={protectedRoute(SettingsPage)} />
         <Route
           path="/change-password"
@@ -73,6 +63,6 @@ export const AppRouter = () => {
           element={protectedRoute(ChangeAvatarPage)}
         />
       </Route>
-    )
+    </Routes>
   )
 }

@@ -1,21 +1,20 @@
 import { Box, Stack, Typography } from '@mui/material'
 import { theme } from '../../theme'
 import React, { ChangeEvent, useState } from 'react'
-import { Topic } from 'types/Forum'
-import { mockAllTopics } from 'mocks/forum'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import { useNavigate } from 'react-router-dom'
+import backendService from 'services/backend-service'
+import { useSelector } from 'react-redux'
+import { Store } from '../../store'
 
 const HELPER_TEXT_MIN = 'Минимум 5 символов!'
 const HELPER_TEXT_MAX = 'Максимум 100 символов!'
 
-const getTopicById = (topicId: string): Topic | null => {
-  return mockAllTopics.find(topic => topic.id === topicId) || null
-}
 export const ForumAddTopicPage = () => {
   const [topic, setTopic] = useState('')
   const [error, setError] = useState<string | null>(null)
+  const user = useSelector((state: Store) => state.auth.user)
 
   const navigate = useNavigate()
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -27,15 +26,9 @@ export const ForumAddTopicPage = () => {
   }
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    if (!user) return
     try {
-      const newTopic: Topic = {
-        id: 'newTopic',
-        caption: topic,
-        idAuthor: 'user',
-        listOfMessages: [],
-      }
-      //TODO: сохранение нового топика
-      console.log('addTopicPageError new topic: ', newTopic)
+      backendService.createTopic(topic, user).then(() => navigate(`/forum`))
     } catch (error) {
       console.log('addTopicPageError: ', error)
     }

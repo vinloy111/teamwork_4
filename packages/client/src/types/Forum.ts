@@ -15,7 +15,31 @@ export declare type Topic = {
 
 export declare type Message = {
   id: string
+  idTopic?: string
+  idComment?: string
   idAuthor: string
-  text: string
-  date: string
+  userName: string
+  content: string
+  createdAt: string
+  updatedAt: string
+  idMessage: string
+}
+
+export type Emoji = {
+  id: string
+  img: string
+  description: string
+}
+
+export type Reaction = {
+  id: string
+  userId: string
+  topicId: string
+  emojiId: string
+}
+
+export type ReactionSave = {
+  userId: string
+  topicId: string
+  emojiId: string
 }

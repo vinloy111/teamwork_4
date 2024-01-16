@@ -151,6 +151,7 @@ export const getGameStats = (
       count: countByOwner[owner],
       color: areasExtendedMap[owner].color,
       armiesPercent: countByOwner[owner] / allCount,
+      playerType: areas.find(item => item.owner === owner)?.player,
     }
   })
 

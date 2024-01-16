@@ -1,9 +1,15 @@
 import { Message } from 'types/Forum'
-import { useEffect, useRef, useState } from 'react'
-import { Stack } from '@mui/material'
+import { useRef, useState } from 'react'
+import { Alert, ButtonGroup, Collapse, IconButton, Stack } from '@mui/material'
 import {
+  MenuButtonBlockquote,
   MenuButtonBold,
+  MenuButtonCode,
+  MenuButtonCodeBlock,
   MenuButtonItalic,
+  MenuButtonOrderedList,
+  MenuButtonRedo,
+  MenuButtonUndo,
   MenuControlsContainer,
   MenuDivider,
   MenuSelectHeading,
@@ -12,93 +18,124 @@ import {
 } from 'mui-tiptap'
 import Button from '@mui/material/Button'
 import { StarterKit } from '@tiptap/starter-kit'
-import Box from '@mui/material/Box'
+import CloseIcon from '@mui/icons-material/Close'
 
 export declare type MessageProps = {
   initMessage?: Message | null
   isEditable?: boolean
-  onSaveMessage: (message: Message) => void
+  onSaveMessage?: (content: string) => void
+  onUpdateMessage?: (content: string) => void
+  handleCancel?: () => void
 }
 
 /**
- * Компонент для сообщения в теме форума.
- * Предполагается, что потом каждое сообщение можно будет изменить,
- * если у авторизованного юзера будет на это право (он автор или админ).
- * В header добавятся кнопки 'Изменить', 'Удалить', 'Цитировать'
- * Дальше еще работа с эмоджи.
- * Плюс доработка дизайна
- * есть смысл выделить RichTextEditor в отдельный компонент
+ * Компонент для отрисовки Текстового редактора сообщения
  * @param initMessage
  * @param isEditable
+ * @param handleCancel
  * @param onSaveMessage
+ * @param onUpdateMessage
  * @constructor
  */
 export const MessageComponent = ({
   initMessage,
   isEditable,
+  handleCancel,
   onSaveMessage,
+  onUpdateMessage,
 }: MessageProps) => {
-  const [message, setMessage] = useState<Message | null>(initMessage || null)
-  const [text, setText] = useState(initMessage?.text || '')
-  const [showMenuBar, setShowMenuBar] = useState(isEditable || false)
-  useEffect(() => {
-    setMessage({ date: '', id: 'new', idAuthor: '', text: text })
-  }, [text])
-  const onTextChange = (value: string) => {
-    setText(value)
-    onSaveMessage({ date: '', id: 'new', idAuthor: '', text: value })
-  }
+  const [error, setError] = useState<string | null>(null)
+
   const rteRef = useRef<RichTextEditorRef>(null)
+  const editor = rteRef.current?.editor
+
+  const onSendMessage = (value: string) => {
+    if (onSaveMessage) onSaveMessage(value)
+    if (onUpdateMessage) onUpdateMessage(value)
+
+    editor?.chain().setContent('')
+  }
   return (
-    <>
-      <Box
-        width={'90%'}
-        sx={{
-          py: 1,
-          px: 1.5,
-        }}>
-        <RichTextEditor
-          ref={rteRef}
-          extensions={[StarterKit]}
-          content={text}
-          editable={isEditable}
-          renderControls={() => (
-            <MenuControlsContainer>
-              <MenuSelectHeading />
-              <MenuDivider />
-              <MenuButtonBold />
-              <MenuButtonItalic />
-            </MenuControlsContainer>
-          )}
-          RichTextFieldProps={{
-            variant: 'outlined',
-            MenuBarProps: {
-              hide: !showMenuBar,
-            },
-            footer: isEditable && (
-              <Stack
-                direction="row"
-                spacing={2}
-                sx={{
-                  borderTopStyle: 'solid',
-                  borderTopWidth: 1,
-                  borderTopColor: theme => theme.palette.divider,
-                  py: 1,
-                  px: 1.5,
-                }}>
+    <Stack width={'100%'}>
+      <Collapse in={error !== null}>
+        <Alert
+          severity="error"
+          action={
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              size="small"
+              onClick={() => {
+                setError(null)
+              }}>
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
+          }
+          sx={{ mb: 2 }}>
+          {error}
+        </Alert>
+      </Collapse>
+      <RichTextEditor
+        ref={rteRef}
+        extensions={[StarterKit]}
+        content={initMessage?.content || ''}
+        editable={isEditable}
+        renderControls={() => (
+          <MenuControlsContainer>
+            <MenuButtonUndo />
+            <MenuButtonRedo />
+            <MenuDivider />
+            <MenuSelectHeading />
+            <MenuDivider />
+            <MenuButtonBold />
+            <MenuButtonItalic />
+            <MenuButtonCode />
+            <MenuButtonCodeBlock />
+            <MenuButtonBlockquote />
+            <MenuButtonOrderedList />
+          </MenuControlsContainer>
+        )}
+        RichTextFieldProps={{
+          variant: 'outlined',
+          MenuBarProps: {
+            hide: !isEditable,
+          },
+          footer: isEditable && (
+            <Stack
+              direction="row"
+              spacing={2}
+              justifyContent="space-between"
+              sx={{
+                borderTopStyle: 'solid',
+                borderTopWidth: 1,
+                borderTopColor: theme => theme.palette.divider,
+                py: 1,
+                px: 1.5,
+              }}>
+              <ButtonGroup>
                 <Button
                   variant="contained"
                   size="small"
                   onClick={() => {
-                    onTextChange(rteRef.current?.editor?.getHTML() ?? '')
+                    if (!rteRef.current?.editor?.getText())
+                      setError('Введите сообщение')
+                    else onSendMessage(rteRef.current?.editor?.getHTML() ?? '')
                   }}>
                   Отправить
                 </Button>
-              </Stack>
-            ),
-          }}
-        />
-      </Box>
-    </>
+                {handleCancel && (
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    onClick={() => handleCancel()}>
+                    Отмена
+                  </Button>
+                )}
+              </ButtonGroup>
+            </Stack>
+          ),
+        }}
+      />
+    </Stack>
   )
 }
