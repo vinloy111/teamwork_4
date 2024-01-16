@@ -2,6 +2,8 @@ import axios from 'axios'
 import { ReactionSave, Reaction, Forum, Topic, Message } from 'types/Forum'
 import { User } from 'types/User'
 import { getUserName } from 'utils/adaptUserData'
+import { Theme } from 'types/Theme'
+import { UserTheme } from 'types/UserTheme'
 
 export const SERVER_BASE_URL = 'http://localhost:3000'
 
@@ -95,6 +97,30 @@ const backendService = {
     return axios.delete<{ deletedId: string }>(
       `${SERVER_BASE_URL}/api/forum/reply/${idReply}`
     )
+  },
+
+  /**
+   * Получение темы юзера
+   */
+  getUserTheme(userId: string) {
+    return axios.get<UserTheme>(`${SERVER_BASE_URL}/api/theme/user/${userId}`)
+  },
+
+  /**
+   * Обновление или задание темы юзеру
+   */
+  updateUserTheme(userId: string, themeId: number) {
+    return axios.put<UserTheme>(`${SERVER_BASE_URL}/api/theme/user`, {
+      userId,
+      themeId,
+    })
+  },
+
+  /**
+   * Получение всех возможных тем
+   */
+  getAllThemes() {
+    return axios.get<Theme[]>(`${SERVER_BASE_URL}/api/theme`)
   },
 }
 

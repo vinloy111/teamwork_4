@@ -8,6 +8,8 @@ import {
   messageModel,
   replyModel,
 } from '../models/forum'
+import { siteThemeModel } from '../models/siteTheme'
+import { userThemeModel } from '../models/userTheme'
 
 const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT } =
   process.env
@@ -43,6 +45,9 @@ export const CommentsTable = sequelize.define('Comments', commentModel)
 export const RepliesTable = sequelize.define('Replies', replyModel)
 export const MessagesTable = sequelize.define('Messages', messageModel)
 
+export const SiteTheme = sequelize.define('SiteTheme', siteThemeModel)
+export const UserTheme = sequelize.define('UserTheme', userThemeModel)
+
 /** Связи */
 TopicsTable.hasMany(CommentsTable, {
   onDelete: 'cascade',
@@ -61,6 +66,16 @@ RepliesTable.belongsTo(MessagesTable, {
   foreignKey: 'idMessage',
   onDelete: 'cascade',
 })
+
+SiteTheme.hasMany(UserTheme, {
+  foreignKey: 'themeId',
+  as: 'userThemes', // Псевдоним для связи
+})
+UserTheme.belongsTo(SiteTheme, {
+  foreignKey: 'themeId',
+  as: 'siteTheme',
+})
+
 export async function dbConnect() {
   try {
     await sequelize.authenticate() // Проверка аутентификации в БД
