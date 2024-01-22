@@ -221,7 +221,12 @@ export const StartScreen = (props: Props): JSX.Element => {
       }}>
       <Paper
         elevation={24}
-        sx={{ maxWidth: 1200, padding: '20px', borderRadius: '10px' }}>
+        sx={{
+          maxWidth: 1200,
+          padding: '20px',
+          borderRadius: '10px',
+          zIndex: 2,
+        }}>
         {title}
         {settingsBlock}
         {button}

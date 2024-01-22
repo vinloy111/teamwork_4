@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
+import { useLocation } from 'react-router-dom'
 import { Store } from '../../store'
 import React, { useEffect, useState } from 'react'
 import {
@@ -17,6 +18,7 @@ import { Theme } from 'types/Theme'
 
 const Footer = () => {
   const dispatch = useDispatch()
+  const { pathname } = useLocation()
   const { userTheme, allThemes } = useSelector((state: Store) => state.theme)
   const userId = useSelector((state: Store) => state.auth.user?.id)
   const [selectedTheme, setSelectedTheme] = useState('')
@@ -60,7 +62,11 @@ const Footer = () => {
     }
   }
 
-  return (
+  const isGamePage = pathname.includes('game')
+
+  return isGamePage ? (
+    <></>
+  ) : (
     <Box display="flex" justifyContent="center" alignItems="center" p={2}>
       <RadioGroup row value={selectedTheme} onChange={handleThemeChange}>
         {allThemes.map(theme => (

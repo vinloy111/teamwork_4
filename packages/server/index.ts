@@ -21,6 +21,13 @@ async function startServer() {
     const app = express()
     app.use(express.json())
     app.use(cors())
+    app.use(function (_, res, next) {
+      res.setHeader(
+        'Content-Security-Policy',
+        "default-src 'self' https://ya-praktikum.tech; font-src 'self'; img-src 'self' https://ya-praktikum.tech; script-src 'self' 'nonce-2726c7f26c'; style-src 'self' 'unsafe-inline'; style-src-elem 'self' 'unsafe-inline'; frame-src 'self'"
+      )
+      next()
+    })
 
     // TODO костыль, исправить после добавления миграций
     const existingThemes = await SiteTheme.count()
@@ -76,6 +83,8 @@ async function startServer() {
       app.use('/assets', express.static(path.resolve(distPath, 'assets')))
       app.use('/avatars', express.static(path.resolve(distPath, 'avatars')))
       app.use('/images', express.static(path.resolve(distPath, 'images')))
+      app.use('/music', express.static(path.resolve(distPath, 'music')))
+      app.use('/sounds', express.static(path.resolve(distPath, 'sounds')))
     }
 
     app.use('*', async (req, res, next) => {
