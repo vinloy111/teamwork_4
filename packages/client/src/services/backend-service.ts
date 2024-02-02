@@ -4,8 +4,13 @@ import { User } from 'types/User'
 import { getUserName } from 'utils/adaptUserData'
 import { Theme } from 'types/Theme'
 import { UserTheme } from 'types/UserTheme'
+import { AppWindow } from 'types/Window'
 
-export const SERVER_BASE_URL = 'http://localhost:3000'
+const isBrowser = typeof window !== 'undefined'
+
+export const SERVER_BASE_URL = isBrowser
+  ? (window as AppWindow).__ENV__.serverBaseUrl || ''
+  : 'http://localhost:3000'
 
 const backendService = {
   getReactions(id: string) {

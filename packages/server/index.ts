@@ -21,13 +21,16 @@ async function startServer() {
     const app = express()
     app.use(express.json())
     app.use(cors())
-    app.use(function (_, res, next) {
-      res.setHeader(
-        'Content-Security-Policy',
-        "default-src 'self' https://ya-praktikum.tech; font-src 'self'; img-src 'self' https://ya-praktikum.tech; script-src 'self' 'nonce-2726c7f26c'; style-src 'self' 'unsafe-inline'; style-src-elem 'self' 'unsafe-inline'; frame-src 'self'"
-      )
-      next()
-    })
+
+    if (!isDev()) {
+      app.use(function (_, res, next) {
+        res.setHeader(
+          'Content-Security-Policy',
+          "default-src 'self' https://ya-praktikum.tech; font-src 'self'; img-src 'self' https://ya-praktikum.tech; script-src 'self' 'nonce-2726c7f26c'; style-src 'self' 'unsafe-inline'; style-src-elem 'self' 'unsafe-inline'; frame-src 'self'"
+        )
+        next()
+      })
+    }
 
     // TODO костыль, исправить после добавления миграций
     const existingThemes = await SiteTheme.count()
@@ -123,9 +126,15 @@ async function startServer() {
           '\\u003c'
         )
 
+        // Сериализация переменных окружения для передачи их на клиентский фронт
+        const envVarsSerialized = JSON.stringify({
+          serverBaseUrl: process.env.SERVER_BASE_URL || 'http://localhost:3000',
+        }).replace(/</g, '\\u003c')
+
         const html = template
           .replace(`<!--ssr-outlet-->`, appHtml)
           .replace('<!--store-data-->', initStateSerialized)
+          .replace('<!--env-data-->', envVarsSerialized)
 
         res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
       } catch (e) {
