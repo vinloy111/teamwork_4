@@ -14,7 +14,7 @@ export default defineConfig({
       output: {
         dir: 'dist-ssr',
       },
-      external: ['react', '@emotion/react', '@emotion/styled'],
+      external: ['react', '@emotion/react', '@emotion/styled', 'axios'],
     },
   },
   resolve: {
