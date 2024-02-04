@@ -9,7 +9,7 @@ import { AppWindow } from 'types/Window'
 const isBrowser = typeof window !== 'undefined'
 
 export const SERVER_BASE_URL = isBrowser
-  ? (window as AppWindow).__ENV__.serverBaseUrl || ''
+  ? (window as AppWindow)?.__ENV__?.serverBaseUrl || ''
   : 'http://localhost:3000'
 
 const backendService = {

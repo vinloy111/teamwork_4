@@ -8,8 +8,8 @@ import { PlayerLeaderBoard } from 'types/LidearBoard'
 import { AppWindow } from 'types/Window'
 const isBrowser = typeof window !== 'undefined'
 export const SERVER_BASE_URL = isBrowser
-  ? (window as AppWindow).__ENV__.serverBaseUrl || ''
-  : 'http://localhost:5000'
+  ? (window as AppWindow)?.__ENV__?.serverBaseUrl || ''
+  : 'http://localhost:3000'
 export const Y_API_BASE_URL = `${SERVER_BASE_URL}/api/v2`
 
 const yApiService = {

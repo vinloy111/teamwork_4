@@ -43,7 +43,7 @@ async function startServer() {
       ])
     }
 
-    const port = Number(process.env.SERVER_PORT) || 5000
+    const port = Number(process.env.SERVER_PORT) || 3000
 
     let vite: ViteDevServer | undefined
     // Добавил проверки на isDev, так как если запускаешь dev и нет папок с билдами, то все падает
@@ -139,7 +139,7 @@ async function startServer() {
 
         // Сериализация переменных окружения для передачи их на клиентский фронт
         const envVarsSerialized = JSON.stringify({
-          serverBaseUrl: process.env.SERVER_BASE_URL || 'http://localhost:5000',
+          serverBaseUrl: process.env.SERVER_BASE_URL || 'http://localhost:3000',
         }).replace(/</g, '\\u003c')
 
         const html = template
