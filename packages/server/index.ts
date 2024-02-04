@@ -78,9 +78,9 @@ async function startServer() {
     )
     app.use(json())
 
-    // @ts-ignore
     app.use(
       '/api',
+      // @ts-ignore
       cookieParser(),
       async (req, res, next) => {
         const yandexService = new YandexAPI(req.headers.cookie)
