@@ -1,14 +1,19 @@
-import express from 'express'
+import { Router } from 'express'
 import { reactionController } from '../controllers/ReactionController'
 
-const reactionRoutes = express.Router()
+/**
+ * Ручки реакций
+ */
+export const reactionRoutes = (reactionRoute: Router) => {
+  const router = Router()
 
-reactionRoutes.get('/topic/:topicId', reactionController.getReactions)
-reactionRoutes.post('/add', reactionController.addReaction)
-reactionRoutes.put('/:id/update', reactionController.updateReaction)
-reactionRoutes.delete(
-  '/:id/delete/topic/:topicId',
-  reactionController.deleteReaction
-)
+  router
+    .get('/topic/:topicId', reactionController.getReactions)
+    .post('/add', reactionController.addReaction)
+    .put('/:id/update', reactionController.updateReaction)
+    .delete('/:id/delete/topic/:topicId', reactionController.deleteReaction)
+
+  reactionRoute.use('/reaction', router)
+}
 
 export default reactionRoutes

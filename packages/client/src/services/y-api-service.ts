@@ -5,8 +5,12 @@ import { RegistrationDto } from 'types/RegistrationDto'
 import { UserSettingsUpdateDto } from 'types/UserSettingsUpdateDto'
 import { APP_CONSTS } from 'consts/index'
 import { PlayerLeaderBoard } from 'types/LidearBoard'
-
-export const Y_API_BASE_URL = 'https://ya-praktikum.tech/api/v2'
+import { AppWindow } from 'types/Window'
+const isBrowser = typeof window !== 'undefined'
+export const SERVER_BASE_URL = isBrowser
+  ? (window as AppWindow)?.__ENV__?.serverBaseUrl || ''
+  : 'http://localhost:3000'
+export const Y_API_BASE_URL = `${SERVER_BASE_URL}/api/v2`
 
 const yApiService = {
   register(userData: RegistrationDto) {
