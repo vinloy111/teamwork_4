@@ -24,7 +24,6 @@ const useAuthCheck = (onComplete: () => void) => {
 
     // Функция для проверки аутентификации пользователя
     const checkUserAuthentication = async () => {
-      console.log('checkUserAuthentication')
       try {
         const response = await yApiService.getUser()
         dispatch(setUser(adaptUserData(response.data)))
