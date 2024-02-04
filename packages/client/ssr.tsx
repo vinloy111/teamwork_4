@@ -1,4 +1,3 @@
-import React from 'react'
 import { StaticRouter } from 'react-router-dom/server'
 import { renderToString } from 'react-dom/server'
 import { Provider } from 'react-redux'

@@ -1,14 +1,18 @@
-import express from 'express'
+import { Router } from 'express'
 import ThemeController from '../controllers/ThemeController'
 
-const router = express.Router()
+/**
+ * Ручки получения тем
+ */
+export const themeRoutes = (themeRouter: Router) => {
+  const router = Router()
 
-// Получение темы пользователя по ID
-router.get('/user/:userId', ThemeController.getUserTheme)
+  router
+    .get('/user/:userId', ThemeController.getUserTheme) // Получение темы пользователя по ID
+    .put('/user', ThemeController.updateUserTheme) // Обновление темы пользователя
+    .get('/', ThemeController.getAllThemes)
 
-// Обновление темы пользователя
-router.put('/user', ThemeController.updateUserTheme)
+  themeRouter.use('/theme', router)
+}
 
-router.get('/', ThemeController.getAllThemes)
-
-export default router
+export default themeRoutes

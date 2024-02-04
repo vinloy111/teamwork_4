@@ -2,6 +2,7 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import { createServer as createViteServer } from 'vite'
 import { createProxyMiddleware } from 'http-proxy-middleware'
+import { json } from 'body-parser'
 import type { ViteDevServer } from 'vite'
 
 dotenv.config()
@@ -13,13 +14,15 @@ import themeRoutes from './routes/themeRoutes'
 import reactionRoutes from './routes/reactionRoutes'
 import { dbConnect, SiteTheme } from './init'
 import forumRoutes from './routes/forumRoutes'
+import cookieParser from 'cookie-parser'
+import { YandexAPI } from './api/yandex-api'
+import routes from './routes/routes'
 
 const isDev = () => process.env.NODE_ENV === 'development'
 
 async function startServer() {
   dbConnect().then(async () => {
     const app = express()
-    app.use(express.json())
     app.use(cors())
 
     if (!isDev()) {
@@ -31,7 +34,6 @@ async function startServer() {
         next()
       })
     }
-
     // TODO костыль, исправить после добавления миграций
     const existingThemes = await SiteTheme.count()
     if (existingThemes === 0) {
@@ -41,7 +43,7 @@ async function startServer() {
       ])
     }
 
-    const port = Number(process.env.SERVER_PORT) || 3000
+    const port = Number(process.env.SERVER_PORT) || 5000
 
     let vite: ViteDevServer | undefined
     // Добавил проверки на isDev, так как если запускаешь dev и нет папок с билдами, то все падает
@@ -63,14 +65,6 @@ async function startServer() {
       app.use(vite.middlewares)
     }
 
-    app.use('/api/theme', themeRoutes)
-    app.use('/api/reaction', reactionRoutes)
-    app.use('/api/forum', forumRoutes)
-
-    app.get('/api', (_, res) => {
-      res.json('👋 Howdy from the server :)')
-    })
-
     app.use(
       '/api/v2',
       createProxyMiddleware({
@@ -79,7 +73,24 @@ async function startServer() {
           '*': '',
         },
         target: 'https://ya-praktikum.tech',
+        logLevel: 'debug',
       })
+    )
+    app.use(json())
+
+    // @ts-ignore
+    app.use(
+      '/api',
+      cookieParser(),
+      async (req, res, next) => {
+        const yandexService = new YandexAPI(req.headers.cookie)
+        const currentUser = await yandexService.getLoggedUser()
+        if (!currentUser) {
+          return res.status(403).send('Permissions denied')
+        }
+        return next()
+      },
+      routes
     )
 
     if (!isDev()) {
@@ -128,7 +139,7 @@ async function startServer() {
 
         // Сериализация переменных окружения для передачи их на клиентский фронт
         const envVarsSerialized = JSON.stringify({
-          serverBaseUrl: process.env.SERVER_BASE_URL || 'http://localhost:3000',
+          serverBaseUrl: process.env.SERVER_BASE_URL || 'http://localhost:5000',
         }).replace(/</g, '\\u003c')
 
         const html = template
