@@ -73,7 +73,6 @@ async function startServer() {
           '*': '',
         },
         target: 'https://ya-praktikum.tech',
-        logLevel: 'debug',
       })
     )
     app.use(json())
