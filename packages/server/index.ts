@@ -70,6 +70,7 @@ async function startServer() {
           '*': '',
         },
         target: 'https://ya-praktikum.tech',
+        logLevel: 'debug',
       })
     )
     app.use(json())
@@ -97,60 +98,80 @@ async function startServer() {
       app.use('/sounds', express.static(path.resolve(distPath, 'sounds')))
     }
 
-    app.use('*', async (req, res, next) => {
-      const url = req.originalUrl
+    app.use(
+      '*',
+      // @ts-ignore
+      cookieParser(),
+      async (req, res, next) => {
+        const url = req.originalUrl
+        const code = req.query.code
 
-      try {
-        let template: string
-
-        if (!isDev()) {
-          template = fs.readFileSync(
-            path.resolve(distPath, 'index.html'),
-            'utf-8'
+        if (typeof code === 'string') {
+          const yandexService = new YandexAPI(req.headers.cookie)
+          const currentUser = await yandexService.getOauthUser(code)
+          console.log(
+            '***************************************',
+            res,
+            currentUser
           )
-        } else {
-          template = fs.readFileSync(
-            path.resolve(srcPath, 'index.html'),
-            'utf-8'
+        }
+        try {
+          let template: string
+
+          if (!isDev()) {
+            template = fs.readFileSync(
+              path.resolve(distPath, 'index.html'),
+              'utf-8'
+            )
+          } else {
+            template = fs.readFileSync(
+              path.resolve(srcPath, 'index.html'),
+              'utf-8'
+            )
+
+            template = await vite!.transformIndexHtml(url, template)
+          }
+
+          let render: (url: string, cookie?: string) => Promise<string>
+
+          if (!isDev()) {
+            render = (await import(ssrClientPath)).render
+          } else {
+            render = (
+              await vite!.ssrLoadModule(path.resolve(srcPath, 'ssr.tsx'))
+            ).render
+          }
+
+          const [initialState, appHtml] = await render(
+            url,
+            req.headers['cookie']
           )
 
-          template = await vite!.transformIndexHtml(url, template)
+          const initStateSerialized = JSON.stringify(initialState).replace(
+            /</g,
+            '\\u003c'
+          )
+
+          // Сериализация переменных окружения для передачи их на клиентский фронт
+          const envVarsSerialized = JSON.stringify({
+            serverBaseUrl:
+              process.env.SERVER_BASE_URL || 'http://localhost:3000',
+          }).replace(/</g, '\\u003c')
+
+          const html = template
+            .replace(`<!--ssr-outlet-->`, appHtml)
+            .replace('<!--store-data-->', initStateSerialized)
+            .replace('<!--env-data-->', envVarsSerialized)
+
+          res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
+        } catch (e) {
+          if (isDev()) {
+            vite!.ssrFixStacktrace(e as Error)
+          }
+          next(e)
         }
-
-        let render: (url: string, cookie?: string) => Promise<string>
-
-        if (!isDev()) {
-          render = (await import(ssrClientPath)).render
-        } else {
-          render = (await vite!.ssrLoadModule(path.resolve(srcPath, 'ssr.tsx')))
-            .render
-        }
-
-        const [initialState, appHtml] = await render(url, req.headers['cookie'])
-
-        const initStateSerialized = JSON.stringify(initialState).replace(
-          /</g,
-          '\\u003c'
-        )
-
-        // Сериализация переменных окружения для передачи их на клиентский фронт
-        const envVarsSerialized = JSON.stringify({
-          serverBaseUrl: process.env.SERVER_BASE_URL || 'http://localhost:3000',
-        }).replace(/</g, '\\u003c')
-
-        const html = template
-          .replace(`<!--ssr-outlet-->`, appHtml)
-          .replace('<!--store-data-->', initStateSerialized)
-          .replace('<!--env-data-->', envVarsSerialized)
-
-        res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
-      } catch (e) {
-        if (isDev()) {
-          vite!.ssrFixStacktrace(e as Error)
-        }
-        next(e)
       }
-    })
+    )
 
     app.listen(port, () => {
       console.log(`  ➜ 🎸 Server is listening on port: ${port}`)

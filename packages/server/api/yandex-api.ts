@@ -28,4 +28,23 @@ export class YandexAPI {
       return null
     }
   }
+
+  async getOauthUser(code: string): Promise<UserFromApi | null> {
+    try {
+      const { data } = await axios.get(`${API_ROOT}/oauth/user`, {
+        data: {
+          code: code,
+        },
+        withCredentials: true,
+        headers: {
+          cookie: this._cookieHeader,
+          Accept: 'application/json',
+          'Content-type': 'application/json',
+        },
+      })
+      return { ...data }
+    } catch (e) {
+      return null
+    }
+  }
 }

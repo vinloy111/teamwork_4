@@ -81,11 +81,11 @@ export const lightThemeOptions: ThemeOptions = {
   palette: {
     mode: 'light',
     primary: {
-      main: '#1976d2',
+      main: '#9c27b0',
     },
     background: {
-      default: '#f0f2f5',
-      paper: '#ffffff',
+      default: '#f7f0fa',
+      paper: '#f3dcf7',
     },
     secondary: {
       main: '#9c27b0',
@@ -100,7 +100,7 @@ export const lightThemeOptions: ThemeOptions = {
       main: '#f44336',
     },
     warning: {
-      main: '#ff9800',
+      main: '#9c27b0',
     },
   },
   typography: {
@@ -111,28 +111,22 @@ export const lightThemeOptions: ThemeOptions = {
 
     h1: {
       fontSize: '3rem',
-      color: '#ff9800',
     },
 
     h2: {
       fontSize: '2.4rem',
-      color: '#ff9800',
     },
     h3: {
       fontSize: '2rem',
-      color: '#ff9800',
     },
     h4: {
       fontSize: '1.5rem',
-      color: '#ff9800',
     },
     h5: {
       fontSize: '1.3rem',
-      color: '#ff9800',
     },
     h6: {
       fontSize: '1.2rem',
-      color: '#ff9800',
     },
   },
   components: {
