@@ -7,16 +7,15 @@ import {
   fetchUserTheme,
   setUserTheme,
 } from 'features/themeSlice'
-import RadioGroup from '@mui/material/RadioGroup'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Radio from '@mui/material/Radio'
-import Box from '@mui/system/Box'
 import backendService from 'services/backend-service'
 import { AsyncThunkAction } from '@reduxjs/toolkit'
 import { UserTheme } from 'types/UserTheme'
 import { Theme } from 'types/Theme'
+import { Checkbox, Tooltip } from '@mui/material'
+import StarIcon from '@mui/icons-material/Star'
+import Brightness5Icon from '@mui/icons-material/Brightness5'
 
-const Footer = () => {
+const ThemeSwitchComponent = () => {
   const dispatch = useDispatch()
   const { pathname } = useLocation()
   const { userTheme, allThemes } = useSelector((state: Store) => state.theme)
@@ -62,24 +61,22 @@ const Footer = () => {
     }
   }
 
-  const isGamePage = pathname.includes('game')
+  const label = { inputProps: { 'aria-label': 'controlled' } }
 
-  return isGamePage ? (
-    <></>
-  ) : (
-    <Box display="flex" justifyContent="center" alignItems="center" p={2}>
-      <RadioGroup row value={selectedTheme} onChange={handleThemeChange}>
-        {allThemes.map(theme => (
-          <FormControlLabel
-            key={theme.id}
-            value={theme.id.toString()}
-            control={<Radio />}
-            label={theme.description}
-          />
-        ))}
-      </RadioGroup>
-    </Box>
+  return (
+    <Tooltip
+      title={allThemes[Number(selectedTheme || 1) - 1]?.description || ''}>
+      <Checkbox
+        {...label}
+        icon={<Brightness5Icon color={'success'} />}
+        checkedIcon={<StarIcon />}
+        checked={selectedTheme === '1'}
+        onChange={event =>
+          handleThemeChange(event, event.target.checked ? '1' : '2')
+        }
+      />
+    </Tooltip>
   )
 }
 
-export default Footer
+export default ThemeSwitchComponent
