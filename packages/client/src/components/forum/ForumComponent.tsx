@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { DataGrid } from '@mui/x-data-grid'
-import { Paper, Stack, Typography } from '@mui/material'
+import { Paper, Stack } from '@mui/material'
 import { theme } from '../../theme'
 import { Forum } from 'types/Forum'
 import { getColumns } from './settingForum'

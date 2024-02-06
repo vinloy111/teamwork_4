@@ -8,7 +8,6 @@ import {
   Avatar,
   Paper,
 } from '@mui/material'
-import StyledHeader from '../../components/styled-header/StyledHeader'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Store } from '../../store'

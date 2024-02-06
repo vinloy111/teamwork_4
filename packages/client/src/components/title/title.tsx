@@ -1,8 +1,4 @@
-import Box from '@mui/material/Box'
-import { Grid, Paper, Stack, Typography } from '@mui/material'
-import Button from '@mui/material/Button'
-import Image404 from '../../assets/images/404.png'
-import Image500 from '../../assets/images/404.png'
+import { Paper, Typography } from '@mui/material'
 import { theme } from '../../theme'
 
 declare type TitleComponentProps = {

@@ -6,7 +6,6 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import LaunchIcon from '@mui/icons-material/Launch'
 import EditIcon from '@mui/icons-material/Edit'
 import { Topic } from 'types/Forum'
-import { number } from 'yup'
 
 export const getColumns = (
   topics: Topic[],
