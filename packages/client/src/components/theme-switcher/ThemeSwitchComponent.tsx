@@ -61,7 +61,6 @@ const ThemeSwitchComponent = () => {
     }
   }
 
-  const isGamePage = pathname.includes('game')
   const label = { inputProps: { 'aria-label': 'controlled' } }
 
   return (

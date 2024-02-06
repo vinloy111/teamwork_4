@@ -7,14 +7,13 @@ import {
   Snackbar,
   Paper,
 } from '@mui/material'
-import StyledHeader from '../../components/styled-header/StyledHeader'
 import { Link, useNavigate } from 'react-router-dom'
 import './style.css'
 import yApiService from '../../services/y-api-service'
 import { isAxiosError } from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
-import { setUser } from '../../features/authSlice'
-import { adaptUserData } from '../../utils/adaptUserData'
+import { setUser } from 'features/authSlice'
+import { adaptUserData } from 'utils/adaptUserData'
 import { Store } from '../../store'
 import { useFormik } from 'formik'
 import { loginValidationSchema } from 'utils/userValidationSchema'
