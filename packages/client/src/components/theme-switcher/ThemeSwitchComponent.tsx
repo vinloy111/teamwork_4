@@ -64,9 +64,7 @@ const ThemeSwitchComponent = () => {
   const isGamePage = pathname.includes('game')
   const label = { inputProps: { 'aria-label': 'controlled' } }
 
-  return isGamePage ? (
-    <></>
-  ) : (
+  return (
     <Tooltip
       title={allThemes[Number(selectedTheme || 1) - 1]?.description || ''}>
       <Checkbox

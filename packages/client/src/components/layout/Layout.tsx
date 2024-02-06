@@ -15,7 +15,8 @@ const Layout = ({ children }: { children?: JSX.Element }): JSX.Element => {
       <LayoutBackground
         showShip={
           location.pathname.includes('leaderboard') ||
-          location.pathname.includes('settings')
+          location.pathname.includes('settings') ||
+          location.pathname.includes('login')
         }
         showUfo={location.pathname.includes('forum')}
       />
