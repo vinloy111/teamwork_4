@@ -85,7 +85,7 @@ export const lightThemeOptions: ThemeOptions = {
     },
     background: {
       default: '#f7f0fa',
-      paper: '#f3dcf7',
+      paper: 'rgb(247,228,255)',
     },
     secondary: {
       main: '#9c27b0',

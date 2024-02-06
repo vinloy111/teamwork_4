@@ -3,9 +3,13 @@ import { useEffect, useRef, useState } from 'react'
 import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
 import './style.css'
+import HomeIcon from '@mui/icons-material/Home'
+import Button from '@mui/material/Button'
+import { useNavigate } from 'react-router-dom'
 
 export const DemoInfo = (): JSX.Element => {
   const demoInfoWrapper = useRef<HTMLDivElement>(null)
+  const navigate = useNavigate()
   const [canvasSize, setCanvasSize] = useState<{
     width: number
     height: number
@@ -31,8 +35,8 @@ export const DemoInfo = (): JSX.Element => {
       <Tabs
         value={tabValue}
         onChange={(_, value) => setTabValue(value)}
-        textColor="secondary"
-        indicatorColor="secondary">
+        textColor="primary"
+        indicatorColor="primary">
         <Tab className="demo-info-tabs-item" value={1} label="Проект" />
         <Tab
           className="demo-info-tabs-item"
@@ -41,6 +45,9 @@ export const DemoInfo = (): JSX.Element => {
         />
         <Tab className="demo-info-tabs-item" value={3} label="Технологии" />
       </Tabs>
+      <Button sx={{ mb: 2 }}>
+        <HomeIcon fontSize="large" onClick={() => navigate(`/`)} />
+      </Button>
     </div>
   )
 

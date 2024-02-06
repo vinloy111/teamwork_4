@@ -1,17 +1,19 @@
 import { GridColDef } from '@mui/x-data-grid'
-import { theme } from '../../theme'
+import { lightTheme, theme } from '../../theme'
 import Typography from '@mui/material/Typography'
 import { IconButton } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 import LaunchIcon from '@mui/icons-material/Launch'
 import EditIcon from '@mui/icons-material/Edit'
 import { Topic } from 'types/Forum'
+import { number } from 'yup'
 
 export const getColumns = (
   topics: Topic[],
   navigate: (url: string) => void,
   userId: string | null,
-  onDelete: (id: string) => void
+  onDelete: (id: string) => void,
+  themeId: number
 ) => {
   const columns: GridColDef[] = [
     {
@@ -23,7 +25,11 @@ export const getColumns = (
       renderCell: props => (
         <Typography
           variant={'h5'}
-          color={theme.palette.warning.main}
+          color={
+            themeId === 1
+              ? theme.palette.warning.main
+              : lightTheme.palette.warning.main
+          }
           onClick={() => {
             const topicF = topics.find(topic => topic.caption === props.value)
             if (topicF) navigate(`/forum/${topicF.id}`)
