@@ -104,17 +104,6 @@ async function startServer() {
       cookieParser(),
       async (req, res, next) => {
         const url = req.originalUrl
-        const code = req.query.code
-
-        if (typeof code === 'string') {
-          const yandexService = new YandexAPI(req.headers.cookie)
-          const currentUser = await yandexService.getOauthUser(code)
-          console.log(
-            '***************************************',
-            res,
-            currentUser
-          )
-        }
         try {
           let template: string
 

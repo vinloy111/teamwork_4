@@ -3,19 +3,17 @@ import { useDispatch } from 'react-redux'
 import { setUser, clearUser } from 'features/authSlice'
 import yApiService from 'services/y-api-service'
 import { adaptUserData } from 'utils/adaptUserData'
+import { useLocation } from 'react-router-dom'
 
 const useAuthCheck = (onComplete: () => void) => {
   const dispatch = useDispatch()
+  const { search } = useLocation()
 
   useEffect(() => {
     // Функция для OAuth авторизации
     const oauthLogin = async (code: string) => {
       try {
         await yApiService.oauthLogin(code)
-        // Удаление параметра code из URL
-        /*        const url = new URL(window.location.href)
-        url.searchParams.delete('code')
-        window.history.pushState({}, '', url.href)*/
         console.log('authorize')
       } catch (error) {
         console.error('Ошибка OAuth авторизации:', error)
@@ -36,8 +34,8 @@ const useAuthCheck = (onComplete: () => void) => {
     }
 
     // Получаем параметры из URL
-    const urlParams = new URLSearchParams(window.location.search)
-    const code = urlParams.get('code')
+    const sp = new URLSearchParams(search)
+    const code = sp.get('code')
 
     // Если есть параметр code, сначала выполняем OAuth авторизацию
     if (code) {

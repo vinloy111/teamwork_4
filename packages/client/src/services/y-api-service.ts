@@ -134,7 +134,7 @@ const yApiService = {
       `${Y_API_BASE_URL}/oauth/yandex`,
       {
         code: code,
-        //redirect_uri: window.location.origin,
+        redirect_uri: window.location.origin,
       },
       {
         withCredentials: true,
