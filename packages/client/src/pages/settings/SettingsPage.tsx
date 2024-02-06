@@ -6,8 +6,8 @@ import {
   Typography,
   Snackbar,
   Avatar,
+  Paper,
 } from '@mui/material'
-import StyledHeader from '../../components/styled-header/StyledHeader'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Store } from '../../store'
@@ -19,6 +19,7 @@ import { adaptUserData } from 'utils/adaptUserData'
 import { theme } from 'theme/index'
 import { useFormik } from 'formik'
 import { settingsValidationSchema } from 'utils/userValidationSchema'
+import { TitleComponent } from 'components/title/title'
 
 function SettingsPage() {
   const ERROR_TEXT = 'Ошибка при сохранении изменений'
@@ -67,132 +68,140 @@ function SettingsPage() {
   }, [user])
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="sm">
       <div className="settings-form">
-        <StyledHeader text="Настройки" />
-        <form noValidate onSubmit={formik.handleSubmit}>
-          <div style={{ margin: '20px 0' }}>
-            {user?.avatar ? (
-              <Avatar
-                src={user.avatar}
-                alt="Аватар"
-                sx={{ m: theme.spacing(1), width: 100, height: 100 }}
-                variant={'circular'}
-              />
-            ) : (
-              <Typography variant="subtitle2">Аватар отсутствует</Typography>
-            )}
-            <Typography variant="body2" style={{ marginTop: '20px' }}>
-              <Link to="/change-avatar" style={{ marginLeft: '5px' }}>
-                Изменить аватар
+        <TitleComponent title="Настройки" />
+        <Paper sx={{ px: 5, py: 2 }}>
+          <form noValidate onSubmit={formik.handleSubmit}>
+            <div>
+              {user?.avatar ? (
+                <Avatar
+                  src={user.avatar}
+                  alt="Аватар"
+                  sx={{
+                    marginBottom: theme.spacing(0.5),
+                    width: 100,
+                    height: 100,
+                  }}
+                  variant={'circular'}
+                />
+              ) : (
+                <Typography variant="subtitle2">Аватар отсутствует</Typography>
+              )}
+              <Typography variant="body2" style={{ marginTop: '20px' }}>
+                <Link to="/change-avatar" style={{ marginLeft: '5px' }}>
+                  Изменить аватар
+                </Link>
+              </Typography>
+            </div>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="first_name"
+              label="Имя"
+              name="firstName"
+              autoComplete="fname"
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              value={formik.values.firstName}
+              error={formik.touched.firstName && !!formik.errors.firstName}
+              helperText={formik.touched.firstName && formik.errors.firstName}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="second_name"
+              label="Фамилия"
+              name="secondName"
+              autoComplete="lname"
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              value={formik.values.secondName}
+              error={formik.touched.secondName && !!formik.errors.secondName}
+              helperText={formik.touched.secondName && formik.errors.secondName}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              id="display_name"
+              label="Отображаемое имя"
+              name="displayName"
+              autoComplete="dname"
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              value={formik.values.displayName}
+              error={formik.touched.displayName && !!formik.errors.displayName}
+              helperText={
+                formik.touched.displayName && formik.errors.displayName
+              }
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="login"
+              label="Логин"
+              name="login"
+              autoComplete="login"
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              value={formik.values.login}
+              error={formik.touched.login && !!formik.errors.login}
+              helperText={formik.touched.login && formik.errors.login}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Электронная почта"
+              name="email"
+              autoComplete="email"
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              value={formik.values.email}
+              error={formik.touched.email && !!formik.errors.email}
+              helperText={formik.touched.email && formik.errors.email}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="phone"
+              label="Телефон"
+              name="phone"
+              autoComplete="tel"
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              value={formik.values.phone}
+              error={formik.touched.phone && !!formik.errors.phone}
+              helperText={formik.touched.phone && formik.errors.phone}
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className="submit">
+              Сохранить изменения
+            </Button>
+            <Typography
+              variant="body2"
+              style={{ marginTop: '20px', textAlign: 'center' }}>
+              <Link to="/change-password" style={{ marginLeft: '5px' }}>
+                Изменить пароль
               </Link>
             </Typography>
-          </div>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="first_name"
-            label="Имя"
-            name="firstName"
-            autoComplete="fname"
-            onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
-            value={formik.values.firstName}
-            error={formik.touched.firstName && !!formik.errors.firstName}
-            helperText={formik.touched.firstName && formik.errors.firstName}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="second_name"
-            label="Фамилия"
-            name="secondName"
-            autoComplete="lname"
-            onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
-            value={formik.values.secondName}
-            error={formik.touched.secondName && !!formik.errors.secondName}
-            helperText={formik.touched.secondName && formik.errors.secondName}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            id="display_name"
-            label="Отображаемое имя"
-            name="displayName"
-            autoComplete="dname"
-            onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
-            value={formik.values.displayName}
-            error={formik.touched.displayName && !!formik.errors.displayName}
-            helperText={formik.touched.displayName && formik.errors.displayName}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="login"
-            label="Логин"
-            name="login"
-            autoComplete="login"
-            onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
-            value={formik.values.login}
-            error={formik.touched.login && !!formik.errors.login}
-            helperText={formik.touched.login && formik.errors.login}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Электронная почта"
-            name="email"
-            autoComplete="email"
-            onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
-            value={formik.values.email}
-            error={formik.touched.email && !!formik.errors.email}
-            helperText={formik.touched.email && formik.errors.email}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="phone"
-            label="Телефон"
-            name="phone"
-            autoComplete="tel"
-            onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
-            value={formik.values.phone}
-            error={formik.touched.phone && !!formik.errors.phone}
-            helperText={formik.touched.phone && formik.errors.phone}
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className="submit">
-            Сохранить изменения
-          </Button>
-          <Typography
-            variant="body2"
-            style={{ marginTop: '20px', textAlign: 'center' }}>
-            <Link to="/change-password" style={{ marginLeft: '5px' }}>
-              Изменить пароль
-            </Link>
-          </Typography>
-        </form>
+          </form>
+        </Paper>
       </div>
       <Snackbar
         open={!!notification}

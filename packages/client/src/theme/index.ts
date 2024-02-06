@@ -18,7 +18,7 @@ export const darkThemeOptions: ThemeOptions = {
       main: '#9c27b0',
     },
     success: {
-      main: '#76ff03',
+      main: '#ffff00',
     },
     error: {
       main: '#e54c44',
@@ -85,7 +85,7 @@ export const lightThemeOptions: ThemeOptions = {
     },
     background: {
       default: '#f7f0fa',
-      paper: '#f3dcf7',
+      paper: 'rgb(247,228,255)',
     },
     secondary: {
       main: '#9c27b0',
@@ -94,7 +94,7 @@ export const lightThemeOptions: ThemeOptions = {
       main: '#2196f3',
     },
     success: {
-      main: '#4caf50',
+      main: '#ffff00',
     },
     error: {
       main: '#f44336',

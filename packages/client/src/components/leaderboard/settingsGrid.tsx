@@ -15,8 +15,12 @@ export const columns: GridColDef[] = [
       return (
         <Avatar
           src={props.value || `/avatars/ufo1.png`}
-          alt={props.field}
-          sx={{ width: 'auto', height: 100, m: theme.spacing(1) }}
+          sx={{
+            width: 'auto',
+            height: 100,
+            m: theme.spacing(1),
+            borderRadius: 3,
+          }}
           variant={'square'}
         />
       )
