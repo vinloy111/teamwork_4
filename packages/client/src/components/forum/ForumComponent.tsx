@@ -17,7 +17,6 @@ export const ForumComponent = () => {
   const navigate = useNavigate()
   const user = useSelector((state: Store) => state.auth.user)
   const themeId = useSelector((state: Store) => state.theme.userTheme?.themeId)
-  console.log(themeId)
   const getForum = () => {
     backendService
       .getForum()

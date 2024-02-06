@@ -17,6 +17,7 @@ import LogoutIcon from '@mui/icons-material/Logout'
 import useFullScreen from 'hooks/useFullScreen'
 import { theme } from 'theme/index'
 import { Store } from '../../store'
+import ThemeSwitchComponent from 'components/theme-switcher/ThemeSwitchComponent'
 
 const menu = [
   { id: 1, title: 'Главная', link: '' },
@@ -92,6 +93,7 @@ const Menu = () => {
               />
             </MenuItem>
           ) : null}
+          <ThemeSwitchComponent />
           <IconButton
             onClick={handleFullScreen}
             aria-label="delete"

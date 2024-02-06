@@ -94,7 +94,7 @@ export const lightThemeOptions: ThemeOptions = {
       main: '#2196f3',
     },
     success: {
-      main: '#4caf50',
+      main: '#ffff00',
     },
     error: {
       main: '#f44336',
