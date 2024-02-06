@@ -5,6 +5,7 @@ import {
   IconButton,
   MenuItem,
   Toolbar,
+  Tooltip,
   Typography,
 } from '@mui/material'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
@@ -94,15 +95,23 @@ const Menu = () => {
             </MenuItem>
           ) : null}
           <ThemeSwitchComponent />
-          <IconButton
-            onClick={handleFullScreen}
-            aria-label="delete"
-            size="large">
-            {isFullscreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
-          </IconButton>
-          <IconButton onClick={handleLogout} aria-label="delete" size="large">
-            <LogoutIcon />
-          </IconButton>
+          <Tooltip title={!isFullscreen ? 'На весь экран' : 'Обычный размер'}>
+            <IconButton
+              onClick={handleFullScreen}
+              size="large"
+              color={'success'}>
+              {isFullscreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
+            </IconButton>
+          </Tooltip>
+          <Tooltip title={'Выйти'}>
+            <IconButton
+              onClick={handleLogout}
+              aria-label="delete"
+              size="large"
+              color={'success'}>
+              <LogoutIcon />
+            </IconButton>
+          </Tooltip>
         </Toolbar>
       </AppBar>
     </Box>

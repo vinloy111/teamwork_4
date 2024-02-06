@@ -18,7 +18,7 @@ export const darkThemeOptions: ThemeOptions = {
       main: '#9c27b0',
     },
     success: {
-      main: '#76ff03',
+      main: '#ffff00',
     },
     error: {
       main: '#e54c44',

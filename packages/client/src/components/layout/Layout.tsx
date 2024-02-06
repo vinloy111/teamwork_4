@@ -4,7 +4,6 @@ import { Outlet } from 'react-router'
 import { useSelector } from 'react-redux'
 import { Store } from '../../store'
 import { LayoutBackground } from 'components/layoutBackground'
-import ThemeSwitchComponent from 'components/theme-switcher/ThemeSwitchComponent'
 
 const Layout = ({ children }: { children?: JSX.Element }): JSX.Element => {
   const user = useSelector((state: Store) => state.auth.user)
