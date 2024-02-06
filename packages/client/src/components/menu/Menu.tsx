@@ -88,7 +88,6 @@ const Menu = () => {
             <MenuItem component={NavLink} to={`/settings`}>
               <Avatar
                 src={user.avatar}
-                alt="Аватар"
                 sx={{ m: theme.spacing(1), width: 40, height: 40 }}
                 variant={'circular'}
               />
