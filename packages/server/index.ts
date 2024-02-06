@@ -26,7 +26,7 @@ async function startServer() {
       app.use(function (_, res, next) {
         res.setHeader(
           'Content-Security-Policy',
-          "default-src 'self' https://ya-praktikum.tech; font-src 'self'; img-src 'self' https://ya-praktikum.tech; script-src 'self' 'nonce-2726c7f26c'; style-src 'self' 'unsafe-inline'; style-src-elem 'self' 'unsafe-inline'; frame-src 'self'"
+          "default-src 'self' https://ya-praktikum.tech; font-src 'self'; img-src 'self' data: https://ya-praktikum.tech; script-src 'self' 'nonce-2726c7f26c'; style-src 'self' 'unsafe-inline'; style-src-elem 'self' 'unsafe-inline'; frame-src 'self'"
         )
         next()
       })

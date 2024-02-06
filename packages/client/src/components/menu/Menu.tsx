@@ -24,6 +24,7 @@ const menu = [
   { id: 3, title: 'Форум', link: 'forum' },
   { id: 4, title: 'Таблица лидеров', link: 'leaderboard' },
   { id: 5, title: 'Настройки', link: 'settings' },
+  { id: 6, title: 'О проекте', link: 'demo-info' },
 ]
 // TODO: Неиспользуемый код
 // function stringAvatar(name: string) {
@@ -76,7 +77,7 @@ const Menu = () => {
   }
 
   return (
-    <Box>
+    <Box sx={pathname.includes(`/demo-info`) ? { display: 'none' } : undefined}>
       <AppBar position="sticky">
         <Toolbar sx={{ flexGrow: 1, direction: 'row' }}>
           {menu.map(renderMenuLink)}
