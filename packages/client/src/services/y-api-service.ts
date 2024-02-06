@@ -124,7 +124,7 @@ const yApiService = {
       `${Y_API_BASE_URL}/oauth/yandex/service-id`,
       {
         params: { redirect_uri: window.location.origin },
-        //withCredentials: true,
+        withCredentials: true,
       }
     )
   },
@@ -134,14 +134,10 @@ const yApiService = {
       `${Y_API_BASE_URL}/oauth/yandex`,
       {
         code: code,
-        //redirect_uri: window.location.origin,
+        redirect_uri: window.location.origin,
       },
       {
         withCredentials: true,
-        headers: {
-          Accept: 'application/json',
-          'Content-type': 'application/json',
-        },
       }
     )
   },

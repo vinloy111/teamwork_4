@@ -13,9 +13,9 @@ const useAuthCheck = (onComplete: () => void) => {
       try {
         await yApiService.oauthLogin(code)
         // Удаление параметра code из URL
-        /*        const url = new URL(window.location.href)
+        const url = new URL(window.location.href)
         url.searchParams.delete('code')
-        window.history.pushState({}, '', url.href)*/
+        window.history.pushState({}, '', url.href)
         console.log('authorize')
       } catch (error) {
         console.error('Ошибка OAuth авторизации:', error)
