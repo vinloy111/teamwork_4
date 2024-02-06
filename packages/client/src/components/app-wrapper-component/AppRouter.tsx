@@ -18,6 +18,7 @@ import UserProfilePage from 'pages/user-profile/UserProfilePage'
 import ChangeAvatarPage from 'pages/change-avatar/ChangeAvatarPage'
 import { ForumAddTopicPage } from 'pages/add-topic/ForumAddTopicPage'
 import { ForumChangeTopicPage } from 'pages/change-topic/ForumChangeTopicPage'
+import { DemoInfo } from 'pages/demoInfo'
 
 export const AppRouter = () => {
   const user = useSelector((state: Store) => state.auth.user)
@@ -62,6 +63,7 @@ export const AppRouter = () => {
           path="/change-avatar"
           element={protectedRoute(ChangeAvatarPage)}
         />
+        <Route path="/demo-info" element={protectedRoute(DemoInfo)} />
       </Route>
     </Routes>
   )
