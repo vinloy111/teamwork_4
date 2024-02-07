@@ -5,6 +5,7 @@ import {
   IconButton,
   MenuItem,
   Toolbar,
+  Tooltip,
   Typography,
 } from '@mui/material'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
@@ -17,6 +18,7 @@ import LogoutIcon from '@mui/icons-material/Logout'
 import useFullScreen from 'hooks/useFullScreen'
 import { theme } from 'theme/index'
 import { Store } from '../../store'
+import ThemeSwitchComponent from 'components/theme-switcher/ThemeSwitchComponent'
 
 const menu = [
   { id: 1, title: 'Главная', link: '' },
@@ -24,6 +26,7 @@ const menu = [
   { id: 3, title: 'Форум', link: 'forum' },
   { id: 4, title: 'Таблица лидеров', link: 'leaderboard' },
   { id: 5, title: 'Настройки', link: 'settings' },
+  { id: 6, title: 'О проекте', link: 'demo-info' },
 ]
 // TODO: Неиспользуемый код
 // function stringAvatar(name: string) {
@@ -76,7 +79,7 @@ const Menu = () => {
   }
 
   return (
-    <Box>
+    <Box sx={pathname.includes(`/demo-info`) ? { display: 'none' } : undefined}>
       <AppBar position="sticky">
         <Toolbar sx={{ flexGrow: 1, direction: 'row' }}>
           {menu.map(renderMenuLink)}
@@ -85,21 +88,29 @@ const Menu = () => {
             <MenuItem component={NavLink} to={`/settings`}>
               <Avatar
                 src={user.avatar}
-                alt="Аватар"
                 sx={{ m: theme.spacing(1), width: 40, height: 40 }}
                 variant={'circular'}
               />
             </MenuItem>
           ) : null}
-          <IconButton
-            onClick={handleFullScreen}
-            aria-label="delete"
-            size="large">
-            {isFullscreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
-          </IconButton>
-          <IconButton onClick={handleLogout} aria-label="delete" size="large">
-            <LogoutIcon />
-          </IconButton>
+          <ThemeSwitchComponent />
+          <Tooltip title={!isFullscreen ? 'На весь экран' : 'Обычный размер'}>
+            <IconButton
+              onClick={handleFullScreen}
+              size="large"
+              color={'success'}>
+              {isFullscreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
+            </IconButton>
+          </Tooltip>
+          <Tooltip title={'Выйти'}>
+            <IconButton
+              onClick={handleLogout}
+              aria-label="delete"
+              size="large"
+              color={'success'}>
+              <LogoutIcon />
+            </IconButton>
+          </Tooltip>
         </Toolbar>
       </AppBar>
     </Box>

@@ -20,7 +20,8 @@ import { Store } from '../../store'
 function App() {
   const userTheme = useSelector((state: Store) => state.theme.userTheme)
   const allThemes = useSelector((state: Store) => state.theme.allThemes)
-  const [isAuthChecked, setIsAuthChecked] = useState(false)
+  const user = useSelector((state: Store) => state.user)
+  const [isAuthChecked, setIsAuthChecked] = useState(user !== null)
 
   useAuthCheck(() => setIsAuthChecked(true))
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')

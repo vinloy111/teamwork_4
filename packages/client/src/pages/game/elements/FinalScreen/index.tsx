@@ -120,7 +120,12 @@ export const FinalScreen = (props: Props): JSX.Element => {
       }}>
       <Paper
         elevation={24}
-        sx={{ maxWidth: 600, padding: '20px', borderRadius: '10px' }}>
+        sx={{
+          maxWidth: 600,
+          padding: '20px',
+          borderRadius: '10px',
+          zIndex: 2,
+        }}>
         {result}
         {button}
       </Paper>
